@@ -23,7 +23,12 @@
     <link rel="stylesheet" href="css/color-variations.css">
     <link rel="stylesheet" href="css/profile-animations.css">
     <link rel="stylesheet" href="css/footer.css">
-    
+
+    <!-- ============================================ -->
+    <!-- CRITICAL: Load LAST to override all other CSS -->
+    <!-- ============================================ -->
+    <link rel="stylesheet" href="css/critical-fixes.css">
+
     <!-- ============================================ -->
     <!-- SUPABASE JS SDK - Load BEFORE your scripts -->
     <!-- ============================================ -->
@@ -123,75 +128,9 @@
                     <p>A selection of my best work</p>
                 </div>
 
+                <!-- Featured projects will be dynamically loaded from Supabase -->
                 <div class="projects-grid" id="featuredProjectsGrid">
-                    <div class="project-card">
-                        <div class="project-header">
-                            <h3>Cephalopods AI Solver</h3>
-                            <div class="project-tech">Rust • C++ • Hashing • Simulation</div>
-                        </div>
-                        <div class="project-content">
-                            <div class="project-description">
-                                Explores all possible game board states in a simulation-heavy environment and calculates hash values efficiently. Solved a major performance bottleneck using memory-safe Rust to bring runtime below 200ms.
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/SimeonDev/cephalopods-ai-solver" target="_blank" rel="noopener noreferrer" class="project-link">
-                                    <span class="link-icon">🔗</span> GitHub
-                                </a>
-                                <button class="project-link" onclick="showDemoMessage('Cephalopods AI Solver', 'https://github.com/SimeonDev/cephalopods-ai-solver')">
-                                    <span class="link-icon">📺</span> Demo
-                                </button>
-                                <button class="project-link details-btn" onclick="showProjectDetails(1)">
-                                    <span class="link-icon">📖</span> Details
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card">
-                        <div class="project-header">
-                            <h3>AI-Powered Vehicle Maintenance Assistant</h3>
-                            <div class="project-tech">Python • LangChain • Streamlit • OpenAI API</div>
-                        </div>
-                        <div class="project-content">
-                            <div class="project-description">
-                                Intelligent vehicle maintenance system using LangChain and OpenAI API for predictive maintenance recommendations and automated scheduling.
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/SimeonDev/vehicle-maintenance-ai" target="_blank" rel="noopener noreferrer" class="project-link">
-                                    <span class="link-icon">🔗</span> GitHub
-                                </a>
-                                <button class="project-link" onclick="showDemoMessage('AI-Powered Vehicle Maintenance Assistant', 'https://github.com/SimeonDev/vehicle-maintenance-ai')">
-                                    <span class="link-icon">📺</span> Demo
-                                </button>
-                                <button class="project-link details-btn" onclick="showProjectDetails(2)">
-                                    <span class="link-icon">📖</span> Details
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card">
-                        <div class="project-header">
-                            <h3>Real-time Code Collaboration Tool</h3>
-                            <div class="project-tech">React • WebSocket • Node.js • MongoDB</div>
-                        </div>
-                        <div class="project-content">
-                            <div class="project-description">
-                                WebSocket-based collaborative coding environment with syntax highlighting, real-time cursor tracking, and integrated chat system.
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/SimeonDev/code-collab" target="_blank" rel="noopener noreferrer" class="project-link">
-                                    <span class="link-icon">🔗</span> GitHub
-                                </a>
-                                <button class="project-link" onclick="showDemoMessage('Real-time Code Collaboration Tool', 'https://github.com/SimeonDev/code-collab')">
-                                    <span class="link-icon">📺</span> Demo
-                                </button>
-                                <button class="project-link details-btn" onclick="showProjectDetails(4)">
-                                    <span class="link-icon">📖</span> Details
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Dynamic content loaded by js/projects-supabase.js -->
                 </div>
                 
                 <div class="view-all-projects">
@@ -238,7 +177,19 @@
                 </div>
 
                 <div class="projects-grid" id="allProjectsGrid">
-                    <!-- All projects will be dynamically loaded here -->
+                    <!-- TEMPORARY TEST: Hardcoded card to verify CSS -->
+                    <div class="project-card" style="border: 3px solid lime !important;">
+                        <div class="project-header">
+                            <h3>🧪 TEST PROJECT CARD</h3>
+                            <div class="project-tech">If you see this, CSS works!</div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-description">
+                                This is a hardcoded test card. JavaScript will replace this with real projects from Supabase.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Dynamic projects from Supabase will be added by JavaScript -->
                 </div>
             </div>
         </div>
@@ -251,36 +202,18 @@
                     <p>Insights, tutorials, and thoughts on technology</p>
                 </div>
                 <div class="blog-grid">
-                    <div class="blog-card">
+                    <!-- TEMPORARY TEST: Hardcoded cards to verify CSS -->
+                    <div class="blog-card" style="border: 3px solid lime !important;">
                         <div class="blog-header">
-                            <div class="blog-date">December 20, 2024</div>
-                            <h3>Optimizing Rust Performance for Game AI</h3>
+                            <div class="blog-date">TEST - December 20, 2024</div>
+                            <h3>🧪 TEST CARD: If you see this, CSS is working!</h3>
                         </div>
                         <div class="blog-excerpt">
-                            <p>Deep dive into memory-safe optimization techniques that reduced our AI solver runtime by 95%...</p>
+                            <p>This is a hardcoded test card with green border. If visible, CSS overrides work.</p>
                         </div>
-                        <a href="#" class="blog-link" onclick="showBlogPost(1)">Read More →</a>
+                        <a href="#" class="blog-link">Read More →</a>
                     </div>
-                    <div class="blog-card">
-                        <div class="blog-header">
-                            <div class="blog-date">November 15, 2024</div>
-                            <h3>Building Secure AI Applications</h3>
-                        </div>
-                        <div class="blog-excerpt">
-                            <p>Security considerations when integrating AI models into production applications...</p>
-                        </div>
-                        <a href="#" class="blog-link" onclick="showBlogPost(2)">Read More →</a>
-                    </div>
-                    <div class="blog-card">
-                        <div class="blog-header">
-                            <div class="blog-date">October 30, 2024</div>
-                            <h3>Blockchain in Cybersecurity</h3>
-                        </div>
-                        <div class="blog-excerpt">
-                            <p>Exploring how blockchain technology can enhance cybersecurity frameworks...</p>
-                        </div>
-                        <a href="#" class="blog-link" onclick="showBlogPost(3)">Read More →</a>
-                    </div>
+                    <!-- Dynamic cards from Supabase will be added by JavaScript -->
                 </div>
             </div>
         </div>
@@ -526,6 +459,73 @@
     <script src="js/footer.js" defer></script>
     
    <!-- ============================================ -->
+<!-- CARD VISIBILITY DIAGNOSTIC SCRIPT -->
+<!-- ============================================ -->
+<script>
+    // Debug card visibility
+    window.debugCardVisibility = function() {
+        console.log('\n=== CARD VISIBILITY DIAGNOSTIC ===\n');
+
+        const selectors = ['.blog-card', '.project-card', '.featured-project-card'];
+
+        selectors.forEach(selector => {
+            const cards = document.querySelectorAll(selector);
+            console.log(`\n${selector}: Found ${cards.length} cards`);
+
+            cards.forEach((card, i) => {
+                const styles = window.getComputedStyle(card);
+                const rect = card.getBoundingClientRect();
+
+                console.log(`  Card ${i + 1}:`);
+                console.log(`    - Opacity: ${styles.opacity}`);
+                console.log(`    - Visibility: ${styles.visibility}`);
+                console.log(`    - Display: ${styles.display}`);
+                console.log(`    - Width: ${styles.width} (${rect.width}px)`);
+                console.log(`    - Height: ${styles.height} (${rect.height}px)`);
+                console.log(`    - Transform: ${styles.transform}`);
+                console.log(`    - Position: ${styles.position}`);
+                console.log(`    - Background: ${styles.background.substring(0, 50)}...`);
+                console.log(`    - Border: ${styles.border}`);
+
+                if (styles.opacity === '0' || styles.visibility === 'hidden' || styles.display === 'none') {
+                    console.error(`    ❌ CARD IS INVISIBLE!`);
+                } else if (rect.width === 0 || rect.height === 0) {
+                    console.error(`    ❌ CARD HAS NO DIMENSIONS!`);
+                } else {
+                    console.log(`    ✅ Card is visible`);
+                }
+            });
+        });
+
+        // Check containers
+        console.log('\n=== CONTAINER DIAGNOSTIC ===\n');
+        const containers = ['.blog-grid', '#allProjectsGrid', '#featuredProjectsGrid'];
+
+        containers.forEach(selector => {
+            const container = document.querySelector(selector);
+            if (container) {
+                const styles = window.getComputedStyle(container);
+                console.log(`${selector}:`);
+                console.log(`  - Display: ${styles.display}`);
+                console.log(`  - Opacity: ${styles.opacity}`);
+                console.log(`  - Visibility: ${styles.visibility}`);
+                console.log(`  - Children: ${container.children.length}`);
+            } else {
+                console.warn(`${selector}: NOT FOUND`);
+            }
+        });
+
+        console.log('\n=== END DIAGNOSTIC ===\n');
+    };
+
+    // Auto-run diagnostic 3 seconds after page load
+    setTimeout(() => {
+        console.log('🔍 Running automatic card visibility diagnostic...');
+        window.debugCardVisibility();
+    }, 3000);
+</script>
+
+   <!-- ============================================ -->
 <!-- ANALYTICS INITIALIZATION -->
 <!-- ============================================ -->
 <script>
@@ -535,7 +535,7 @@
         if (typeof trackPageView === 'function') {
             trackPageView('home', window.location.pathname);
         }
-        
+
         console.log('🎯 Analytics tracking initialized');
     });
     

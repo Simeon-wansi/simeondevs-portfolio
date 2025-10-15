@@ -532,6 +532,89 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================
+// FETCH AND RENDER FEATURED PROJECTS (Homepage)
+// ============================================
+async function loadFeaturedProjects() {
+    console.log('🌟 Loading featured projects for homepage...');
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('projects')
+            .select('*')
+            .eq('published', true)
+            .eq('featured', true)  // Only featured projects
+            .order('created_at', { ascending: false })
+            .limit(3);  // Show max 3 featured projects on homepage
+
+        if (error) {
+            console.error('❌ Error loading featured projects:', error);
+            showFeaturedProjectsError();
+            return;
+        }
+
+        console.log(`✅ Loaded ${data.length} featured projects`);
+        renderFeaturedProjects(data);
+
+    } catch (err) {
+        console.error('❌ Featured projects fetch exception:', err);
+        showFeaturedProjectsError();
+    }
+}
+
+// ============================================
+// RENDER FEATURED PROJECTS TO HOMEPAGE
+// ============================================
+function renderFeaturedProjects(projects) {
+    const container = document.getElementById('featuredProjectsGrid');
+
+    if (!container) {
+        console.error('❌ featuredProjectsGrid container not found!');
+        return;
+    }
+
+    if (!projects || projects.length === 0) {
+        container.innerHTML = `
+            <div class="no-featured-message">
+                <p>🚀 No featured projects yet. Check back soon!</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Clear container
+    container.innerHTML = '';
+
+    // Render each featured project
+    projects.forEach(project => {
+        try {
+            const card = createProjectCard(project);
+            card.classList.add('featured-project-card');
+            container.appendChild(card);
+        } catch (error) {
+            console.error(`❌ Error rendering featured project:`, error);
+        }
+    });
+
+    console.log(`✅ Rendered ${projects.length} featured projects on homepage`);
+}
+
+// ============================================
+// SHOW FEATURED PROJECTS ERROR
+// ============================================
+function showFeaturedProjectsError() {
+    const container = document.getElementById('featuredProjectsGrid');
+    if (container) {
+        container.innerHTML = `
+            <div class="error-message">
+                <h3>⚠️ Unable to load featured projects</h3>
+                <p>Please check your internet connection and try again.</p>
+                <button class="cta-button" onclick="loadFeaturedProjects()">Retry</button>
+            </div>
+        `;
+    }
+}
+
+// ============================================
 // EXPORT FUNCTIONS
 // ============================================
 window.initializeProjects = initializeProjects;
@@ -539,3 +622,4 @@ window.showProjectDetails = showProjectDetails;
 window.closeProjectModal = closeProjectModal;
 window.filterProjects = filterProjects;
 window.fetchProjects = fetchProjects;
+window.loadFeaturedProjects = loadFeaturedProjects;

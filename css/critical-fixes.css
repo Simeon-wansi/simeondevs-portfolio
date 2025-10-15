@@ -1,0 +1,96 @@
+/* ============================================
+   CRITICAL FIX: Force Blog & Project Cards Visibility
+   THIS FILE MUST LOAD LAST - AFTER ALL OTHER CSS
+   Override any conflicting animations/transforms
+   ============================================ */
+
+/* Grid containers must be visible and use CSS Grid */
+.blog-grid,
+#allProjectsGrid,
+.projects-grid,
+#featuredProjectsGrid,
+.featured-projects-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+    margin-top: 2rem !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    width: 100% !important;
+}
+
+/* Individual cards must be visible */
+.blog-card,
+.project-card,
+.featured-project-card {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    position: relative !important;
+    margin-bottom: 0 !important;
+    min-height: 200px !important;
+    width: auto !important;
+    background: rgba(26, 10, 46, 0.8) !important;
+    border: 1px solid rgba(157, 78, 221, 0.3) !important;
+    border-radius: 15px !important;
+    padding: 1.5rem !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Hover effects */
+.blog-card:hover,
+.project-card:hover,
+.featured-project-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 10px 30px rgba(157, 78, 221, 0.3) !important;
+}
+
+/* Ensure card content is visible */
+.blog-card *,
+.project-card *,
+.featured-project-card * {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Ensure card internals don't have display: none */
+.blog-header,
+.blog-excerpt,
+.blog-footer,
+.project-header,
+.project-content,
+.project-description,
+.project-links {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* No featured projects message */
+.no-featured-message,
+.no-projects-message,
+.no-blog-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem;
+    background: rgba(26, 10, 46, 0.5);
+    border-radius: 15px;
+    border: 1px solid rgba(157, 78, 221, 0.3);
+    color: #cccccc;
+    font-size: 1.1rem;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .blog-grid,
+    #allProjectsGrid,
+    #featuredProjectsGrid,
+    .featured-projects-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+}

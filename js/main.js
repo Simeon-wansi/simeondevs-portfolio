@@ -65,11 +65,15 @@ function showPage(pageId) {
 // ============================================
 function initializePageData(pageId) {
     console.log(`🔄 Initializing data for page: ${pageId}`);
-    
+
     switch(pageId) {
         case 'home':
-            // Home page uses static content
-            console.log('🏠 Home page - using static content');
+            console.log('🏠 Loading featured projects on home page...');
+            if (typeof loadFeaturedProjects === 'function') {
+                loadFeaturedProjects();
+            } else {
+                console.error('❌ loadFeaturedProjects function not found!');
+            }
             break;
             
         case 'projects':
