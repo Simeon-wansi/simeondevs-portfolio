@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "simeondevs",
   "buildCommand": "node inject-env.js",
   "installCommand": "echo 'No dependencies to install'",
   "outputDirectory": ".",
