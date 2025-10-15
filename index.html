@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimeonDev - Build. Hack. Learn.</title>
+    <meta name="description" content="SimeNova - AI & Cybersecurity Explorer | Turning ideas into code with advanced machine learning, blockchain, and security solutions">
+    <meta name="keywords" content="AI, Machine Learning, Cybersecurity, Web Development, Blockchain, Portfolio, SimeNova">
+    <meta name="author" content="SimeNova">
+    
+    <!-- CSS Modules -->
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- External CSS (existing) -->
+    <link rel="stylesheet" href="css/matrix-theme.css">
+    <link rel="stylesheet" href="css/color-variations.css">
+    <link rel="stylesheet" href="css/profile-animations.css">
+    <link rel="stylesheet" href="css/footer.css">
+    
+    <!-- ============================================ -->
+    <!-- SUPABASE JS SDK - Load BEFORE your scripts -->
+    <!-- ============================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="showPage('home')">SimeNova</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('projects')">Projects</a></li>
+                <li><a href="#" onclick="showPage('blog')">Blog</a></li>
+                <li><a href="#" onclick="showPage('about')">About</a></li>
+                <li><a href="#" onclick="showPage('services')">Services</a></li>
+                <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="container">
+                <div class="hero">
+                    <div class="profile-section">
+                        <div class="profile-pic-container">
+                            <div class="profile-pic">
+                                <img src="images/profile.jpg" alt="SimeNova Profile Picture" loading="lazy">
+                                <div class="online-status"></div>
+                            </div>
+                        </div>
+                        <div class="profile-info">
+                            <h1>SimeonDev</h1>
+                            <p class="tagline">🔧 Build. Hack. Learn.</p>
+                            <p class="description">Turning ideas into code | AI & Cybersecurity Explorer</p>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number" id="total-projects">8</span>
+                                    <span class="stat-label">Projects</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="completed-projects">7</span>
+                                    <span class="stat-label">Completed</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="featured-projects">4</span>
+                                    <span class="stat-label">Featured</span>
+                                </div>
+                            </div>
+                            <div class="profile-badges">
+                                <span class="profile-badge">AI Specialist</span>
+                                <span class="profile-badge">Security Expert</span>
+                                <span class="profile-badge featured">Open Source</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="cta-button" onclick="showPage('projects')">View My Work</a>
+                </div>
+
+                <div class="section-header">
+                    <h2>Skills Snapshot</h2>
+                    <p>Technologies and tools I use to build innovative solutions</p>
+                </div>
+
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <h3>🧑‍💻 Programming</h3>
+                        <p>C · C++ · Rust · Python · JavaScript · React</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>🧠 AI & Machine Learning</h3>
+                        <p>LangChain · Streamlit · OpenAI API · Computer Vision · Prompt Engineering</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>🔐 Cybersecurity</h3>
+                        <p>CTFs · Reverse Engineering · System Exploitation</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>⚙️ Tools & Platforms</h3>
+                        <p>Git · Linux · Docker · Firebase · PostgreSQL · React Native</p>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2>Featured Projects</h2>
+                    <p>A selection of my best work</p>
+                </div>
+
+                <div class="projects-grid" id="featuredProjectsGrid">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h3>Cephalopods AI Solver</h3>
+                            <div class="project-tech">Rust • C++ • Hashing • Simulation</div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-description">
+                                Explores all possible game board states in a simulation-heavy environment and calculates hash values efficiently. Solved a major performance bottleneck using memory-safe Rust to bring runtime below 200ms.
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/simenova/cephalopods-ai-solver" target="_blank" rel="noopener noreferrer" class="project-link">
+                                    <span class="link-icon">🔗</span> GitHub
+                                </a>
+                                <button class="project-link" onclick="showDemoMessage('Cephalopods AI Solver', 'https://github.com/simenova/cephalopods-ai-solver')">
+                                    <span class="link-icon">📺</span> Demo
+                                </button>
+                                <button class="project-link details-btn" onclick="showProjectDetails(1)">
+                                    <span class="link-icon">📖</span> Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h3>AI-Powered Vehicle Maintenance Assistant</h3>
+                            <div class="project-tech">Python • LangChain • Streamlit • OpenAI API</div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-description">
+                                Intelligent vehicle maintenance system using LangChain and OpenAI API for predictive maintenance recommendations and automated scheduling.
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/simenova/vehicle-maintenance-ai" target="_blank" rel="noopener noreferrer" class="project-link">
+                                    <span class="link-icon">🔗</span> GitHub
+                                </a>
+                                <button class="project-link" onclick="showDemoMessage('AI-Powered Vehicle Maintenance Assistant', 'https://github.com/simenova/vehicle-maintenance-ai')">
+                                    <span class="link-icon">📺</span> Demo
+                                </button>
+                                <button class="project-link details-btn" onclick="showProjectDetails(2)">
+                                    <span class="link-icon">📖</span> Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h3>Real-time Code Collaboration Tool</h3>
+                            <div class="project-tech">React • WebSocket • Node.js • MongoDB</div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-description">
+                                WebSocket-based collaborative coding environment with syntax highlighting, real-time cursor tracking, and integrated chat system.
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/simenova/code-collab" target="_blank" rel="noopener noreferrer" class="project-link">
+                                    <span class="link-icon">🔗</span> GitHub
+                                </a>
+                                <button class="project-link" onclick="showDemoMessage('Real-time Code Collaboration Tool', 'https://github.com/simenova/code-collab')">
+                                    <span class="link-icon">📺</span> Demo
+                                </button>
+                                <button class="project-link details-btn" onclick="showProjectDetails(4)">
+                                    <span class="link-icon">📖</span> Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="view-all-projects">
+                    <button class="cta-button" onclick="showPage('projects')">
+                        View All Projects →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Page -->
+        <div id="projects" class="page">
+            <div class="container">
+                <div class="section-header">
+                    <h2>My Projects</h2>
+                    <p>Explore my latest work in AI, cybersecurity, and software development</p>
+                </div>
+                
+                <!-- Project Filters -->
+                <div class="project-filters">
+                    <button class="filter-btn active" data-filter="all">All Projects</button>
+                    <button class="filter-btn" data-filter="AI/ML">AI & ML</button>
+                    <button class="filter-btn" data-filter="Cybersecurity">Cybersecurity</button>
+                    <button class="filter-btn" data-filter="Web Development">Web Dev</button>
+                    <button class="filter-btn" data-filter="Blockchain">Blockchain</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                    <button class="filter-btn" data-filter="in-progress">In Progress</button>
+                </div>
+                
+                <!-- Project Stats -->
+                <div class="project-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalProjects">0</span>
+                        <span class="stat-label">Total Projects</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="completedProjects">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="inProgressProjects">0</span>
+                        <span class="stat-label">In Progress</span>
+                    </div>
+                </div>
+
+                <div class="projects-grid" id="allProjectsGrid">
+                    <!-- All projects will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Page -->
+        <div id="blog" class="page">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Blog & Articles</h2>
+                    <p>Insights, tutorials, and thoughts on technology</p>
+                </div>
+                <div class="blog-grid">
+                    <div class="blog-card">
+                        <div class="blog-header">
+                            <div class="blog-date">December 20, 2024</div>
+                            <h3>Optimizing Rust Performance for Game AI</h3>
+                        </div>
+                        <div class="blog-excerpt">
+                            <p>Deep dive into memory-safe optimization techniques that reduced our AI solver runtime by 95%...</p>
+                        </div>
+                        <a href="#" class="blog-link" onclick="showBlogPost(1)">Read More →</a>
+                    </div>
+                    <div class="blog-card">
+                        <div class="blog-header">
+                            <div class="blog-date">November 15, 2024</div>
+                            <h3>Building Secure AI Applications</h3>
+                        </div>
+                        <div class="blog-excerpt">
+                            <p>Security considerations when integrating AI models into production applications...</p>
+                        </div>
+                        <a href="#" class="blog-link" onclick="showBlogPost(2)">Read More →</a>
+                    </div>
+                    <div class="blog-card">
+                        <div class="blog-header">
+                            <div class="blog-date">October 30, 2024</div>
+                            <h3>Blockchain in Cybersecurity</h3>
+                        </div>
+                        <div class="blog-excerpt">
+                            <p>Exploring how blockchain technology can enhance cybersecurity frameworks...</p>
+                        </div>
+                        <a href="#" class="blog-link" onclick="showBlogPost(3)">Read More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="about" class="page">
+            <div class="container">
+                <div class="section-header">
+                    <h2>About Me</h2>
+                    <p>Get to know the person behind the code</p>
+                </div>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>I'm a passionate developer and cybersecurity enthusiast who loves turning complex problems into elegant solutions. With a background in AI/ML and security research, I focus on building systems that are both powerful and secure.</p>
+                        <p>My journey began with curiosity about how things work under the hood, which led me to explore everything from low-level systems programming to high-level AI architectures. I believe in the power of open source and continuous learning.</p>
+                        <p>When I'm not coding, you can find me participating in CTF competitions, contributing to open source projects, or exploring the latest developments in quantum computing and blockchain technology.</p>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">50</div>
+                            <div class="stat-label">Projects Completed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">25</div>
+                            <div class="stat-label">Technologies</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100</div>
+                            <div class="stat-label">CTF Challenges</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Page -->
+        <div id="services" class="page">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Services</h2>
+                    <p>How I can help bring your ideas to life</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">🤖</div>
+                        <h3>AI/ML Development</h3>
+                        <p>Custom machine learning solutions, from data preprocessing to model deployment. Specializing in NLP, computer vision, and predictive analytics.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🔐</div>
+                        <h3>Cybersecurity Consulting</h3>
+                        <p>Security assessments, penetration testing, and secure system design. Helping organizations protect their digital assets.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">💻</div>
+                        <h3>Full-Stack Development</h3>
+                        <p>End-to-end web application development using modern technologies. From concept to deployment and maintenance.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">⛓️</div>
+                        <h3>Blockchain Solutions</h3>
+                        <p>Smart contract development, DeFi protocols, and blockchain integration for transparent and secure systems.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Get In Touch</h2>
+                    <p>Let's discuss your next project</p>
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h3>Contact Information</h3>
+                        <div class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            <span>contact@simeondev.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">💬</span>
+                            <span>Available for freelance projects</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">🌍</span>
+                            <span>Remote work preferred</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">⚡</span>
+                            <span>Usually responds within 24 hours</span>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <input type="text" id="subject" name="subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="form-submit">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <!-- Brand Section -->
+                    <div class="footer-brand">
+                        <h2 class="footer-logo">SimeNova</h2>
+                        <p class="footer-tagline">Empowering Innovation Through Technology</p>
+                        <p class="footer-description">
+                            Turning complex ideas into elegant solutions through AI, cybersecurity, and cutting-edge development.
+                        </p>
+                    </div>
+                    
+                    <!-- Social Links -->
+                    <div class="footer-social">
+                        <h3>Connect With Me</h3>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/sim%C3%A9on-wansi/" target="_blank" rel="noopener noreferrer" class="social-link linkedin" title="LinkedIn">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                </svg>
+                            </a>
+                            <a href="https://discord.gg/sime_nova" target="_blank" rel="noopener noreferrer" class="social-link discord" title="Discord">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0002 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1568 2.4189Z"/>
+                                </svg>
+                            </a>
+                            <a href="https://github.com/Simeon-wansi" target="_blank" rel="noopener noreferrer" class="social-link github" title="GitHub">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                            </a>
+                            <a href="https://kaggle.com/simenova" target="_blank" rel="noopener noreferrer" class="social-link kaggle" title="Kaggle">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.285.18.046.149.034.255-.036.315l-6.555 6.344 6.836 8.507c.095.104.117.208.07.336"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Newsletter Section -->
+                    <div class="footer-newsletter">
+                        <h3>Stay Updated</h3>
+                        <p>Subscribe to my newsletter for the latest insights on AI, cybersecurity, and tech innovations.</p>
+                        <form class="newsletter-form" id="newsletter-form">
+                            <div class="newsletter-input-group">
+                                <input type="email" id="newsletter-email" placeholder="Enter your email" required>
+                                <button type="submit" class="newsletter-btn">
+                                    <span class="newsletter-btn-text">Subscribe</span>
+                                    <span class="newsletter-btn-loading" style="display: none;">
+                                        <div class="loading-spinner"></div>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="newsletter-privacy">
+                                <small>By subscribing, you agree to our <a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a></small>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Quick Links -->
+                    <div class="footer-links">
+                        <h3>Quick Links</h3>
+                        <ul>
+                            <li><a href="#" onclick="showPage('home')">Home</a></li>
+                            <li><a href="#" onclick="showPage('projects')">Projects</a></li>
+                            <li><a href="#" onclick="showPage('blog')">Blog</a></li>
+                            <li><a href="#" onclick="showPage('about')">About</a></li>
+                            <li><a href="#" onclick="showPage('services')">Services</a></li>
+                            <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Footer Bottom -->
+                <div class="footer-bottom">
+                    <div class="footer-bottom-content">
+                        <p>&copy; 2025 SimeonDev. All rights reserved.</p>
+                        <div class="footer-bottom-links">
+                            <a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a>
+                            <a href="#" onclick="showTermsOfService()">Terms of Service</a>
+                            <a href="#" onclick="showPage('contact')">Contact</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    <!-- ============================================ -->
+    <!-- SUPABASE JS SDK - Load BEFORE your scripts -->
+    <!-- ============================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- ============================================ -->
+    <!-- JAVASCRIPT FILES - CORRECT LOADING ORDER -->
+    <!-- ============================================ -->
+
+    <!-- STEP 1: Load environment variables -->
+    <script src="js/env.js"></script>
+
+    <!-- STEP 2: Load local config (development only, will fail in production - that's OK) -->
+    <script src="js/config.js" onerror="console.log('ℹ️ No local config - using environment variables')"></script>
+
+    <!-- STEP 3: Initialize Supabase client -->
+    <script src="js/supabase-client.js"></script>
+
+    <!-- STEP 4: Core functionality -->
+    <script src="js/main.js"></script>
+
+    <!-- STEP 5: Supabase integrations -->
+    <script src="js/projects-supabase.js"></script>
+    <script src="js/blog-supabase.js"></script>
+    <script src="js/contact-supabase.js"></script>
+    <script src="js/newsletter-supabase.js"></script>
+
+    <!-- STEP 6: Non-critical scripts (deferred) -->
+    <script src="js/animations.js" defer></script>
+    <script src="js/colorEngine.js" defer></script>
+    <script src="js/footer.js" defer></script>
+    
+   <!-- ============================================ -->
+<!-- ANALYTICS INITIALIZATION -->
+<!-- ============================================ -->
+<script>
+    // Track page views when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        // Track initial page view
+        if (typeof trackPageView === 'function') {
+            trackPageView('home', window.location.pathname);
+        }
+        
+        console.log('🎯 Analytics tracking initialized');
+    });
+    
+    // Override showPage function to track page views
+    const originalShowPage = window.showPage;
+    if (originalShowPage) {
+        window.showPage = function(pageId) {
+            originalShowPage(pageId);
+            
+            if (typeof trackPageView === 'function') {
+                trackPageView(pageId, `/${pageId}`);
+            }
+        };
+    }
+</script>
+
+<!-- ============================================ -->
+<!-- ERROR HANDLER -->
+<!-- ============================================ -->
+<script>
+    // Global error handler for missing configuration
+    window.addEventListener('error', function(e) {
+        if (e.message && e.message.includes('SUPABASE')) {
+            console.error('🚨 Supabase configuration error detected');
+        }
+    });
+    
+    // Helper function to show global errors
+    function showGlobalError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.style.cssText = `
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 0, 110, 0.95);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            text-align: center;
+        `;
+        errorDiv.textContent = message;
+        document.body.appendChild(errorDiv);
+        
+        setTimeout(() => errorDiv.remove(), 5000);
+    }
+    
+    window.showGlobalError = showGlobalError;
+</script>
+    <!-- JavaScript Files - Optimized Loading
+    <script src="js/main.js"></script>
+    <script src="js/projects_complex.js"></script>
+    <script src="js/forms.js"></script>
+    
+    <-- Defer heavy animation scripts
+    <script src="js/animations.js" defer></script>
+    <script src="js/colorEngine.js" defer></script>
+    <script src="js/blog.js" defer></script>
+    <script src="js/footer.js" defer></script> -->
+    
+    <!-- Debug overlay functions
+    <script>
+        function toggleDebugOverlay() {
+            const overlay = document.getElementById('debugOverlay');
+            const isVisible = overlay.style.display !== 'none';
+            overlay.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                updateDebugInfo();
+            }
+        }
+        
+        function updateDebugInfo() {
+            const content = document.getElementById('debugContent');
+            if (!content) return;
+            
+            let info = [];
+            
+            // Check projects data
+            if (typeof projectsData !== 'undefined') {
+                info.push('✅ Projects data: ' + projectsData.length + ' items');
+            } else {
+                info.push('❌ Projects data: Not found');
+            }
+            
+            // Check container
+            const container = document.getElementById('allProjectsGrid');
+            if (container) {
+                info.push('✅ Container: Found (' + container.children.length + ' children)');
+            } else {
+                info.push('❌ Container: Not found');
+            }
+            
+            // Check functions
+            const functions = ['initializeProjects', 'renderAllProjects', 'renderProjects'];
+            functions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    info.push('✅ ' + funcName + ': Available');
+                } else {
+                    info.push('❌ ' + funcName + ': Missing');
+                }
+            });
+            
+            // Check page visibility
+            const projectsPage = document.getElementById('projects');
+            if (projectsPage) {
+                const isActive = projectsPage.classList.contains('active');
+                info.push('📄 Projects page: ' + (isActive ? 'Active' : 'Inactive'));
+            }
+            
+            // Add manual render button
+            info.push('<br><button onclick="forceRenderProjects()" style="background: #00f5ff; color: #000; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 10px;">Force Render</button>');
+            
+            content.innerHTML = info.join('<br>');
+        }
+        
+        function forceRenderProjects() {
+            console.log('🔧 Force rendering projects...');
+            
+            // Switch to projects page first
+            showPage('projects');
+            
+            // Force render after a delay
+            setTimeout(() => {
+                if (typeof initializeProjects === 'function') {
+                    initializeProjects();
+                }
+            }, 500);
+            
+            updateDebugInfo();
+        }
+        
+        // Auto-update debug info every 2 seconds
+        setInterval(updateDebugInfo, 2000);
+    </script> -->
+    
+    <!-- EmailJS SDK (configure with your keys) - Load asynchronously -->
+    <!-- <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script> -->
+</body>
+</html>

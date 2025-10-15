@@ -1,0 +1,389 @@
+/* Simeondev Portfolio - Dynamic Color Variations */
+
+/* Color Palette Variables */
+:root {
+    /* Primary Colors */
+    --primary-bg: #0a0a0a;
+    --secondary-bg: #1a0a2e;
+    --tertiary-bg: #16213e;
+    
+    /* Main Brand Colors */
+    --purple-primary: #9d4edd;
+    --purple-secondary: #7209b7;
+    --purple-light: #c77dff;
+    --purple-dark: #5a189a;
+    
+    --gold-primary: #ffd60a;
+    --gold-secondary: #ffb700;
+    --gold-light: #ffed4e;
+    --gold-dark: #e85d04;
+    
+    /* Accent Colors */
+    --cyan-accent: #00f5ff;
+    --cyan-dark: #0096c7;
+    --cyan-light: #87ceeb;
+    
+    --pink-accent: #ff006e;
+    --pink-dark: #d00051;
+    --pink-light: #ff5aa6;
+    
+    --green-matrix: #00ff41;
+    --green-dark: #00cc33;
+    --green-light: #66ff66;
+    
+    --blue-accent: #0077ff;
+    --blue-dark: #0056b3;
+    --blue-light: #4dabf7;
+    
+    /* Neutral Colors */
+    --white: #ffffff;
+    --light-gray: #cccccc;
+    --medium-gray: #888888;
+    --dark-gray: #333333;
+    
+    /* Transparency Levels */
+    --alpha-10: rgba(255, 255, 255, 0.1);
+    --alpha-20: rgba(255, 255, 255, 0.2);
+    --alpha-30: rgba(255, 255, 255, 0.3);
+    --alpha-50: rgba(255, 255, 255, 0.5);
+    
+    /* Section-specific Colors */
+    --section-primary: var(--purple-primary);
+    --section-secondary: var(--gold-primary);
+    --section-accent: var(--cyan-accent);
+}
+
+/* Section Color Schemes */
+.page#home {
+    --section-primary: var(--purple-primary);
+    --section-secondary: var(--gold-primary);
+    --section-accent: var(--cyan-accent);
+}
+
+.page#projects {
+    --section-primary: var(--pink-accent);
+    --section-secondary: var(--green-matrix);
+    --section-accent: var(--gold-primary);
+}
+
+.page#blog {
+    --section-primary: var(--blue-accent);
+    --section-secondary: var(--purple-primary);
+    --section-accent: var(--gold-primary);
+}
+
+.page#about {
+    --section-primary: var(--cyan-accent);
+    --section-secondary: var(--pink-accent);
+    --section-accent: var(--purple-primary);
+}
+
+.page#services {
+    --section-primary: var(--green-matrix);
+    --section-secondary: var(--blue-accent);
+    --section-accent: var(--gold-primary);
+}
+
+.page#contact {
+    --section-primary: var(--gold-primary);
+    --section-secondary: var(--purple-primary);
+    --section-accent: var(--cyan-accent);
+}
+
+/* Dynamic Color Applications */
+.hero h1,
+.section-header h2 {
+    background: linear-gradient(45deg, var(--section-primary), var(--section-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    animation: colorShift 3s ease-in-out infinite alternate;
+}
+
+@keyframes colorShift {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(30deg); }
+}
+
+/* Card Color Variations */
+.skill-card {
+    background: rgba(26, 10, 46, 0.5);
+    border: 1px solid color-mix(in srgb, var(--section-primary) 30%, transparent);
+    transition: all 0.3s ease;
+}
+
+.skill-card:hover {
+    background: color-mix(in srgb, var(--section-primary) 10%, rgba(26, 10, 46, 0.7));
+    border-color: var(--section-primary);
+    box-shadow: 0 15px 40px color-mix(in srgb, var(--section-primary) 20%, transparent);
+}
+
+.skill-card h3 {
+    color: var(--section-secondary);
+}
+
+.skill-card::before {
+    background: linear-gradient(90deg, var(--section-primary), var(--section-secondary));
+}
+
+/* Project Card Colors */
+.project-card {
+    background: rgba(26, 10, 46, 0.5);
+    border: 1px solid color-mix(in srgb, var(--section-primary) 30%, transparent);
+}
+
+.project-card:hover {
+    background: color-mix(in srgb, var(--section-primary) 8%, rgba(26, 10, 46, 0.7));
+    border-color: var(--section-primary);
+    box-shadow: 0 20px 50px color-mix(in srgb, var(--section-primary) 30%, transparent);
+}
+
+.project-card h3 {
+    color: var(--section-secondary);
+}
+
+.project-tech {
+    color: var(--section-accent);
+}
+
+/* Button Color Variations */
+.cta-button,
+.project-link,
+.form-submit {
+    background: linear-gradient(45deg, var(--section-primary), var(--section-secondary));
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover,
+.project-link:hover,
+.form-submit:hover {
+    background: linear-gradient(45deg, var(--section-secondary), var(--section-primary));
+    box-shadow: 0 10px 30px color-mix(in srgb, var(--section-primary) 30%, transparent);
+}
+
+/* Navigation Color Adaptation */
+.nav-links a::before {
+    background: linear-gradient(45deg, var(--section-primary), var(--section-secondary));
+}
+
+.nav-links a:hover {
+    color: var(--primary-bg);
+}
+
+/* Form Color Variations */
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--section-primary);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--section-primary) 20%, transparent);
+}
+
+.form-group input:valid,
+.form-group textarea:valid {
+    border-color: var(--green-matrix);
+}
+
+/* Animated Color Backgrounds */
+.color-wave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        45deg,
+        color-mix(in srgb, var(--section-primary) 10%, transparent),
+        color-mix(in srgb, var(--section-secondary) 10%, transparent),
+        color-mix(in srgb, var(--section-accent) 10%, transparent)
+    );
+    background-size: 400% 400%;
+    animation: colorWave 8s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes colorWave {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Color Pulsing Effect */
+.color-pulse {
+    animation: colorPulse 2s ease-in-out infinite;
+}
+
+@keyframes colorPulse {
+    0%, 100% {
+        box-shadow: 0 0 20px color-mix(in srgb, var(--section-primary) 30%, transparent);
+    }
+    50% {
+        box-shadow: 0 0 30px color-mix(in srgb, var(--section-secondary) 40%, transparent);
+    }
+}
+
+/* Interactive Color Changes */
+.interactive-color {
+    transition: all 0.3s ease;
+}
+
+.interactive-color:hover {
+    filter: hue-rotate(30deg) saturate(1.2);
+    transform: scale(1.02);
+}
+
+/* Gradient Text Effects */
+.gradient-text {
+    background: linear-gradient(
+        45deg,
+        var(--section-primary),
+        var(--section-secondary),
+        var(--section-accent)
+    );
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientText 4s ease-in-out infinite;
+}
+
+@keyframes gradientText {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Status Color Indicators */
+.status-online {
+    color: var(--green-matrix);
+    background: color-mix(in srgb, var(--green-matrix) 15%, transparent);
+    border-color: var(--green-matrix);
+}
+
+.status-busy {
+    color: var(--pink-accent);
+    background: color-mix(in srgb, var(--pink-accent) 15%, transparent);
+    border-color: var(--pink-accent);
+}
+
+.status-away {
+    color: var(--gold-primary);
+    background: color-mix(in srgb, var(--gold-primary) 15%, transparent);
+    border-color: var(--gold-primary);
+}
+
+/* Theme-specific Color Overrides */
+.theme-purple {
+    --section-primary: var(--purple-primary);
+    --section-secondary: var(--purple-light);
+    --section-accent: var(--purple-dark);
+}
+
+.theme-gold {
+    --section-primary: var(--gold-primary);
+    --section-secondary: var(--gold-light);
+    --section-accent: var(--gold-dark);
+}
+
+.theme-cyan {
+    --section-primary: var(--cyan-accent);
+    --section-secondary: var(--cyan-light);
+    --section-accent: var(--cyan-dark);
+}
+
+.theme-matrix {
+    --section-primary: var(--green-matrix);
+    --section-secondary: var(--green-light);
+    --section-accent: var(--green-dark);
+}
+
+/* Color Accessibility */
+.high-contrast {
+    --section-primary: #ffffff;
+    --section-secondary: #000000;
+    --section-accent: #ffff00;
+}
+
+.high-contrast .skill-card,
+.high-contrast .project-card {
+    border-width: 2px;
+}
+
+.high-contrast .gradient-text {
+    background: linear-gradient(45deg, #ffffff, #ffff00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Color Randomization */
+.random-color {
+    --random-hue: calc(var(--mouse-x, 0) * 360deg);
+    filter: hue-rotate(var(--random-hue));
+}
+
+/* Seasonal Color Themes */
+.season-spring {
+    --section-primary: #00ff41;
+    --section-secondary: #ffd60a;
+    --section-accent: #ff69b4;
+}
+
+.season-summer {
+    --section-primary: #ffd60a;
+    --section-secondary: #ff006e;
+    --section-accent: #00f5ff;
+}
+
+.season-autumn {
+    --section-primary: #ff006e;
+    --section-secondary: #e85d04;
+    --section-accent: #7209b7;
+}
+
+.season-winter {
+    --section-primary: #00f5ff;
+    --section-secondary: #9d4edd;
+    --section-accent: #ffffff;
+}
+
+/* Responsive Color Adjustments */
+@media (max-width: 768px) {
+    :root {
+        --section-intensity: 0.8;
+    }
+    
+    .skill-card,
+    .project-card {
+        background: color-mix(in srgb, var(--section-primary) 5%, rgba(26, 10, 46, 0.3));
+    }
+    
+    .hero h1,
+    .section-header h2 {
+        background: linear-gradient(45deg, var(--section-primary), var(--section-secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+}
+
+/* Performance Optimization */
+.color-optimized {
+    will-change: color, background-color, border-color;
+    contain: style;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .color-wave,
+    .color-pulse,
+    .gradient-text {
+        animation-duration: 10s;
+    }
+    
+    .colorShift {
+        animation: none;
+    }
+    
+    .interactive-color:hover {
+        filter: none;
+        transform: none;
+    }
+}

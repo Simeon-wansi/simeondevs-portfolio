@@ -1,0 +1,294 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "Cephalopods AI Solver",
+      "description": "Advanced AI system that explores all possible game board states in a simulation-heavy environment and calculates hash values efficiently. Successfully optimized performance using memory-safe Rust implementation, reducing runtime from several seconds to under 200ms. Features intelligent state pruning, dynamic programming optimization, and parallel processing capabilities.",
+      "fullDescription": "This project represents a significant breakthrough in game AI optimization. The Cephalopods AI Solver uses advanced algorithms to analyze complex game states and provide optimal solutions in real-time. The system employs a hybrid approach combining traditional game theory with modern machine learning techniques.\n\nKey innovations include:\n- Custom hash table implementation for ultra-fast state lookups\n- Memory-safe Rust core with C++ integration for maximum performance\n- Parallel processing architecture utilizing all available CPU cores\n- Dynamic pruning algorithms that reduce search space by up to 90%\n- Real-time performance monitoring and optimization suggestions",
+      "technologies": ["Rust", "C++", "Hashing", "Simulation", "Parallel Processing", "Game Theory"],
+      "category": "AI/ML",
+      "status": "completed",
+      "githubUrl": "https://github.com/SimeonDev/cephalopods-ai-solver",
+      "demoUrl": "https://cephalopods-demo.SimeonDev.dev",
+      "imageUrl": "images/project-cephalopods.jpg",
+      "featured": true,
+      "completedDate": "2024-12-15",
+      "metrics": {
+        "performance": "200ms average response time",
+        "accuracy": "99.7% solution accuracy",
+        "efficiency": "90% reduction in memory usage"
+      },
+      "challenges": [
+        "Optimizing hash collision handling for massive state spaces",
+        "Implementing memory-safe inter-language communication",
+        "Balancing accuracy with real-time performance requirements"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "AI-Powered Vehicle Maintenance Assistant",
+      "description": "Intelligent vehicle maintenance system leveraging LangChain and OpenAI GPT models for predictive maintenance recommendations. Features automated scheduling, cost analysis, and integration with multiple vehicle data sources. Streamlit interface provides intuitive user experience for both mechanics and vehicle owners.",
+      "fullDescription": "Revolutionary vehicle maintenance platform that transforms how we approach automotive care. Using advanced AI models and real-time data analysis, the system provides personalized maintenance recommendations, predicts potential issues, and optimizes service schedules.\n\nCore features:\n- Predictive maintenance using machine learning algorithms\n- Natural language processing for maintenance documentation\n- Cost optimization and parts availability tracking\n- Integration with OBD-II diagnostic systems\n- Automated appointment scheduling and reminders\n- Multi-vehicle fleet management capabilities",
+      "technologies": ["Python", "LangChain", "Streamlit", "OpenAI API", "PostgreSQL", "OBD-II"],
+      "category": "AI/ML",
+      "status": "completed",
+      "githubUrl": "https://github.com/Simeon-wansi/Vehicle_maintenance_assistant.git",
+      "demoUrl": "https://github.com/Simeon-wansi/Vehicle_maintenance_assistant.git",
+      "imageUrl": "images/project-vehicle-ai.jpg",
+      "featured": true,
+      "completedDate": "2024-11-20",
+      "metrics": {
+        "accuracy": "94% prediction accuracy",
+        "costSavings": "Average 30% reduction in maintenance costs",
+        "userSatisfaction": "4.8/5 user rating"
+      },
+      "challenges": [
+        "Integrating diverse vehicle data sources and formats",
+        "Training models on limited historical maintenance data",
+        "Ensuring AI recommendations comply with safety standards"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Cybersecurity CTF Platform",
+      "description": "Comprehensive cybersecurity Capture The Flag platform featuring real-time scoring, progressive difficulty levels, and educational content. Includes challenges in web security, cryptography, reverse engineering, and forensics. Built with modern web technologies and containerized for scalability.",
+      "fullDescription": "Educational cybersecurity platform designed to train the next generation of security professionals. Features a comprehensive challenge system covering all major cybersecurity domains, from basic web vulnerabilities to advanced exploit development.\n\nPlatform capabilities:\n- 200+ hands-on cybersecurity challenges\n- Real-time leaderboards and team competitions\n- Automated challenge deployment using Docker\n- Progressive learning paths for different skill levels\n- Integrated hint system and solution explanations\n- Performance analytics and learning progress tracking",
+      "technologies": ["JavaScript", "Node.js", "Docker", "PostgreSQL", "Redis", "Kubernetes"],
+      "category": "Cybersecurity",
+      "status": "in-progress",
+      "githubUrl": "https://github.com/simeondev/ctf-platform",
+      "demoUrl": "https://ctf.simeondevs.dev",
+      "imageUrl": "images/project-ctf.jpg",
+      "featured": false,
+      "completedDate": null,
+      "metrics": {
+        "challenges": "200+ active challenges",
+        "users": "1,500+ registered users",
+        "uptime": "99.9% platform availability"
+      },
+      "challenges": [
+        "Securing the platform while teaching about vulnerabilities",
+        "Scaling containerized challenges for high concurrent usage",
+        "Balancing educational value with realistic security scenarios"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Real-time Code Collaboration Tool",
+      "description": "Advanced collaborative coding environment featuring real-time synchronization, multi-cursor editing, and integrated communication tools. Built with React and WebSocket technology for seamless team collaboration. Includes syntax highlighting, code completion, and version control integration.",
+      "fullDescription": "Next-generation collaborative development platform that revolutionizes how teams write code together. Features real-time synchronization, advanced conflict resolution, and seamless integration with popular development tools.\n\nKey features:\n- Real-time collaborative editing with operational transformation\n- Multi-cursor support with user presence indicators\n- Integrated voice and text chat with code context\n- Advanced syntax highlighting for 50+ programming languages\n- Built-in version control with Git integration\n- Customizable workspaces and project templates",
+      "technologies": ["React", "WebSocket", "Node.js", "MongoDB", "Operational Transform", "Git"],
+      "category": "Web Development",
+      "status": "completed",
+      "githubUrl": "https://github.com/SimeonDev/code-collab",
+      "demoUrl": "https://collab.SimeonDev.dev",
+      "imageUrl": "images/project-collab.jpg",
+      "featured": true,
+      "completedDate": "2024-10-05",
+      "metrics": {
+        "latency": "< 50ms synchronization delay",
+        "concurrent": "100+ simultaneous users supported",
+        "accuracy": "99.99% conflict resolution accuracy"
+      },
+      "challenges": [
+        "Implementing efficient operational transformation algorithms",
+        "Optimizing WebSocket connections for low latency",
+        "Handling complex merge conflicts in real-time collaboration"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Blockchain Voting System",
+      "description": "Decentralized voting application utilizing smart contracts for transparent and tamper-proof elections. Features voter authentication, real-time result tracking, and comprehensive audit trails. Built on Ethereum with IPFS for distributed storage and enhanced security.",
+      "fullDescription": "Revolutionary voting platform that brings transparency and security to democratic processes. Uses blockchain technology to ensure vote integrity while maintaining voter privacy through advanced cryptographic techniques.\n\nSystem features:\n- Immutable vote recording on Ethereum blockchain\n- Zero-knowledge proofs for voter privacy\n- Distributed vote storage using IPFS\n- Real-time result visualization and analytics\n- Comprehensive audit trail for election verification\n- Multi-signature wallet integration for enhanced security",
+      "technologies": ["Solidity", "Web3.js", "React", "IPFS", "Ethereum", "Cryptography"],
+      "category": "Blockchain",
+      "status": "completed",
+      "githubUrl": "https://github.com/SimeonDev/blockchain-voting",
+      "demoUrl": "https://vote.SimeonDev.dev",
+      "imageUrl": "images/project-blockchain.jpg",
+      "featured": false,
+      "completedDate": "2024-09-12",
+      "metrics": {
+        "security": "Zero successful attacks in testing",
+        "transparency": "100% vote auditability",
+        "efficiency": "Gas optimization reduced costs by 40%"
+      },
+      "challenges": [
+        "Ensuring voter privacy while maintaining transparency",
+        "Optimizing smart contract gas usage for large-scale elections",
+        "Implementing user-friendly interfaces for non-technical voters"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Machine Learning Stock Predictor",
+      "description": "Advanced ML model using LSTM neural networks and technical indicators for stock price prediction. Achieves 85% accuracy rate through ensemble methods and real-time data processing. Features backtesting, risk analysis, and automated trading signal generation.",
+      "fullDescription": "Sophisticated financial prediction system that combines multiple machine learning approaches to forecast stock price movements. Uses deep learning, traditional technical analysis, and sentiment analysis to provide comprehensive market insights.\n\nCore capabilities:\n- LSTM neural networks for time series prediction\n- Ensemble methods combining multiple ML models\n- Real-time market data processing and analysis\n- Sentiment analysis of news and social media\n- Comprehensive backtesting and risk assessment\n- Automated trading signal generation and alerts",
+      "technologies": ["Python", "TensorFlow", "Pandas", "NumPy", "Scikit-learn", "Alpha Vantage API"],
+      "category": "AI/ML",
+      "status": "completed",
+      "githubUrl": "https://github.com/SimeonDev/ml-stock-predictor",
+      "demoUrl": "https://stocks.SimeonDev.dev",
+      "imageUrl": "images/project-stocks.jpg",
+      "featured": true,
+      "completedDate": "2024-08-30",
+      "metrics": {
+        "accuracy": "85% prediction accuracy",
+        "returns": "23% average annual returns in backtesting",
+        "sharpe": "1.8 Sharpe ratio"
+      },
+      "challenges": [
+        "Handling non-stationary financial time series data",
+        "Avoiding overfitting while maintaining prediction accuracy",
+        "Incorporating external market factors and sentiment data"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Quantum Computing Simulator",
+      "description": "High-performance quantum computing simulator built in C++ with Python bindings. Supports quantum circuits up to 20 qubits with full state vector simulation. Features quantum algorithm implementations and educational visualization tools.",
+      "fullDescription": "Educational quantum computing platform that makes quantum algorithms accessible to students and researchers. Implements full quantum state simulation with optimized linear algebra operations.\n\nFeatures:\n- Full quantum state vector simulation\n- Quantum circuit visualization and debugging\n- Implementation of major quantum algorithms\n- Educational tutorials and interactive examples\n- Performance optimizations for multi-qubit systems\n- Integration with popular quantum computing frameworks",
+      "technologies": ["C++", "Python", "Linear Algebra", "Quantum Algorithms", "Visualization"],
+      "category": "Quantum Computing",
+      "status": "completed",
+      "githubUrl": "https://github.com/SimeonDev/quantum-simulator",
+      "demoUrl": "https://quantum.SimeonDev.dev",
+      "imageUrl": "images/project-quantum.jpg",
+      "featured": false,
+      "completedDate": "2024-07-15",
+      "metrics": {
+        "performance": "Simulates 20-qubit circuits in real-time",
+        "accuracy": "Machine precision quantum state fidelity",
+        "education": "Used by 500+ students worldwide"
+      },
+      "challenges": [
+        "Optimizing memory usage for exponentially growing state spaces",
+        "Implementing numerically stable quantum gate operations",
+        "Creating intuitive visualizations for quantum concepts"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "IoT Environmental Monitoring System",
+      "description": "Comprehensive IoT platform for environmental monitoring using Arduino, Raspberry Pi, and cloud integration. Real-time data collection, analysis, and alerting for temperature, humidity, air quality, and more. Features predictive analytics and automated responses.",
+      "fullDescription": "Smart environmental monitoring solution that combines IoT sensors, edge computing, and cloud analytics to provide comprehensive environmental insights. Designed for both residential and commercial applications.\n\nSystem components:\n- Network of distributed IoT sensors\n- Edge computing with Raspberry Pi controllers\n- Real-time data streaming and processing\n- Machine learning-based anomaly detection\n- Automated alert system with multiple notification channels\n- Web dashboard with historical analytics and reporting",
+      "technologies": ["Arduino", "Raspberry Pi", "Python", "MQTT", "InfluxDB", "Grafana"],
+      "category": "IoT",
+      "status": "completed",
+      "githubUrl": "https://github.com/SimeonDev/iot-environmental",
+      "demoUrl": "https://iot.SimeonDev.dev",
+      "imageUrl": "images/project-iot.jpg",
+      "featured": true,
+      "completedDate": "2024-06-20",
+      "metrics": {
+        "sensors": "50+ active sensor nodes",
+        "uptime": "99.5% system availability",
+        "accuracy": "±0.1°C temperature accuracy"
+      },
+      "challenges": [
+        "Ensuring reliable wireless communication in diverse environments",
+        "Optimizing battery life for remote sensor nodes",
+        "Handling large volumes of time-series data efficiently"
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "name": "AI/ML",
+      "description": "Artificial Intelligence and Machine Learning projects",
+      "color": "#9d4edd",
+      "count": 3
+    },
+    {
+      "name": "Cybersecurity",
+      "description": "Information security and ethical hacking projects",
+      "color": "#ff006e",
+      "count": 1
+    },
+    {
+      "name": "Web Development",
+      "description": "Full-stack web applications and platforms",
+      "color": "#00f5ff",
+      "count": 1
+    },
+    {
+      "name": "Blockchain",
+      "description": "Decentralized applications and smart contracts",
+      "color": "#ffd60a",
+      "count": 1
+    },
+    {
+      "name": "Quantum Computing",
+      "description": "Quantum algorithms and simulation",
+      "color": "#00ff41",
+      "count": 1
+    },
+    {
+      "name": "IoT",
+      "description": "Internet of Things and embedded systems",
+      "color": "#0077ff",
+      "count": 1
+    }
+  ],
+  "technologies": [
+    {
+      "name": "Python",
+      "category": "Programming Language",
+      "proficiency": 95,
+      "projects": 4
+    },
+    {
+      "name": "JavaScript",
+      "category": "Programming Language",
+      "proficiency": 90,
+      "projects": 3
+    },
+    {
+      "name": "Rust",
+      "category": "Programming Language",
+      "proficiency": 85,
+      "projects": 1
+    },
+    {
+      "name": "C++",
+      "category": "Programming Language",
+      "proficiency": 88,
+      "projects": 2
+    },
+    {
+      "name": "React",
+      "category": "Framework",
+      "proficiency": 92,
+      "projects": 3
+    },
+    {
+      "name": "Node.js",
+      "category": "Runtime",
+      "proficiency": 88,
+      "projects": 2
+    },
+    {
+      "name": "TensorFlow",
+      "category": "ML Framework",
+      "proficiency": 85,
+      "projects": 1
+    },
+    {
+      "name": "Docker",
+      "category": "DevOps",
+      "proficiency": 80,
+      "projects": 2
+    }
+  ],
+  "statistics": {
+    "totalProjects": 8,
+    "completedProjects": 7,
+    "inProgressProjects": 1,
+    "featuredProjects": 4,
+    "totalCategories": 6,
+    "totalTechnologies": 25,
+    "averageProjectDuration": "3 months",
+    "totalLinesOfCode": "50,000+"
+  }
+}

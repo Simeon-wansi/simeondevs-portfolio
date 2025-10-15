@@ -1,0 +1,99 @@
+/* Theme Variables and Base Colors */
+:root {
+    /* Primary Colors */
+    --primary-purple: #9d4edd;
+    --primary-gold: #ffd60a;
+    --primary-dark: #0a0a0a;
+    --primary-navy: #1a0a2e;
+    --primary-blue: #16213e;
+    
+    /* Matrix Colors */
+    --matrix-green: #00ff41;
+    --matrix-cyan: #00f5ff;
+    --matrix-pink: #ff006e;
+    --matrix-blue: #0077ff;
+    
+    /* Neutral Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #999999;
+    --text-accent: #e0e0e0;
+    
+    /* Background Colors */
+    --bg-primary: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #16213e 100%);
+    --bg-card: rgba(26, 10, 46, 0.5);
+    --bg-overlay: rgba(26, 10, 46, 0.9);
+    --bg-input: rgba(0, 0, 0, 0.3);
+    
+    /* Border Colors */
+    --border-primary: rgba(157, 78, 221, 0.3);
+    --border-hover: rgba(157, 78, 221, 0.5);
+    --border-focus: #ffd60a;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(45deg, #9d4edd, #ffd60a);
+    --gradient-reverse: linear-gradient(45deg, #ffd60a, #9d4edd);
+    --gradient-card: linear-gradient(45deg, rgba(157, 78, 221, 0.1), rgba(255, 214, 10, 0.1));
+    --gradient-hover: linear-gradient(45deg, rgba(157, 78, 221, 0.1), rgba(255, 214, 10, 0.1));
+    
+    /* Shadows */
+    --shadow-sm: 0 4px 12px rgba(157, 78, 221, 0.3);
+    --shadow-md: 0 10px 30px rgba(157, 78, 221, 0.3);
+    --shadow-lg: 0 15px 40px rgba(157, 78, 221, 0.2);
+    --shadow-xl: 0 20px 50px rgba(157, 78, 221, 0.3);
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-xxl: 4rem;
+    
+    /* Typography */
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-mono: 'Courier New', monospace;
+    --font-size-xs: 0.8rem;
+    --font-size-sm: 0.9rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.1rem;
+    --font-size-xl: 1.2rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 2rem;
+    --font-size-4xl: 2.5rem;
+    --font-size-5xl: 3rem;
+    --font-size-6xl: 4rem;
+    
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 15px;
+    --radius-xl: 20px;
+    --radius-2xl: 25px;
+    --radius-full: 50%;
+    
+    /* Z-index */
+    --z-background: -1;
+    --z-content: 1;
+    --z-header: 1000;
+    --z-modal: 2000;
+}
+
+/* Dark theme overrides (if needed) */
+[data-theme="dark"] {
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --bg-card: rgba(26, 10, 46, 0.7);
+}
+
+/* Light theme overrides (if needed) */
+[data-theme="light"] {
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --bg-card: rgba(255, 255, 255, 0.9);
+}
