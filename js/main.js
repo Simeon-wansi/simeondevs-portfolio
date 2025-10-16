@@ -68,11 +68,20 @@ function initializePageData(pageId) {
 
     switch(pageId) {
         case 'home':
-            console.log('🏠 Loading featured projects on home page...');
+            console.log('🏠 Loading featured content on home page...');
+
+            // Load featured projects
             if (typeof loadFeaturedProjects === 'function') {
                 loadFeaturedProjects();
             } else {
                 console.error('❌ loadFeaturedProjects function not found!');
+            }
+
+            // Load latest blog posts
+            if (typeof loadLatestBlogPosts === 'function') {
+                loadLatestBlogPosts();
+            } else {
+                console.error('❌ loadLatestBlogPosts function not found!');
             }
             break;
             

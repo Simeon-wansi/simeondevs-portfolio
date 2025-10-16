@@ -102,16 +102,23 @@ async function handleBlogRealtimeUpdate(payload) {
 // ============================================
 async function initializeBlog() {
     console.log('🚀 Initializing blog module...');
-    
-    // Fetch blog posts from Supabase
+
+    // Check if blog page is active
+    const blogPage = document.getElementById('blog');
+    if (!blogPage || !blogPage.classList.contains('active')) {
+        console.log('⚠️  Blog page not active, skipping blog initialization');
+        return;
+    }
+
+    // Fetch ALL blog posts from Supabase (no limit for blog page)
     await fetchBlogPosts();
-    
+
     // Render blog posts
     renderBlogPosts();
-    
+
     // Setup real-time subscription
     setupBlogRealtimeSubscription();
-    
+
     console.log('✅ Blog module initialized');
 }
 
@@ -119,14 +126,23 @@ async function initializeBlog() {
 // RENDER BLOG POSTS
 // ============================================
 function renderBlogPosts() {
-    console.log('🔄 Rendering blog posts...');
-    
-    const blogGrid = document.querySelector('.blog-grid');
+    console.log('🔄 Rendering blog posts to BLOG PAGE...');
+
+    // CRITICAL FIX: Target blog page specifically, not homepage
+    const blogGrid = document.querySelector('#blog .blog-grid');
+
     if (!blogGrid) {
-        console.warn('⚠️  Blog grid container not found');
+        console.error('❌ Blog page .blog-grid container not found!');
         return;
     }
-    
+
+    // Verify blog page is active
+    const blogPage = document.getElementById('blog');
+    if (!blogPage?.classList.contains('active')) {
+        console.warn('⚠️  Blog page not active, skipping render');
+        return;
+    }
+
     if (!blogPostsData || blogPostsData.length === 0) {
         blogGrid.innerHTML = `
             <div class="no-blog-message">
@@ -136,14 +152,12 @@ function renderBlogPosts() {
         `;
         return;
     }
-    
+
     // Clear container
     blogGrid.innerHTML = '';
-    
-    // Render blog cards (limit to 6 on blog listing page)
-    const displayPosts = blogPostsData.slice(0, 6);
-    
-    displayPosts.forEach((post, index) => {
+
+    // Render ALL blog posts (no limit - show everything)
+    blogPostsData.forEach((post, index) => {
         try {
             const blogCard = createBlogCard(post);
             blogGrid.appendChild(blogCard);
@@ -151,8 +165,8 @@ function renderBlogPosts() {
             console.error(`❌ Error rendering blog post ${index + 1}:`, error);
         }
     });
-    
-    console.log(`✅ Rendered ${displayPosts.length} blog posts`);
+
+    console.log(`✅ Rendered ${blogPostsData.length} blog posts to blog page`);
 }
 
 // ============================================
@@ -444,28 +458,94 @@ window.addEventListener('beforeunload', () => {
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Blog Supabase module loaded');
-    
-    // Initialize blog when blog page is visited
-    const blogPage = document.getElementById('blog');
-    if (blogPage) {
-        // Set up observer to initialize when blog page becomes active
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.target.classList.contains('active')) {
-                    initializeBlog();
-                    observer.disconnect(); // Initialize only once
-                }
-            });
-        });
-        
-        observer.observe(blogPage, { attributes: true, attributeFilter: ['class'] });
-        
-        // Also initialize if already active
-        if (blogPage.classList.contains('active')) {
-            initializeBlog();
-        }
-    }
+
+    // Blog initialization is now handled by main.js via initializePageData()
+    // when user navigates to the blog page
 });
+
+// ============================================
+// LOAD LATEST BLOG POSTS FOR HOMEPAGE
+// ============================================
+async function loadLatestBlogPosts() {
+    console.log('📰 Loading latest blog posts for homepage...');
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('blog_posts')
+            .select('*')
+            .eq('status', 'published')
+            .order('published_at', { ascending: false })
+            .limit(3);
+
+        if (error) {
+            console.error('❌ Error loading latest blog posts:', error);
+            showLatestBlogError();
+            return;
+        }
+
+        console.log(`✅ Loaded ${data.length} latest blog posts`);
+        renderLatestBlogPosts(data);
+
+    } catch (err) {
+        console.error('❌ Latest blog posts fetch exception:', err);
+        showLatestBlogError();
+    }
+}
+
+// ============================================
+// RENDER LATEST BLOG POSTS TO HOMEPAGE
+// ============================================
+function renderLatestBlogPosts(posts) {
+    console.log('🏠 Rendering latest blogs to HOMEPAGE...');
+
+    // Specifically target homepage container (NOT blog page)
+    const container = document.getElementById('latestBlogGrid');
+
+    if (!container) {
+        console.error('❌ latestBlogGrid container not found!');
+        return;
+    }
+
+    if (!posts || posts.length === 0) {
+        container.innerHTML = `
+            <div class="no-blog-message">
+                <p>📝 No blog posts yet. Stay tuned for upcoming articles!</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Clear container
+    container.innerHTML = '';
+
+    // Render each latest blog post (limited to 3 for homepage)
+    posts.forEach(post => {
+        try {
+            const card = createBlogCard(post);
+            container.appendChild(card);
+        } catch (error) {
+            console.error(`❌ Error rendering latest blog post:`, error);
+        }
+    });
+
+    console.log(`✅ Rendered ${posts.length} latest blog posts to homepage`);
+}
+
+// ============================================
+// SHOW LATEST BLOG ERROR
+// ============================================
+function showLatestBlogError() {
+    const container = document.getElementById('latestBlogGrid');
+    if (container) {
+        container.innerHTML = `
+            <div class="error-message">
+                <h3>⚠️ Unable to load latest blog posts</h3>
+                <p>Please check your internet connection and try again.</p>
+                <button class="cta-button" onclick="loadLatestBlogPosts()">Retry</button>
+            </div>
+        `;
+    }
+}
 
 // ============================================
 // EXPORT FUNCTIONS
@@ -476,3 +556,4 @@ window.fetchBlogPosts = fetchBlogPosts;
 window.shareOnTwitter = shareOnTwitter;
 window.shareOnLinkedIn = shareOnLinkedIn;
 window.copyToClipboard = copyToClipboard;
+window.loadLatestBlogPosts = loadLatestBlogPosts;

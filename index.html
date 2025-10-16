@@ -138,6 +138,22 @@
                         View All Projects →
                     </button>
                 </div>
+
+                <div class="section-header">
+                    <h2>Latest Articles</h2>
+                    <p>Insights, tutorials, and thoughts on technology</p>
+                </div>
+
+                <!-- Latest blog posts will be dynamically loaded from Supabase -->
+                <div class="blog-grid" id="latestBlogGrid">
+                    <!-- Dynamic content loaded by js/blog-supabase.js -->
+                </div>
+
+                <div class="view-all-link">
+                    <button class="cta-button" onclick="showPage('blog')">
+                        View All Articles →
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -201,19 +217,9 @@
                     <h2>Blog & Articles</h2>
                     <p>Insights, tutorials, and thoughts on technology</p>
                 </div>
+                <!-- Blog posts will be dynamically loaded from Supabase -->
                 <div class="blog-grid">
-                    <!-- TEMPORARY TEST: Hardcoded cards to verify CSS -->
-                    <div class="blog-card" style="border: 3px solid lime !important;">
-                        <div class="blog-header">
-                            <div class="blog-date">TEST - December 20, 2024</div>
-                            <h3>🧪 TEST CARD: If you see this, CSS is working!</h3>
-                        </div>
-                        <div class="blog-excerpt">
-                            <p>This is a hardcoded test card with green border. If visible, CSS overrides work.</p>
-                        </div>
-                        <a href="#" class="blog-link">Read More →</a>
-                    </div>
-                    <!-- Dynamic cards from Supabase will be added by JavaScript -->
+                    <!-- Dynamic content loaded by js/blog-supabase.js -->
                 </div>
             </div>
         </div>
