@@ -194,19 +194,25 @@ function createProjectCard(project) {
     card.setAttribute('data-category', project.category);
     card.setAttribute('data-status', project.status);
     card.setAttribute('data-id', project.id);
-    
-    const statusBadge = project.status === 'completed' ? 
-        '<span class="status-badge completed">✅ Completed</span>' : 
+
+    const statusBadge = project.status === 'completed' ?
+        '<span class="status-badge completed">✅ Completed</span>' :
         '<span class="status-badge in-progress">🚧 In Progress</span>';
-    
-    const featuredBadge = project.featured ? 
+
+    const featuredBadge = project.featured ?
         '<span class="featured-badge">⭐ Featured</span>' : '';
-    
+
     // Format technologies array
-    const techString = Array.isArray(project.technologies) ? 
-        project.technologies.join(' • ') : 
+    const techString = Array.isArray(project.technologies) ?
+        project.technologies.join(' • ') :
         (project.technologies || '');
-    
+
+    // Format date
+    const dateString = project.completed_date ? formatDate(project.completed_date) : '';
+
+    // Calculate total clicks (github + demo)
+    const totalClicks = (project.github_clicks || 0) + (project.demo_clicks || 0);
+
     card.innerHTML = `
         <div class="project-header">
             <div class="project-badges">
@@ -220,35 +226,41 @@ function createProjectCard(project) {
             <p class="project-description">${escapeHtml(project.description)}</p>
             <div class="project-meta">
                 <span class="project-category">${escapeHtml(project.category)}</span>
-                ${project.completed_date ? `<span class="project-date">${formatDate(project.completed_date)}</span>` : ''}
+                ${dateString ? `<span class="project-date">${dateString}</span>` : ''}
             </div>
             <div class="project-stats-inline">
                 <span class="stat-item">👁️ ${project.view_count || 0} views</span>
-                <span class="stat-item">🔗 ${project.github_clicks || 0} clicks</span>
+                <span class="stat-item">🔗 ${totalClicks} clicks</span>
             </div>
             <div class="project-links">
-                <a href="${project.github_url}" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="project-link"
-                   onclick="trackProjectClick('${project.id}', 'github'); return true;">
-                    <span class="link-icon">🔗</span> GitHub
-                </a>
-                <a href="${project.demo_url}" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="project-link"
-                   onclick="trackProjectClick('${project.id}', 'demo'); return true;">
-                    <span class="link-icon">📺</span> Demo
-                </a>
-                <button class="project-link details-btn" 
+                ${project.github_url ? `
+                    <a href="${escapeHtml(project.github_url)}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="project-link"
+                       onclick="trackProjectClick('${project.id}', 'github'); return true;">
+                        <span class="link-icon">🔗</span> GitHub
+                    </a>
+                ` : ''}
+
+                ${project.demo_url ? `
+                    <a href="${escapeHtml(project.demo_url)}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="project-link"
+                       onclick="trackProjectClick('${project.id}', 'demo'); return true;">
+                        <span class="link-icon">📺</span> Demo
+                    </a>
+                ` : ''}
+
+                <button class="project-link details-btn"
                         onclick="showProjectDetails('${project.id}')">
                     <span class="link-icon">📖</span> Details
                 </button>
             </div>
         </div>
     `;
-    
+
     return card;
 }
 
@@ -381,16 +393,16 @@ function formatDate(dateString) {
 // ============================================
 async function showProjectDetails(projectId) {
     console.log(`🔄 Showing details for project ${projectId}`);
-    
+
     // Track click
     await trackProjectClick(projectId, 'details');
-    
+
     const project = projectsData.find(p => p.id === projectId);
     if (!project) {
         console.error(`❌ Project with ID ${projectId} not found`);
         return;
     }
-    
+
     // Increment view count in database
     try {
         await supabaseClient
@@ -400,60 +412,87 @@ async function showProjectDetails(projectId) {
     } catch (err) {
         console.warn('View count update failed:', err);
     }
-    
-    // Format technologies
-    const techString = Array.isArray(project.technologies) ? 
-        project.technologies.join(', ') : 
-        (project.technologies || '');
-    
-    // Create modal content
-    const modalContent = `
+
+    // Format technologies as individual tags
+    const techList = Array.isArray(project.technologies) ?
+        project.technologies.map(tech => `<span class="tech-tag">${escapeHtml(tech)}</span>`).join('') :
+        `<span class="tech-tag">${escapeHtml(project.technologies || 'N/A')}</span>`;
+
+    // Format date
+    const dateString = project.completed_date ?
+        formatDate(project.completed_date) : 'In Progress';
+
+    // Create modal HTML
+    const modalHTML = `
         <div class="project-modal-overlay" onclick="closeProjectModal()">
             <div class="project-modal" onclick="event.stopPropagation()">
+                <button class="modal-close" onclick="closeProjectModal()">✕</button>
+
                 <div class="modal-header">
                     <h2>${escapeHtml(project.title)}</h2>
-                    <button class="modal-close" onclick="closeProjectModal()">×</button>
+                    <div class="modal-badges">
+                        ${project.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
+                        <span class="status-badge ${project.status}">${project.status === 'completed' ? '✅ Completed' : '🚧 In Progress'}</span>
+                    </div>
                 </div>
+
                 <div class="modal-content">
-                    <div class="project-tech-list">
-                        ${project.technologies && project.technologies.map ? 
-                            project.technologies.map(tech => `<span class="tech-tag">${escapeHtml(tech)}</span>`).join('') :
-                            `<span class="tech-tag">${escapeHtml(techString)}</span>`
-                        }
+                    <div class="modal-section">
+                        <h3>📋 Description</h3>
+                        <p>${escapeHtml(project.description)}</p>
                     </div>
-                    <p class="project-full-description">${escapeHtml(project.description)}</p>
-                    <div class="project-meta-info">
-                        <p><strong>Category:</strong> ${escapeHtml(project.category)}</p>
-                        <p><strong>Status:</strong> ${escapeHtml(project.status)}</p>
-                        ${project.completed_date ? `<p><strong>Completed:</strong> ${formatDate(project.completed_date)}</p>` : ''}
-                        <p><strong>Views:</strong> ${project.view_count || 0}</p>
+
+                    <div class="modal-section">
+                        <h3>🛠️ Technologies</h3>
+                        <div class="tech-tags">
+                            ${techList}
+                        </div>
                     </div>
-                    <div class="modal-links">
-                        <a href="${project.github_url}" 
-                           target="_blank" 
-                           rel="noopener noreferrer" 
-                           class="modal-link"
-                           onclick="trackProjectClick('${project.id}', 'github'); return true;">
-                            🔗 View on GitHub
-                        </a>
-                        <a href="${project.demo_url}" 
-                           target="_blank" 
-                           rel="noopener noreferrer" 
-                           class="modal-link"
-                           onclick="trackProjectClick('${project.id}', 'demo'); return true;">
-                            📺 Live Demo
-                        </a>
+
+                    <div class="modal-section">
+                        <h3>ℹ️ Project Info</h3>
+                        <ul class="project-info-list">
+                            <li><strong>Category:</strong> ${escapeHtml(project.category)}</li>
+                            <li><strong>Status:</strong> ${escapeHtml(project.status)}</li>
+                            <li><strong>Completed:</strong> ${dateString}</li>
+                            <li><strong>Views:</strong> ${project.view_count || 0}</li>
+                        </ul>
+                    </div>
+
+                    <div class="modal-actions">
+                        ${project.github_url ? `
+                            <a href="${escapeHtml(project.github_url)}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="modal-link github-link"
+                               onclick="trackProjectClick('${project.id}', 'github'); return true;">
+                                🔗 View on GitHub
+                            </a>
+                        ` : ''}
+
+                        ${project.demo_url ? `
+                            <a href="${escapeHtml(project.demo_url)}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="modal-link demo-link"
+                               onclick="trackProjectClick('${project.id}', 'demo'); return true;">
+                                📺 Live Demo
+                            </a>
+                        ` : ''}
                     </div>
                 </div>
             </div>
         </div>
     `;
-    
+
     // Add modal to page
     const modalContainer = document.createElement('div');
-    modalContainer.innerHTML = modalContent;
-    document.body.appendChild(modalContainer);
-    
+    modalContainer.innerHTML = modalHTML;
+    document.body.appendChild(modalContainer.firstElementChild);
+
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+
     console.log(`✅ Project details modal shown for ${project.title}`);
 }
 
@@ -464,6 +503,8 @@ function closeProjectModal() {
     const modal = document.querySelector('.project-modal-overlay');
     if (modal) {
         modal.remove();
+        // Restore body scroll
+        document.body.style.overflow = '';
         console.log('✅ Project modal closed');
     }
 }
