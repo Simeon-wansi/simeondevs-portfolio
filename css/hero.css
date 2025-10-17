@@ -71,12 +71,12 @@
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    border: 3px solid #9d4edd;
+    /* border: 3px solid #9d4edd; */
     padding: 5px;
-    background: linear-gradient(45deg, #9d4edd, #ffd60a);
+    /* background: linear-gradient(45deg, #9d4edd, #ffd60a); */
     position: relative;
     overflow: hidden;
-    animation: profileGlow 3s ease-in-out infinite alternate;
+    /* animation: profileGlow 3s ease-in-out infinite alternate; */
 }
 
 .profile-pic img {

@@ -280,13 +280,13 @@
     border-radius: var(--radius-sm);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
-    color: var(--matrix-green);
+    color: var(--primary-gold);
 }
 
 .blog-content pre code {
     background: none;
     padding: 0;
-    color: var(--matrix-green);
+    color: var(--primary-gold);
 }
 
 .blog-content a {

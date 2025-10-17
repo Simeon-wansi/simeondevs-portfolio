@@ -1,4 +1,4 @@
-// SimeonDev Portfolio - Advanced Animations & Matrix Effects
+// SimeonDev Portfolio - Advanced Animations
 // Particle System & Visual Effects
 
 // Initialize animations when DOM is ready - with delay for better performance
@@ -6,9 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Delay heavy animations to allow page to load first
     setTimeout(() => {
         initializeParticleSystem();
-        initializeMatrixBackground();
         setupMouseInteractions();
-        initializeColorEngine();
     }, 1000); // 1 second delay
 });
 
@@ -155,45 +153,6 @@ function animateParticles(canvas, ctx) {
     requestAnimationFrame(() => animateParticles(canvas, ctx));
 }
 
-// Initialize matrix background
-function initializeMatrixBackground() {
-    const matrixBg = document.createElement('div');
-    matrixBg.className = 'matrix-bg';
-    matrixBg.innerHTML = '<div class="matrix-stars"></div>';
-    document.body.appendChild(matrixBg);
-    
-    // Create additional matrix layers
-    createMatrixLayers();
-}
-
-// Create matrix layers
-function createMatrixLayers() {
-    for (let i = 0; i < 3; i++) {
-        const layer = document.createElement('div');
-        layer.className = 'matrix-layer';
-        layer.style.cssText = `
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(1px 1px at ${Math.random() * 100}px ${Math.random() * 100}px, ${getRandomMatrixColor()}, transparent),
-                radial-gradient(2px 2px at ${Math.random() * 200}px ${Math.random() * 200}px, ${getRandomMatrixColor()}, transparent);
-            background-size: ${200 + i * 50}px ${100 + i * 25}px;
-            animation: matrixFall ${20 + i * 5}s linear infinite;
-            animation-delay: ${i * 2}s;
-            opacity: ${0.3 - i * 0.1};
-        `;
-        
-        document.querySelector('.matrix-bg').appendChild(layer);
-    }
-}
-
-// Get random matrix color
-function getRandomMatrixColor() {
-    const colors = ['rgba(157, 78, 221, 0.4)', 'rgba(255, 214, 10, 0.3)', 'rgba(0, 255, 65, 0.5)', 'rgba(0, 245, 255, 0.3)'];
-    return colors[Math.floor(Math.random() * colors.length)];
-}
-
 // Setup mouse interactions
 function setupMouseInteractions() {
     let mouseTimeout;
@@ -269,60 +228,6 @@ function createClickEffect(x, y) {
     }, 600);
 }
 
-// Initialize color engine
-function initializeColorEngine() {
-    // Dynamic color variations for different sections
-    const sections = document.querySelectorAll('.page');
-    
-    sections.forEach(section => {
-        const sectionId = section.id;
-        const colorScheme = getSectionColorScheme(sectionId);
-        
-        // Apply color scheme variables
-        section.style.setProperty('--section-primary', colorScheme.primary);
-        section.style.setProperty('--section-secondary', colorScheme.secondary);
-        section.style.setProperty('--section-accent', colorScheme.accent);
-    });
-}
-
-// Get color scheme for section
-function getSectionColorScheme(sectionId) {
-    const schemes = {
-        home: {
-            primary: '#9d4edd',
-            secondary: '#ffd60a',
-            accent: '#00f5ff'
-        },
-        projects: {
-            primary: '#ff006e',
-            secondary: '#00ff41',
-            accent: '#ffd60a'
-        },
-        blog: {
-            primary: '#0077ff',
-            secondary: '#9d4edd',
-            accent: '#ffd60a'
-        },
-        about: {
-            primary: '#00f5ff',
-            secondary: '#ff006e',
-            accent: '#9d4edd'
-        },
-        services: {
-            primary: '#00ff41',
-            secondary: '#0077ff',
-            accent: '#ffd60a'
-        },
-        contact: {
-            primary: '#ffd60a',
-            secondary: '#9d4edd',
-            accent: '#00f5ff'
-        }
-    };
-    
-    return schemes[sectionId] || schemes.home;
-}
-
 // Add required CSS animations
 const style = document.createElement('style');
 style.textContent = `
@@ -335,12 +240,7 @@ style.textContent = `
         0% { transform: scale(0); opacity: 1; }
         100% { transform: scale(2); opacity: 0; }
     }
-    
-    @keyframes matrixFall {
-        0% { transform: translateY(-100vh) rotate(0deg); }
-        100% { transform: translateY(100vh) rotate(360deg); }
-    }
-    
+
     .animate-in {
         animation: fadeInUp 0.6s ease-out forwards;
     }
@@ -390,6 +290,5 @@ document.head.appendChild(style);
 window.SimeonDevAnimations = {
     createParticles,
     createMouseTrail,
-    createClickEffect,
-    initializeColorEngine
+    createClickEffect
 };

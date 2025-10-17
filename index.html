@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SimeonDevv - Build. Hack. Learn.</title>
+    <title>SimeonDev - Build. Hack. Learn.</title>
     <meta name="description" content="SimeonDev - AI & Cybersecurity Explorer | Turning ideas into code with advanced machine learning, blockchain, and security solutions">
     <meta name="keywords" content="AI, Machine Learning, Cybersecurity, Web Development, Blockchain, Portfolio, SimeonDev">
     <meta name="author" content="SimeonDev">
     
-    <!-- CSS Modules -->
-    <link rel="stylesheet" href="css/theme.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/hero.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/sections.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    
-    <!-- External CSS (existing) -->
-    <link rel="stylesheet" href="css/matrix-theme.css">
-    <link rel="stylesheet" href="css/color-variations.css">
-    <link rel="stylesheet" href="css/profile-animations.css">
-    <link rel="stylesheet" href="css/footer.css">
+    <!-- ============================================ -->
+    <!-- TECH PURPLE THEME - CSS IN CORRECT ORDER -->
+    <!-- ============================================ -->
+    <link rel="stylesheet" href="css/theme.css">           <!-- 1. Variables -->
+    <link rel="stylesheet" href="css/typography.css">      <!-- 2. Typography -->
+    <link rel="stylesheet" href="css/layouts.css">         <!-- 3. Layouts -->
+    <link rel="stylesheet" href="css/components.css">      <!-- 4. Components -->
+    <link rel="stylesheet" href="css/navigation.css">      <!-- 5. Navigation -->
+    <link rel="stylesheet" href="css/hero.css">            <!-- 6. Hero -->
+    <link rel="stylesheet" href="css/footer.css">          <!-- 7. Footer -->
+    <link rel="stylesheet" href="css/animations.css">      <!-- 8. Animations -->
+    <link rel="stylesheet" href="css/utilities.css">       <!-- 9. Utilities -->
+    <link rel="stylesheet" href="css/responsive.css">      <!-- 10. Responsive -->
 
-    <!-- ============================================ -->
-    <!-- CRITICAL: Load LAST to override all other CSS -->
-    <!-- ============================================ -->
-    <link rel="stylesheet" href="css/critical-fixes.css">
+    <!-- Legacy compatibility -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/sections.css">
 
     <!-- ============================================ -->
     <!-- SUPABASE JS SDK - Load BEFORE your scripts -->
@@ -72,7 +69,7 @@
                             </div>
                         </div>
                         <div class="profile-info">
-                            <h1>SimeonDevv</h1>
+                            <h1>SimeonDev</h1>
                             <p class="tagline">🔧 Build. Hack. Learn.</p>
                             <p class="description">Turning ideas into code | AI & Cybersecurity Explorer</p>
                             <div class="profile-stats">
@@ -92,7 +89,8 @@
                             <div class="profile-badges">
                                 <span class="profile-badge">AI Specialist</span>
                                 <span class="profile-badge">Security Expert</span>
-                                <span class="profile-badge featured">Open Source</span>
+                                <span class="profile-badge">Open Source</span>
+                                <!-- <span class="profile-badge featured">Open Source</span> -->
                             </div>
                         </div>
                     </div>
@@ -461,7 +459,8 @@
 
     <!-- STEP 6: Non-critical scripts (deferred) -->
     <script src="js/animations.js" defer></script>
-    <script src="js/colorEngine.js" defer></script>
+    <!-- Theme switcher disabled - using Tech Purple only -->
+    <!-- <script src="js/colorEngine.js" defer></script> -->
     <script src="js/footer.js" defer></script>
     
    <!-- ============================================ -->
@@ -594,16 +593,15 @@
     
     window.showGlobalError = showGlobalError;
 </script>
-    <!-- JavaScript Files - Optimized Loading
+    <!-- OLD JAVASCRIPT FILES - NO LONGER USED
+    These scripts have been replaced with the new modular structure above
     <script src="js/main.js"></script>
     <script src="js/projects_complex.js"></script>
     <script src="js/forms.js"></script>
-    
-    <-- Defer heavy animation scripts
     <script src="js/animations.js" defer></script>
-    <script src="js/colorEngine.js" defer></script>
     <script src="js/blog.js" defer></script>
-    <script src="js/footer.js" defer></script> -->
+    <script src="js/footer.js" defer></script>
+    -->
     
     <!-- Debug overlay functions
     <script>

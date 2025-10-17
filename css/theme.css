@@ -7,11 +7,9 @@
     --primary-navy: #1a0a2e;
     --primary-blue: #16213e;
     
-    /* Matrix Colors */
-    --matrix-green: #00ff41;
-    --matrix-cyan: #00f5ff;
-    --matrix-pink: #ff006e;
-    --matrix-blue: #0077ff;
+    /* Success/Error Colors */
+    --color-success: #10b981;
+    --color-error: #ef4444;
     
     /* Neutral Colors */
     --text-primary: #ffffff;
