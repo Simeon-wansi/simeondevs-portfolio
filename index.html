@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/layouts.css">         <!-- 3. Layouts -->
     <link rel="stylesheet" href="css/components.css">      <!-- 4. Components -->
     <link rel="stylesheet" href="css/navigation.css">      <!-- 5. Navigation -->
-    <link rel="stylesheet" href="css/hero.css">            <!-- 6. Hero -->
+    <link rel="stylesheet" href="css/hero-2025.css">       <!-- 6. Modern Hero 2025 -->
     <link rel="stylesheet" href="css/footer.css">          <!-- 7. Footer -->
     <link rel="stylesheet" href="css/animations.css">      <!-- 8. Animations -->
     <link rel="stylesheet" href="css/utilities.css">       <!-- 9. Utilities -->
@@ -59,43 +59,115 @@
     <main>
         <!-- Home Page -->
         <div id="home" class="page active">
-            <div class="container">
-                <div class="hero">
-                    <div class="profile-section">
-                        <div class="profile-pic-container">
-                            <div class="profile-pic">
-                                <img src="images/profile.jpg" alt="SimeonDev Profile Picture" loading="lazy">
-                                <div class="online-status"></div>
+            <!-- ============================================
+                 MODERN 2025 HERO SECTION
+                 Animated gradient background, rotating titles, CSS 3D sphere
+                 ============================================ -->
+            <section class="hero-2025">
+                <!-- Animated Gradient Background -->
+                <div class="hero-bg" aria-hidden="true">
+                    <div class="gradient-orb orb-1"></div>
+                    <div class="gradient-orb orb-2"></div>
+                    <div class="gradient-orb orb-3"></div>
+                </div>
+
+                <!-- Particle Network Overlay -->
+                <div class="particle-network" aria-hidden="true">
+                    <div class="particle" style="--x: 15%; --y: 25%; --angle: 30deg;"></div>
+                    <div class="particle" style="--x: 35%; --y: 45%; --angle: 60deg;"></div>
+                    <div class="particle" style="--x: 65%; --y: 20%; --angle: 120deg;"></div>
+                    <div class="particle" style="--x: 85%; --y: 65%; --angle: 150deg;"></div>
+                    <div class="particle" style="--x: 25%; --y: 75%; --angle: -45deg;"></div>
+                    <div class="particle" style="--x: 55%; --y: 85%; --angle: -30deg;"></div>
+                </div>
+
+                <!-- Main Content Container -->
+                <div class="hero-container">
+                    <div class="hero-content">
+                        <!-- Left Side: Profile & Text Content -->
+                        <div class="hero-left">
+                            <!-- Profile Image -->
+                            <div class="profile-card">
+                                <div class="profile-image-wrapper">
+                                    <img src="images/profile.jpg"
+                                         alt="Simeon Wansi - Full-Stack Developer"
+                                         class="profile-img"
+                                         loading="eager">
+                                    <div class="profile-ring" aria-hidden="true"></div>
+                                </div>
+                            </div>
+
+                            <!-- Text Content -->
+                            <div class="hero-text">
+                                <!-- Name -->
+                                <h1 class="hero-name">Simeon Wansi</h1>
+
+                                <!-- Rotating Job Titles -->
+                                <div class="title-rotator" role="text" aria-live="polite">
+                                    <span class="title-prefix">I build</span>
+                                    <span class="rotating-text">
+                                        <span class="title-item active">AI Solutions</span>
+                                        <span class="title-item">Secure Systems</span>
+                                        <span class="title-item">Scalable Applications</span>
+                                    </span>
+                                </div>
+
+                                <!-- Bio -->
+                                <p class="hero-bio">
+                                    Building intelligent applications that solve real business problems
+                                    through AI integration, cybersecurity, and modern web technologies.
+                                    Helping UAE and international clients gain competitive advantages.
+                                </p>
+
+                                <!-- Meta Info -->
+                                <div class="hero-meta">
+                                    <span class="meta-item">📍 Dubai, UAE</span>
+                                    <span class="meta-divider">•</span>
+                                    <span class="meta-item">💼 Available for Projects</span>
+                                </div>
+
+                                <!-- CTA Buttons -->
+                                <div class="hero-ctas">
+                                    <a href="#projects"
+                                       onclick="showPage('projects'); return false;"
+                                       class="cta-primary">
+                                        <span>View My Work</span>
+                                        <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </a>
+                                    <a href="#contact"
+                                       onclick="showPage('contact'); return false;"
+                                       class="cta-secondary">
+                                        Let's Talk
+                                    </a>
+                                </div>
+
+                                <!-- Skill Tags -->
+                                <div class="hero-tags">
+                                    <span class="hero-tag">Full Stack</span>
+                                    <span class="hero-tag">AI/ML</span>
+                                    <span class="hero-tag">Cybersecurity</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="profile-info">
-                            <h1>SimeonDev</h1>
-                            <p class="tagline">🔧 Build. Hack. Learn.</p>
-                            <p class="description">Turning ideas into code | AI & Cybersecurity Explorer</p>
-                            <div class="profile-stats">
-                                <div class="stat-item">
-                                    <span class="stat-number" id="total-projects">8</span>
-                                    <span class="stat-label">Projects</span>
+
+                        <!-- Right Side: CSS 3D Sphere -->
+                        <div class="hero-right" aria-hidden="true">
+                            <div class="sphere-container">
+                                <div class="sphere">
+                                    <div class="sphere-ring ring-1"></div>
+                                    <div class="sphere-ring ring-2"></div>
+                                    <div class="sphere-ring ring-3"></div>
+                                    <div class="sphere-core"></div>
                                 </div>
-                                <div class="stat-item">
-                                    <span class="stat-number" id="completed-projects">7</span>
-                                    <span class="stat-label">Completed</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number" id="featured-projects">4</span>
-                                    <span class="stat-label">Featured</span>
-                                </div>
-                            </div>
-                            <div class="profile-badges">
-                                <span class="profile-badge">AI Specialist</span>
-                                <span class="profile-badge">Security Expert</span>
-                                <span class="profile-badge">Open Source</span>
-                                <!-- <span class="profile-badge featured">Open Source</span> -->
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="cta-button" onclick="showPage('projects')">View My Work</a>
                 </div>
+            </section>
+
+            <div class="container">
 
                 <div class="section-header">
                     <h2>Skills Snapshot</h2>
@@ -462,6 +534,9 @@
     <!-- Theme switcher disabled - using Tech Purple only -->
     <!-- <script src="js/colorEngine.js" defer></script> -->
     <script src="js/footer.js" defer></script>
+
+    <!-- STEP 7: Hero title rotator -->
+    <script src="js/title-rotator.js"></script>
     
    <!-- ============================================ -->
 <!-- CARD VISIBILITY DIAGNOSTIC SCRIPT -->
