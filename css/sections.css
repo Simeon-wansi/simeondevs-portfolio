@@ -47,12 +47,20 @@
     gap: var(--spacing-lg);
 }
 
+/* ============================================
+   CONTACT PAGE - RESPONSIVE LAYOUT
+   ============================================ */
+
 /* Contact Section */
 .contact-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr; /* Two columns on desktop */
     gap: var(--spacing-xl);
     margin: var(--spacing-xl) 0;
+    align-items: start;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .contact-info {
@@ -60,6 +68,9 @@
     padding: var(--spacing-lg);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-primary);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
 }
 
 .contact-item {
@@ -80,6 +91,50 @@
     padding: var(--spacing-lg);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-primary);
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Form fields */
+.form-group {
+    margin-bottom: var(--spacing-lg);
+    width: 100%;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    max-width: 100%; /* Prevent overflow */
+    box-sizing: border-box;
+}
+
+/* RESPONSIVE: Stack vertically on tablets and mobile */
+@media (max-width: 1024px) {
+    .contact-grid {
+        grid-template-columns: 1fr; /* Single column */
+        gap: var(--spacing-xl);
+    }
+
+    .contact-info {
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-form {
+        padding: var(--spacing-lg);
+    }
+
+    .contact-grid {
+        gap: var(--spacing-lg);
+    }
+}
+
+/* Prevent horizontal scroll */
+.contact-grid,
+.contact-form {
+    overflow-x: visible;
+    max-width: 100%;
 }
 
 /* Project Filters */

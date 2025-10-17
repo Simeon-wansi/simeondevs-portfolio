@@ -1,3 +1,66 @@
+/* ============================================
+   RESPONSIVE FIXES - PREVENT OVERFLOW
+   ============================================ */
+
+/* Large screens (1400px+) */
+@media (min-width: 1400px) {
+    html {
+        font-size: 100%; /* 16px on very large screens */
+    }
+}
+
+/* Desktop (1024px - 1399px) */
+@media (min-width: 1024px) and (max-width: 1399px) {
+    html {
+        font-size: 93.75%; /* 15px */
+    }
+
+    .container {
+        max-width: 1200px;
+        padding: 0 var(--spacing-lg);
+    }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    html {
+        font-size: 87.5%; /* 14px */
+    }
+
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+
+    /* Stack contact form */
+    .contact-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Adjust project cards */
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--spacing-md);
+    }
+}
+
+/* Small mobile (up to 480px) */
+@media (max-width: 480px) {
+    html {
+        font-size: 85%; /* 13.6px - even smaller */
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    /* Reduce all spacing */
+    :root {
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+        --spacing-xxl: 2.5rem;
+    }
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     /* Typography */
@@ -319,5 +382,44 @@
     .blog-link:focus {
         outline: 2px solid var(--primary-gold);
         outline-offset: 2px;
+    }
+}
+
+/* ============================================
+   ADDITIONAL RESPONSIVE FIXES
+   ============================================ */
+
+/* Ensure all layouts stack properly on mobile */
+@media (max-width: 767px) {
+    html {
+        font-size: 87.5%; /* 14px */
+    }
+
+    .container {
+        padding: 0 var(--spacing-sm);
+        max-width: 100%;
+    }
+
+    /* Single column layouts */
+    .projects-grid,
+    .blog-grid,
+    .contact-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Stack project buttons */
+    .project-links {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Reduce spacing */
+    .section {
+        padding: var(--spacing-xl) 0;
+    }
+
+    /* Smaller hero */
+    .hero-section {
+        min-height: auto;
+        padding: var(--spacing-xl) 0;
     }
 }

@@ -1,3 +1,7 @@
+/* ============================================
+   PREVENT HORIZONTAL SCROLL - GLOBAL
+   ============================================ */
+
 /* Base Styles and Typography */
 * {
     margin: 0;
@@ -5,15 +9,24 @@
     box-sizing: border-box;
 }
 
+html {
+    font-size: 87.5%; /* 14px base - reduces overall scale by ~12% */
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
 body {
     font-family: var(--font-family);
     background: var(--bg-primary);
     color: var(--text-primary);
     overflow-x: hidden;
+    max-width: 100vw;
     line-height: 1.6;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 /* Typography */
@@ -117,4 +130,35 @@ main {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--gradient-reverse);
+}
+
+/* ============================================
+   PREVENT HORIZONTAL SCROLL - CONTAINERS
+   ============================================ */
+
+/* Prevent any element from causing horizontal scroll */
+.container,
+.section,
+.page {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Ensure grids don't overflow */
+.projects-grid,
+.blog-grid,
+.featured-projects-grid {
+    max-width: 100%;
+    overflow-x: visible;
+}
+
+/* Ensure all page containers respect viewport width */
+#home,
+#projects,
+#blog,
+#about,
+#services,
+#contact {
+    max-width: 100vw;
+    overflow-x: hidden;
 }

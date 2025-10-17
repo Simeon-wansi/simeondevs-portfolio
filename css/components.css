@@ -186,29 +186,80 @@
     margin-bottom: var(--spacing-md);
 }
 
+/* ============================================
+   PROJECT CARD BUTTONS - FIXED LAYOUT
+   ============================================ */
+
 .project-links {
-    display: flex;
-    gap: var(--spacing-sm);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Equal width columns */
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: var(--spacing-md);
+    width: 100%;
 }
 
 .project-link {
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 0.5rem; /* Adjust padding */
     background: rgba(0, 245, 255, 0.2);
     color: #00f5ff;
     text-decoration: none;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem; /* 14px */
+    font-weight: 600;
+    text-align: center;
+    transition: all var(--transition-fast);
+    border: 2px solid transparent;
     border: 1px solid rgba(0, 245, 255, 0.3);
-    display: inline-flex;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 10 !important;
+    text-decoration: none !important;
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 0.25rem;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0; /* Allow flex shrinking */
+}
+
+/* Icon sizing */
+.project-link .link-icon {
+    font-size: 0.875rem;
+    flex-shrink: 0; /* Icons don't shrink */
 }
 
 .project-link:hover {
     background: rgba(0, 245, 255, 0.3);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 245, 255, 0.3);
+}
+
+/* Mobile: Stack buttons vertically */
+@media (max-width: 768px) {
+    .project-links {
+        grid-template-columns: 1fr; /* Stack on mobile */
+        gap: 0.5rem;
+    }
+
+    .project-link {
+        width: 100%;
+        padding: 0.875rem 1rem;
+    }
+}
+
+/* Tablet: 2 columns, Details full width */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .project-links {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .details-btn {
+        grid-column: 1 / -1; /* Span both columns */
+    }
 }
 
 /* Blog Cards */
