@@ -682,7 +682,7 @@
    MUST be at END of file for highest specificity
    ============================================ */
 
-/* Grid containers must be visible and use CSS Grid */
+/* Grid containers must be visible and CENTERED */
 .blog-grid,
 #allProjectsGrid,
 .projects-grid,
@@ -690,15 +690,19 @@
 #latestBlogGrid,
 .featured-projects-grid {
     display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+    justify-content: center !important;    /* CENTER TRACKS */
+    justify-items: center !important;      /* CENTER ITEMS */
     gap: 2rem !important;
-    margin-top: 2rem !important;
+    margin: 2rem auto !important;          /* CENTER CONTAINER */
+    width: 100% !important;
+    max-width: 1400px !important;          /* Constrain on wide screens */
     opacity: 1 !important;
     visibility: visible !important;
-    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
-/* Individual cards must be visible */
+/* Individual cards must be visible and centered */
 .blog-card,
 .project-card,
 .featured-project-card {
@@ -707,9 +711,11 @@
     visibility: visible !important;
     transform: none !important;
     position: relative !important;
-    margin-bottom: 0 !important;
+    width: 100% !important;              /* Fill grid cell */
+    max-width: 100% !important;          /* Don't exceed cell */
+    margin: 0 !important;                /* No margins */
+    justify-self: center !important;     /* Center in cell */
     min-height: 200px !important;
-    width: auto !important;
     background: rgba(26, 10, 46, 0.8) !important;
     border: 1px solid rgba(157, 78, 221, 0.3) !important;
     border-radius: 15px !important;

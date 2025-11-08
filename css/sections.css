@@ -197,13 +197,15 @@
     color: var(--text-secondary);
 }
 
-/* View All Projects */
-.view-all-projects {
+/* View All Projects & Articles - Centered Buttons */
+.view-all-projects,
+.view-all-link {
     text-align: center;
     margin: var(--spacing-lg) 0;
 }
 
-.view-all-projects .cta-button {
+.view-all-projects .cta-button,
+.view-all-link .cta-button {
     background: var(--gradient-primary);
     color: var(--primary-dark);
     padding: var(--spacing-sm) var(--spacing-lg);
@@ -217,7 +219,8 @@
     display: inline-block;
 }
 
-.view-all-projects .cta-button:hover {
+.view-all-projects .cta-button:hover,
+.view-all-link .cta-button:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 30px rgba(157, 78, 221, 0.4);
 }

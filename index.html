@@ -19,10 +19,11 @@
     <link rel="stylesheet" href="css/hero-2025.css">       <!-- 6. Modern Hero 2025 -->
     <link rel="stylesheet" href="css/project-cards-minimal.css"> <!-- 7. Minimalist Project Cards -->
     <link rel="stylesheet" href="css/project-modal.css">   <!-- 8. Project Details Modal -->
-    <link rel="stylesheet" href="css/footer.css">          <!-- 9. Footer -->
-    <link rel="stylesheet" href="css/animations.css">      <!-- 10. Animations -->
-    <link rel="stylesheet" href="css/utilities.css">       <!-- 11. Utilities -->
-    <link rel="stylesheet" href="css/responsive.css">      <!-- 12. Responsive -->
+    <link rel="stylesheet" href="css/skills-enhanced.css">  <!-- 9. Enhanced Skills Section -->
+    <link rel="stylesheet" href="css/footer.css">          <!-- 10. Footer -->
+    <link rel="stylesheet" href="css/animations.css">      <!-- 11. Animations -->
+    <link rel="stylesheet" href="css/utilities.css">       <!-- 12. Utilities -->
+    <link rel="stylesheet" href="css/responsive.css">      <!-- 13. Responsive -->
 
     <!-- Legacy compatibility -->
     <link rel="stylesheet" href="css/main.css">
@@ -169,31 +170,225 @@
                 </div>
             </section>
 
-            <div class="container">
-
-                <div class="section-header">
-                    <h2>Skills Snapshot</h2>
-                    <p>Technologies and tools I use to build innovative solutions</p>
+            <!-- ============================================
+                 SKILLS SECTION - ENHANCED DESIGN
+                 ============================================ -->
+            <section id="skills" class="skills-section">
+                <div class="container">
+                    <!-- Section Header -->
+                    <div class="section-header">
+                        <h2 class="section-title">Skills Snapshot</h2>
+                        <p class="section-subtitle">
+                            Technologies and tools I use to build innovative solutions
+                        </p>
+                    </div>
+                    
+                    <!-- Skills Grid -->
+                    <div class="skills-grid">
+                        
+                        <!-- Card 1: Full-Stack Web Development -->
+                        <div class="skill-card card-web" data-category="web">
+                            <div class="card-accent-line"></div>
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <span class="card-icon">🌐</span>
+                                    <h3 class="card-title">Full-Stack Web Development</h3>
+                                </div>
+                                
+                                <div class="card-body">
+                                    <div class="skill-group">
+                                        <span class="skill-label">Frontend:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">React</span>
+                                            <span class="skill-tag">Next.js</span>
+                                            <span class="skill-tag">TypeScript</span>
+                                            <span class="skill-tag">Tailwind CSS</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="skill-group">
+                                        <span class="skill-label">Backend:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">Node.js</span>
+                                            <span class="skill-tag">Express</span>
+                                            <span class="skill-tag">REST APIs</span>
+                                            <span class="skill-tag">WebSockets</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-glow"></div>
+                        </div>
+                        
+                        <!-- Card 2: Mobile App Development -->
+                        <div class="skill-card card-mobile" data-category="mobile">
+                            <div class="card-accent-line"></div>
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <span class="card-icon">📱</span>
+                                    <h3 class="card-title">Mobile App Development</h3>
+                                </div>
+                                
+                                <div class="card-body">
+                                    <div class="skill-group">
+                                        <span class="skill-label">Framework:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">React Native</span>
+                                            <span class="skill-tag">Expo</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="skill-group">
+                                        <span class="skill-label">Platforms:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">iOS & Android</span>
+                                            <span class="skill-tag">Push Notifications</span>
+                                            <span class="skill-tag">App Store Deployment</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-glow"></div>
+                        </div>
+                        
+                        <!-- Card 3: AI & Intelligent Systems -->
+                        <div class="skill-card card-ai" data-category="ai">
+                            <div class="card-accent-line"></div>
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <span class="card-icon">🤖</span>
+                                    <h3 class="card-title">AI & Intelligent Systems</h3>
+                                </div>
+                                
+                                <div class="card-body">
+                                    <div class="skill-group">
+                                        <span class="skill-label">Frameworks:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">OpenAI API</span>
+                                            <span class="skill-tag">Anthropic Claude</span>
+                                            <span class="skill-tag">LangChain</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="skill-group">
+                                        <span class="skill-label">Capabilities:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">Multi-Agent Systems</span>
+                                            <span class="skill-tag">RAG</span>
+                                            <span class="skill-tag">Computer Vision</span>
+                                            <span class="skill-tag">NLP</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-glow"></div>
+                        </div>
+                        
+                        <!-- Card 4: Backend & Databases -->
+                        <div class="skill-card card-backend" data-category="backend">
+                            <div class="card-accent-line"></div>
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <span class="card-icon">🗄️</span>
+                                    <h3 class="card-title">Backend & Databases</h3>
+                                </div>
+                                
+                                <div class="card-body">
+                                    <div class="skill-group">
+                                        <span class="skill-label">APIs:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">FastAPI</span>
+                                            <span class="skill-tag">Node.js</span>
+                                            <span class="skill-tag">Express</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="skill-group">
+                                        <span class="skill-label">Databases:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">PostgreSQL</span>
+                                            <span class="skill-tag">Supabase</span>
+                                            <span class="skill-tag">MongoDB</span>
+                                            <span class="skill-tag">Firebase</span>
+                                            <span class="skill-tag">Redis</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-glow"></div>
+                        </div>
+                        
+                        <!-- Card 5: Cloud & DevOps -->
+                        <div class="skill-card card-cloud" data-category="cloud">
+                            <div class="card-accent-line"></div>
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <span class="card-icon">☁️</span>
+                                    <h3 class="card-title">Cloud & DevOps</h3>
+                                </div>
+                                
+                                <div class="card-body">
+                                    <div class="skill-group">
+                                        <span class="skill-label">Deployment:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">Vercel</span>
+                                            <span class="skill-tag">Railway</span>
+                                            <span class="skill-tag">Docker</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="skill-group">
+                                        <span class="skill-label">Tools:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">Git</span>
+                                            <span class="skill-tag">CI/CD</span>
+                                            <span class="skill-tag">Linux</span>
+                                            <span class="skill-tag">Nginx</span>
+                                            <span class="skill-tag">Performance Optimization</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-glow"></div>
+                        </div>
+                        
+                        <!-- Card 6: Security & Systems Programming -->
+                        <div class="skill-card card-security" data-category="security">
+                            <div class="card-accent-line"></div>
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <span class="card-icon">🔐</span>
+                                    <h3 class="card-title">Security & Systems Programming</h3>
+                                </div>
+                                
+                                <div class="card-body">
+                                    <div class="skill-group">
+                                        <span class="skill-label">Security:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">CTFs</span>
+                                            <span class="skill-tag">Penetration Testing</span>
+                                            <span class="skill-tag">Reverse Engineering</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="skill-group">
+                                        <span class="skill-label">Systems:</span>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">C</span>
+                                            <span class="skill-tag">C++</span>
+                                            <span class="skill-tag">Rust</span>
+                                            <span class="skill-tag">System Design</span>
+                                            <span class="skill-tag">Performance Optimization</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-glow"></div>
+                        </div>
+                        
+                    </div>
                 </div>
-
-                <div class="skills-grid">
-                    <div class="skill-card">
-                        <h3>🧑‍💻 Programming</h3>
-                        <p>C · C++ · Rust · Python · JavaScript · React</p>
-                    </div>
-                    <div class="skill-card">
-                        <h3>🧠 AI & Machine Learning</h3>
-                        <p>LangChain · Streamlit · OpenAI API · Computer Vision · Prompt Engineering</p>
-                    </div>
-                    <div class="skill-card">
-                        <h3>🔐 Cybersecurity</h3>
-                        <p>CTFs · Reverse Engineering · System Exploitation</p>
-                    </div>
-                    <div class="skill-card">
-                        <h3>⚙️ Tools & Platforms</h3>
-                        <p>Git · Linux · Docker · Firebase · PostgreSQL · React Native</p>
-                    </div>
-                </div>
+            </section>
 
                 <div class="section-header">
                     <h2>Featured Projects</h2>

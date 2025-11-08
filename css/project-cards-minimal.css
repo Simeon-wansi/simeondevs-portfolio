@@ -73,21 +73,45 @@
     border-bottom: 2px solid var(--border-primary);
 }
 
-/* === GRID LAYOUT === */
+/* === GRID LAYOUT - ZOOM-PROOF CENTERED === */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    justify-content: center;    /* Centers grid tracks */
+    justify-items: center;      /* Centers items in cells */
     gap: 2rem;
-    margin-bottom: 2rem;
+    margin: 2rem auto;          /* Centers grid container */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
+/* Ensure section containers don't interfere */
+.featured-section,
+.all-projects-section {
+    padding: 6rem 0;
+    width: 100%;
+    overflow-x: hidden;       /* Prevent horizontal scroll */
+}
+
+/* Large screens: prefer 3 columns max */
+@media (min-width: 1400px) {
+    .projects-grid {
+        grid-template-columns: repeat(auto-fit, minmax(380px, 400px));
+        max-width: 1400px;
+        margin: 2rem auto;
+    }
+}
+
+/* Tablet: 2 columns */
 @media (max-width: 1200px) {
     .projects-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         gap: 1.5rem;
     }
 }
 
+/* Mobile: 1 column */
 @media (max-width: 768px) {
     .projects-grid {
         grid-template-columns: 1fr;
@@ -106,6 +130,11 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    width: 100%;              /* Fill grid cell */
+    max-width: 100%;          /* Don't exceed cell */
+    margin: 0;                /* No margins - grid handles spacing */
+    justify-self: center;     /* Center within grid cell */
+    align-self: start;        /* Align to top of cell */
 }
 
 .project-card-minimal:hover {
@@ -282,23 +311,15 @@
     opacity: 0.8;
 }
 
-/* === LOADING SKELETON === */
+/* === LOADING SKELETON - CENTERED === */
 .loading-skeleton {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    justify-content: center;
+    justify-items: center;
     gap: 2rem;
-}
-
-@media (max-width: 1200px) {
-    .loading-skeleton {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .loading-skeleton {
-        grid-template-columns: 1fr;
-    }
+    width: 100%;
+    margin: 0 auto;
 }
 
 .skeleton-card {
@@ -307,6 +328,22 @@
     border-radius: 16px;
     overflow: hidden;
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    width: 100%;
+    max-width: 100%;
+    justify-self: center;
+}
+
+/* Responsive skeleton */
+@media (max-width: 1200px) {
+    .loading-skeleton {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .loading-skeleton {
+        grid-template-columns: 1fr;
+    }
 }
 
 .skeleton-card::before {

@@ -55,3 +55,57 @@
 /* Purple Glow */
 .glow-purple { box-shadow: var(--glow-purple); }
 .glow-gold { box-shadow: var(--glow-gold); }
+
+/* ============================================
+   GLOBAL LAYOUT FIXES
+   Prevent zoom-related alignment issues
+   ============================================ */
+
+/* Prevent horizontal scroll globally */
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
+/* All sections should respect width */
+section,
+.page {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+/* Ensure all grids stay contained */
+[class*="grid"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Center all section headers */
+.section-header {
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3rem;
+}
+
+/* Subsection titles */
+.subsection-title {
+    max-width: 100%;
+    margin-bottom: 2rem;
+}
+
+/* Prevent any element from causing horizontal scroll */
+* {
+    max-width: 100vw;
+}
+
+/* Fix for decorative elements */
+*::before,
+*::after {
+    max-width: 100vw;
+}

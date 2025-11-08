@@ -1,5 +1,6 @@
 /* ============================================
-   GRID LAYOUTS
+   UNIVERSAL GRID SYSTEM - ZOOM-PROOF CENTERING
+   Applies to ALL grid layouts across the site
    ============================================ */
 
 .projects-grid,
@@ -9,13 +10,59 @@
 #allProjectsGrid,
 #latestBlogGrid {
     display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
-    gap: var(--space-lg) !important;
-    margin: var(--space-xl) 0 !important;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important; /* auto-fit collapses empty tracks */
+    justify-content: center !important;    /* Centers grid tracks horizontally */
+    justify-items: center !important;      /* Centers items within cells */
+    place-items: center start !important;  /* Center horizontally, align top vertically */
+    gap: 2rem !important;
+    margin: var(--space-xl) auto !important;  /* Centers container itself */
+    width: 100% !important;
+    max-width: 1400px !important;          /* Constrains on ultra-wide screens */
+    box-sizing: border-box !important;
     opacity: 1 !important;
     visibility: visible !important;
 }
 
+/* All grid children should fill their cells without auto margins */
+.projects-grid > *,
+.blog-grid > *,
+.featured-projects-grid > *,
+#featuredProjectsGrid > *,
+#allProjectsGrid > *,
+#latestBlogGrid > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    justify-self: center !important;
+}
+
+/* Large screens: constrain card width for better centering */
+@media (min-width: 1600px) {
+    .projects-grid,
+    .blog-grid,
+    .featured-projects-grid,
+    #featuredProjectsGrid,
+    #allProjectsGrid,
+    #latestBlogGrid {
+        grid-template-columns: repeat(auto-fit, minmax(380px, 420px)) !important;
+        max-width: 1600px !important;
+    }
+}
+
+/* Ultra-wide screens: prevent excessive spread */
+@media (min-width: 2560px) {
+    .projects-grid,
+    .blog-grid,
+    .featured-projects-grid,
+    #featuredProjectsGrid,
+    #allProjectsGrid,
+    #latestBlogGrid {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 450px)) !important;
+        max-width: 1800px !important;
+    }
+}
+
+/* Mobile optimization */
 @media (max-width: 768px) {
     .projects-grid,
     .blog-grid,
@@ -28,11 +75,107 @@
     }
 }
 
-/* Container */
+/* ============================================
+   EDGE CASE HANDLERS - SINGLE/DUAL ITEMS
+   ============================================ */
+
+/* When grid has only one child - center it */
+.projects-grid:has(> :only-child),
+.blog-grid:has(> :only-child),
+.skills-grid:has(> :only-child) {
+    grid-template-columns: minmax(320px, 500px) !important;
+    justify-content: center !important;
+}
+
+/* When grid has exactly two children on wide screens */
+@media (min-width: 1024px) {
+    .projects-grid:has(> :nth-child(2):last-child),
+    .blog-grid:has(> :nth-child(2):last-child),
+    .skills-grid:has(> :nth-child(2):last-child) {
+        grid-template-columns: repeat(2, minmax(320px, 450px)) !important;
+        justify-content: center !important;
+    }
+}
+
+/* Very narrow screens - full width cards */
+@media (max-width: 375px) {
+    .projects-grid,
+    .blog-grid,
+    .featured-projects-grid,
+    #featuredProjectsGrid,
+    #allProjectsGrid,
+    #latestBlogGrid,
+    .skills-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 0.5rem !important;
+    }
+}
+
+/* ============================================
+   CENTERED CONTAINER SYSTEM
+   Keeps content aligned at any zoom level
+   ============================================ */
+
+/* Base container - used throughout site */
 .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 var(--space-lg);
+    width: 100%;
+    max-width: 1200px;           /* Tighter container for better centering */
+    margin-left: auto;           /* Centers horizontally */
+    margin-right: auto;          /* Centers horizontally */
+    padding-left: 2rem;          /* Side spacing */
+    padding-right: 2rem;         /* Side spacing */
+    box-sizing: border-box;      /* Include padding in width */
+}
+
+/* Narrow container for text-heavy content */
+.container-narrow {
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    box-sizing: border-box;
+}
+
+/* Wide container for grids */
+.container-wide {
+    width: 100%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    box-sizing: border-box;
+}
+
+/* Responsive padding adjustments */
+@media (max-width: 1440px) {
+    .container,
+    .container-narrow,
+    .container-wide {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container,
+    .container-narrow,
+    .container-wide {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .container,
+    .container-narrow,
+    .container-wide {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
 }
 
 /* Section Spacing */
