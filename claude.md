@@ -1,1035 +1,2010 @@
-**TASK: Implement Modern 2025 Hero Section with Rotating Titles and CSS 3D Sphere**
+# 🚀 **COMPLETE UI IMPLEMENTATION PROMPT FOR CLAUDE CODE**
 
-## CRITICAL INSTRUCTIONS
-
-⚠️ **DO NOT TOUCH THESE SECTIONS:**
-- Navigation bar
-- Projects page and project cards
-- Blog page and blog cards
-- Contact form
-- Footer
-- Any JavaScript files related to Supabase (blog-supabase.js, projects-supabase.js)
-- Database integration code
-- Analytics tracking
-
-✅ **ONLY MODIFY:**
-- Hero section HTML in `index.html`
-- Hero section CSS (create new `css/hero-2025.css`)
-- Add new JavaScript file `js/title-rotator.js`
-- Update CSS imports in `index.html` head section
-
-## Project Context
-
-This is a professional portfolio for SimeonDev (Simeon Wansi), a Full-Stack Developer and AI Solutions Architect based in Dubai. The site currently has:
-- Working navigation
-- Functional projects page with Supabase integration
-- Functional blog page with Supabase integration
-- Working contact form
-- Tech Purple color theme (#8B5CF6 primary, #F59E0B accent)
-
-**We are ONLY updating the hero section to be more modern and dynamic.**
+Copy this ENTIRE prompt and send it to Claude Code:
 
 ---
 
-## IMPLEMENTATION PLAN
+**TASK: Implement Minimalist Project Cards with Rich Details Modal**
 
-### Step 1: Backup and Analysis
+## 🎯 OVERVIEW
 
-**Before making changes:**
-1. Identify the current hero section in `index.html`
-2. Note any existing classes or IDs used by JavaScript
-3. Check if any other files reference the hero section
-4. Preserve any existing functionality
+We're upgrading the projects section to use a modern, scalable design:
+- **Grid View:** Minimalist cards optimized for 50+ projects
+- **Details View:** Rich modal with comprehensive project information
+- **Database:** Already updated with new fields and 4 sample projects
 
-### Step 2: Create New Hero CSS File
+## ⚠️ CRITICAL RULES
 
-**File: `css/hero-2025.css` (CREATE NEW FILE)**
+### **DO NOT TOUCH:**
+- ❌ Navigation system
+- ❌ Blog page and blog cards
+- ❌ Contact form
+- ❌ Footer
+- ❌ Hero section (we just updated it)
+- ❌ Other pages (About, Services)
+- ❌ `js/main.js` navigation functions
+- ❌ Database connection files (`js/supabase-client.js`)
+
+### **ONLY MODIFY:**
+- ✅ Projects page HTML structure
+- ✅ Project card design
+- ✅ Create new modal for project details
+- ✅ Update `js/projects-supabase.js` for new database fields
+- ✅ Create new `css/project-cards-minimal.css`
+- ✅ Create new `css/project-modal.css`
+- ✅ Create new `js/project-modal.js`
+
+---
+
+## 📊 DATABASE STRUCTURE
+
+### **New Fields Added to `projects` Table:**
+
+```javascript
+// Fields we NOW have in database (use these):
+{
+    // Existing fields
+    id,
+    title,
+    slug,
+    description,          // Short description
+    image_url,            // Hero image
+    demo_url,
+    github_url,
+    technologies,         // Array
+    category,
+    status,
+    featured,
+    published,
+    completed_date,
+    view_count,
+    github_clicks,
+    demo_clicks,
+    created_at,
+    updated_at,
+    
+    // NEW fields for minimalist cards
+    tagline,              // One-liner for cards
+    primary_tech,         // Main technology
+    
+    // NEW fields for rich modal
+    full_description,     // Detailed description
+    thumbnail_url,        // Smaller image
+    preview_gif_url,      // Animated preview
+    video_url,            // Demo video
+    gallery_urls,         // Array of images
+    key_metrics,          // JSONB object
+    highlights,           // Array of strings
+    challenges,           // Text
+    solutions,            // Text
+    results,              // Text
+    lessons_learned,      // Array
+    
+    // NEW metadata
+    tags,                 // Array
+    blog_post_url,
+    case_study_url,
+    start_date,
+    project_duration,
+    team_size,
+    role,
+    collaborators,        // Array
+    
+    // NEW AI scores
+    complexity_score,     // 0-100
+    innovation_score,     // 0-100
+    business_impact_score,// 0-100
+    
+    // NEW analytics
+    blog_clicks,
+    details_views
+}
+```
+
+---
+
+## 🎨 DESIGN SPECIFICATION
+
+### **Minimalist Project Card (Grid View)**
+
+```
+Visual Structure:
+┌─────────────────────────────┐
+│ ⭐ Featured    ✅ Completed │  ← Small badges (top-right)
+├─────────────────────────────┤
+│                             │
+│   [Project Image]           │  ← 280px height, 16:9
+│   Hover: slight zoom        │     Full-bleed
+│                             │
+├─────────────────────────────┤
+│ GulfValidate                │  ← Title (18px, bold)
+│                             │
+│ Python · LangChain · AI     │  ← Tech tags (12px, muted)
+│                             │
+│ AI-powered startup          │  ← Tagline (14px)
+│ validation for GCC...       │     One line, ellipsis
+│                             │
+│ 🎯 AI/ML  •  Oct 2024       │  ← Footer (12px, muted)
+└─────────────────────────────┘
+      Click anywhere → Opens modal
+```
+
+**Card Specifications:**
+- **Width:** 100% (grid handles sizing)
+- **Image height:** 280px (16:9 aspect ratio)
+- **Padding:** 0 on image (full-bleed), 1.5rem on content
+- **Border:** 1px solid rgba(139, 92, 246, 0.2)
+- **Border radius:** 16px
+- **Hover effect:** 
+  - Lift up 8px
+  - Glow shadow
+  - Image zooms to 1.05
+  - Border color intensifies
+- **Entire card is clickable** (cursor: pointer)
+
+### **Grid Layout:**
 
 ```css
-/* ============================================
-   MODERN 2025 HERO SECTION
-   Animated gradient background, rotating titles, CSS 3D sphere
-   ============================================ */
-
-/* === HERO CONTAINER === */
-.hero-2025 {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    padding: 6rem 0 4rem;
-    isolation: isolate;
-}
-
-/* === ANIMATED GRADIENT BACKGROUND === */
-.hero-bg {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    overflow: hidden;
-    opacity: 0.6;
-}
-
-.gradient-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.4;
-    will-change: transform;
-}
-
-.orb-1 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, transparent 70%);
-    top: -15%;
-    left: -10%;
-    animation: floatOrb 25s ease-in-out infinite;
-    animation-delay: 0s;
-}
-
-.orb-2 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(245, 158, 11, 0.5) 0%, transparent 70%);
-    bottom: -10%;
-    right: -5%;
-    animation: floatOrb 20s ease-in-out infinite;
-    animation-delay: 8s;
-}
-
-.orb-3 {
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, rgba(167, 139, 250, 0.5) 0%, transparent 70%);
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: floatOrb 30s ease-in-out infinite;
-    animation-delay: 16s;
-}
-
-@keyframes floatOrb {
-    0%, 100% {
-        transform: translate(0, 0) scale(1);
-    }
-    33% {
-        transform: translate(40px, -40px) scale(1.15);
-    }
-    66% {
-        transform: translate(-30px, 30px) scale(0.9);
-    }
-}
-
-/* === PARTICLE NETWORK === */
-.particle-network {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.4;
-}
-
-.particle {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: var(--color-primary-light);
-    border-radius: 50%;
-    left: var(--x);
-    top: var(--y);
-    animation: particlePulse 4s ease-in-out infinite;
-    animation-delay: calc(var(--x) * 0.02s);
-    box-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
-}
-
-.particle::after {
-    content: '';
-    position: absolute;
-    width: 1px;
-    height: 80px;
-    background: linear-gradient(
-        to bottom, 
-        transparent, 
-        rgba(139, 92, 246, 0.3), 
-        transparent
-    );
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%) rotate(var(--angle, 45deg));
-}
-
-@keyframes particlePulse {
-    0%, 100% {
-        opacity: 0.4;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.8);
-    }
-}
-
-/* === MAIN CONTENT CONTAINER === */
-.hero-container {
-    position: relative;
-    z-index: 1;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    width: 100%;
-}
-
-.hero-content {
+/* Desktop: 3 columns */
+.projects-grid {
     display: grid;
-    grid-template-columns: 1.3fr 0.7fr;
-    gap: 4rem;
-    align-items: center;
-}
-
-/* === LEFT SIDE: CONTENT === */
-.hero-left {
-    display: flex;
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
-    align-items: flex-start;
 }
 
-/* === PROFILE IMAGE === */
-.profile-card {
-    flex-shrink: 0;
-    position: relative;
-}
-
-.profile-image-wrapper {
-    position: relative;
-    width: 180px;
-    height: 180px;
-}
-
-.profile-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid var(--color-primary);
-    box-shadow: 
-        0 10px 40px rgba(139, 92, 246, 0.5),
-        inset 0 2px 4px rgba(255, 255, 255, 0.1);
-    position: relative;
-    z-index: 2;
-    transition: transform 0.3s ease;
-}
-
-.profile-img:hover {
-    transform: scale(1.05);
-}
-
-.profile-ring {
-    position: absolute;
-    inset: -10px;
-    border-radius: 50%;
-    border: 3px solid var(--color-accent);
-    opacity: 0.6;
-    animation: ringPulse 3s ease-in-out infinite;
-}
-
-@keyframes ringPulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 0.4;
-    }
-    50% {
-        transform: scale(1.12);
-        opacity: 0.8;
-    }
-}
-
-/* === TEXT CONTENT === */
-.hero-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+/* Tablet: 2 columns */
+@media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
 }
 
-.hero-name {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 900;
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin: 0;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-}
-
-/* === ROTATING TITLES === */
-.title-rotator {
-    font-size: clamp(1.5rem, 3vw, 2.25rem);
-    font-weight: 700;
-    color: var(--text-primary);
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-    min-height: 3rem;
-    flex-wrap: wrap;
-}
-
-.title-prefix {
-    color: var(--text-secondary);
-    font-weight: 600;
-}
-
-.rotating-text {
-    position: relative;
-    display: inline-block;
-    min-width: 280px;
-    height: 3rem;
-    overflow: hidden;
-}
-
-.title-item {
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    transform: translateY(30px) rotateX(90deg);
-    transform-origin: center top;
-    color: var(--color-primary-light);
-    white-space: nowrap;
-    transition: all 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    perspective: 1000px;
-}
-
-.title-item.active {
-    opacity: 1;
-    transform: translateY(0) rotateX(0deg);
-}
-
-.title-item.exit {
-    opacity: 0;
-    transform: translateY(-30px) rotateX(-90deg);
-    transition: all 0.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
-}
-
-/* Animated cursor */
-.rotating-text::after {
-    content: '';
-    position: absolute;
-    right: -8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 70%;
-    background: var(--color-accent);
-    animation: blink 1.2s step-end infinite;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-/* === BIO TEXT === */
-.hero-bio {
-    font-size: 1.125rem;
-    line-height: 1.8;
-    color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0;
-}
-
-/* === META INFO === */
-.hero-meta {
-    display: flex;
-    align-items: center;
+/* Mobile: 1 column */
+@media (max-width: 768px) {
+    grid-template-columns: 1fr;
     gap: 1rem;
-    font-size: 0.9375rem;
-    color: var(--text-muted);
-    flex-wrap: wrap;
-}
-
-.meta-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-}
-
-.meta-divider {
-    color: var(--color-primary);
-    font-weight: 700;
-}
-
-/* === CTA BUTTONS === */
-.hero-ctas {
-    display: flex;
-    gap: 1rem;
-    margin-top: 0.5rem;
-    flex-wrap: wrap;
-}
-
-.cta-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.625rem;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-    color: white;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 1rem;
-    text-decoration: none;
-    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    border: none;
-}
-
-.cta-primary::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.cta-primary:hover::before {
-    opacity: 1;
-}
-
-.cta-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
-}
-
-.cta-primary:active {
-    transform: translateY(-1px);
-}
-
-.cta-primary span,
-.cta-primary svg {
-    position: relative;
-    z-index: 1;
-}
-
-.arrow-icon {
-    width: 20px;
-    height: 20px;
-    transition: transform 0.3s ease;
-    stroke: currentColor;
-    stroke-width: 2;
-    fill: none;
-}
-
-.cta-primary:hover .arrow-icon {
-    transform: translateX(5px);
-}
-
-.cta-secondary {
-    display: inline-flex;
-    align-items: center;
-    padding: 1rem 2rem;
-    background: rgba(139, 92, 246, 0.05);
-    color: var(--color-primary-light);
-    border: 2px solid var(--border-primary);
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-}
-
-.cta-secondary:hover {
-    background: rgba(139, 92, 246, 0.15);
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.2);
-}
-
-/* === TAGS === */
-.hero-tags {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-}
-
-.hero-tag {
-    padding: 0.5rem 1.125rem;
-    background: rgba(139, 92, 246, 0.12);
-    border: 1px solid var(--border-primary);
-    border-radius: 9999px;
-    color: var(--color-primary-light);
-    font-size: 0.875rem;
-    font-weight: 500;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-}
-
-.hero-tag:hover {
-    background: rgba(139, 92, 246, 0.2);
-    border-color: var(--color-primary);
-    transform: translateY(-2px);
-}
-
-/* === RIGHT SIDE: CSS 3D SPHERE === */
-.hero-right {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    min-height: 400px;
-}
-
-.sphere-container {
-    width: 350px;
-    height: 350px;
-    perspective: 1200px;
-    perspective-origin: center;
-}
-
-.sphere {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    animation: rotateSphere 30s linear infinite;
-}
-
-@keyframes rotateSphere {
-    from {
-        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-    }
-    to {
-        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
-    }
-}
-
-.sphere-ring {
-    position: absolute;
-    inset: 0;
-    border: 2px solid rgba(139, 92, 246, 0.4);
-    border-radius: 50%;
-    animation: ringGlow 4s ease-in-out infinite;
-}
-
-.ring-1 {
-    transform: rotateX(0deg) rotateY(0deg);
-    animation-delay: 0s;
-    border-color: rgba(139, 92, 246, 0.5);
-}
-
-.ring-2 {
-    transform: rotateX(60deg) rotateY(0deg);
-    animation-delay: 1.3s;
-    border-color: rgba(167, 139, 250, 0.4);
-}
-
-.ring-3 {
-    transform: rotateX(120deg) rotateY(0deg);
-    animation-delay: 2.6s;
-    border-color: rgba(196, 181, 253, 0.3);
-}
-
-@keyframes ringGlow {
-    0%, 100% {
-        border-color: rgba(139, 92, 246, 0.4);
-        box-shadow: 
-            0 0 20px rgba(139, 92, 246, 0.3),
-            inset 0 0 20px rgba(139, 92, 246, 0.1);
-    }
-    50% {
-        border-color: rgba(245, 158, 11, 0.6);
-        box-shadow: 
-            0 0 40px rgba(245, 158, 11, 0.5),
-            inset 0 0 30px rgba(245, 158, 11, 0.2);
-    }
-}
-
-.sphere-core {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100px;
-    height: 100px;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle at 30% 30%, 
-        rgba(245, 158, 11, 0.9), 
-        rgba(139, 92, 246, 0.8)
-    );
-    border-radius: 50%;
-    box-shadow: 
-        0 0 60px rgba(139, 92, 246, 0.8),
-        0 0 100px rgba(245, 158, 11, 0.4),
-        inset 0 0 30px rgba(255, 255, 255, 0.3);
-    animation: corePulse 3s ease-in-out infinite;
-}
-
-@keyframes corePulse {
-    0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-        box-shadow: 
-            0 0 60px rgba(139, 92, 246, 0.8),
-            0 0 100px rgba(245, 158, 11, 0.4);
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.15);
-        box-shadow: 
-            0 0 80px rgba(139, 92, 246, 1),
-            0 0 120px rgba(245, 158, 11, 0.6);
-    }
-}
-
-/* === RESPONSIVE DESIGN === */
-
-/* Tablet landscape (1024px - 1279px) */
-@media (max-width: 1279px) {
-    .hero-content {
-        grid-template-columns: 1.5fr 1fr;
-        gap: 3rem;
-    }
-    
-    .sphere-container {
-        width: 300px;
-        height: 300px;
-    }
-}
-
-/* Tablet portrait (768px - 1023px) */
-@media (max-width: 1023px) {
-    .hero-content {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        text-align: center;
-    }
-    
-    .hero-left {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .hero-text {
-        align-items: center;
-    }
-    
-    .hero-bio,
-    .title-rotator {
-        text-align: center;
-    }
-    
-    .title-rotator {
-        justify-content: center;
-    }
-    
-    .hero-ctas {
-        justify-content: center;
-    }
-    
-    .hero-meta {
-        justify-content: center;
-    }
-    
-    .hero-tags {
-        justify-content: center;
-    }
-    
-    .sphere-container {
-        width: 280px;
-        height: 280px;
-    }
-}
-
-/* Mobile (up to 767px) */
-@media (max-width: 767px) {
-    .hero-2025 {
-        padding: 5rem 0 3rem;
-        min-height: auto;
-    }
-    
-    .hero-container {
-        padding: 0 1.25rem;
-    }
-    
-    .hero-left {
-        gap: 1.5rem;
-    }
-    
-    .profile-image-wrapper {
-        width: 140px;
-        height: 140px;
-    }
-    
-    .hero-name {
-        font-size: 2rem;
-    }
-    
-    .title-rotator {
-        font-size: 1.25rem;
-        flex-direction: column;
-        gap: 0.5rem;
-        min-height: 4rem;
-    }
-    
-    .rotating-text {
-        min-width: 200px;
-        height: 2rem;
-    }
-    
-    .hero-bio {
-        font-size: 1rem;
-    }
-    
-    .hero-ctas {
-        flex-direction: column;
-        width: 100%;
-        gap: 0.75rem;
-    }
-    
-    .cta-primary,
-    .cta-secondary {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    /* Hide sphere on mobile for performance */
-    .hero-right {
-        display: none;
-    }
-    
-    /* Reduce orb sizes */
-    .orb-1 {
-        width: 400px;
-        height: 400px;
-    }
-    
-    .orb-2 {
-        width: 350px;
-        height: 350px;
-    }
-    
-    .orb-3 {
-        width: 300px;
-        height: 300px;
-    }
-}
-
-/* Small mobile (up to 480px) */
-@media (max-width: 480px) {
-    .hero-2025 {
-        padding: 4rem 0 2rem;
-    }
-    
-    .hero-text {
-        gap: 1.25rem;
-    }
-    
-    .profile-image-wrapper {
-        width: 120px;
-        height: 120px;
-    }
-    
-    .hero-name {
-        font-size: 1.75rem;
-    }
-    
-    .title-rotator {
-        font-size: 1.125rem;
-    }
-    
-    .rotating-text {
-        min-width: 180px;
-    }
-    
-    .cta-primary,
-    .cta-secondary {
-        padding: 0.875rem 1.5rem;
-        font-size: 0.9375rem;
-    }
-}
-
-/* Reduce motion for accessibility */
-@media (prefers-reduced-motion: reduce) {
-    .hero-2025 *,
-    .hero-2025 *::before,
-    .hero-2025 *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
 }
 ```
 
 ---
 
-### Step 3: Create Title Rotator JavaScript
+## 💎 DETAILED MODAL DESIGN
 
-**File: `js/title-rotator.js` (CREATE NEW FILE)**
+When user clicks any card, open full-screen modal:
 
-```javascript
-/**
- * TITLE ROTATOR - 2025 Modern Hero Section
- * Smoothly rotates through job titles with 3D flip animation
- */
+```
+Modal Structure:
+╔═══════════════════════════════════════════════════╗
+║  [×] Close                                        ║
+║ ══════════════════════════════════════════════════║
+║                                                   ║
+║  ┌────────────────────────────────────────────┐  ║
+║  │  [Hero Image - Large 600px height]        │  ║
+║  └────────────────────────────────────────────┘  ║
+║                                                   ║
+║  ⭐ Featured  ✅ Completed  🎯 AI/ML              ║
+║                                                   ║
+║  GulfValidate                                     ║
+║  ═══════════════                                  ║
+║  AI-powered startup validation for GCC markets    ║
+║                                                   ║
+║  Python · LangChain · OpenAI API · Next.js       ║
+║                                                   ║
+║  📊 Key Metrics                                   ║
+║  ┌──────────────────────────────────────────┐   ║
+║  │ AI Agents: 11 specialized agents          │   ║
+║  │ Analysis Time: 60 seconds                 │   ║
+║  │ Markets Covered: All 6 GCC countries      │   ║
+║  │ Startups Validated: 500+                  │   ║
+║  └──────────────────────────────────────────┘   ║
+║                                                   ║
+║  🎯 Highlights                                    ║
+║  • 11 specialized AI agents                      ║
+║  • 60-second investment-grade reports            ║
+║  • 6-dimension validation framework              ║
+║  • 500+ startups validated                       ║
+║                                                   ║
+║  🤖 AI Analysis                                  ║
+║  ┌──────────────────────────────────────────┐   ║
+║  │ Technical Complexity:  ████████░░  92%    │   ║
+║  │ Innovation Score:      █████████░  95%    │   ║
+║  │ Business Impact:       ██████████  98%    │   ║
+║  └──────────────────────────────────────────┘   ║
+║                                                   ║
+║  📝 Full Description                             ║
+║  [Full detailed description from database]       ║
+║                                                   ║
+║  💪 Challenges                                    ║
+║  [Challenges text from database]                 ║
+║                                                   ║
+║  ✨ Solutions                                     ║
+║  [Solutions text from database]                  ║
+║                                                   ║
+║  🎉 Results                                       ║
+║  [Results text from database]                    ║
+║                                                   ║
+║  📚 Lessons Learned                              ║
+║  • [Lesson 1]                                    ║
+║  • [Lesson 2]                                    ║
+║                                                   ║
+║  👥 Project Info                                 ║
+║  Duration: 4.5 months                            ║
+║  Team Size: Solo Developer                       ║
+║  Completed: Oct 15, 2024                         ║
+║                                                   ║
+║  ┌──────────────┐ ┌──────────────┐ ┌──────────┐║
+║  │ 🚀 Live Demo │ │ 💻 GitHub    │ │ 📖 Blog  │║
+║  └──────────────┘ └──────────────┘ └──────────┘║
+║                                                   ║
+║  📈 Stats: 👁️ 1,247 views • 🔗 89 clicks        ║
+╚═══════════════════════════════════════════════════╝
+```
 
-class TitleRotator {
-    constructor(selector, options = {}) {
-        this.container = document.querySelector(selector);
-        
-        if (!this.container) {
-            console.warn(`TitleRotator: Container "${selector}" not found`);
-            return;
-        }
-        
-        this.items = this.container.querySelectorAll('.title-item');
-        
-        if (this.items.length === 0) {
-            console.warn('TitleRotator: No .title-item elements found');
-            return;
-        }
-        
-        this.currentIndex = 0;
-        this.interval = options.interval || 3000;
-        this.isRunning = false;
-        this.intervalId = null;
-        
-        this.init();
-    }
-    
-    init() {
-        // Set first item as active
-        if (this.items.length > 0) {
-            this.items[0].classList.add('active');
-        }
-        
-        // Start rotation if more than one item
-        if (this.items.length > 1) {
-            this.start();
-        }
-        
-        // Pause on hover
-        this.container.addEventListener('mouseenter', () => this.pause());
-        this.container.addEventListener('mouseleave', () => this.start());
-        
-        // Pause when tab is not visible
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                this.pause();
-            } else {
-                this.start();
-            }
-        });
-    }
-    
-    start() {
-        if (this.isRunning) return;
-        
-        this.isRunning = true;
-        this.intervalId = setInterval(() => this.rotate(), this.interval);
-    }
-    
-    pause() {
-        if (!this.isRunning) return;
-        
-        this.isRunning = false;
-        if (this.intervalId) {
-            clearInterval(this.intervalId);
-            this.intervalId = null;
-        }
-    }
-    
-    rotate() {
-        // Get current and next items
-        const currentItem = this.items[this.currentIndex];
-        const nextIndex = (this.currentIndex + 1) % this.items.length;
-        const nextItem = this.items[nextIndex];
-        
-        // Add exit animation to current
-        currentItem.classList.remove('active');
-        currentItem.classList.add('exit');
-        
-        // After exit animation completes, show next item
-        setTimeout(() => {
-            // Remove all classes
-            this.items.forEach(item => {
-                item.classList.remove('active', 'exit');
-            });
-            
-            // Activate next item
-            nextItem.classList.add('active');
-            
-            // Update index
-            this.currentIndex = nextIndex;
-        }, 500); // Match CSS transition duration
-    }
-    
-    destroy() {
-        this.pause();
-        this.container.removeEventListener('mouseenter', () => this.pause());
-        this.container.removeEventListener('mouseleave', () => this.start());
-    }
-}
+**Modal Specifications:**
+- **Display:** Full-screen overlay with backdrop
+- **Background:** Semi-transparent dark backdrop (rgba(0,0,0,0.8))
+- **Content:** White/dark card (depending on theme) centered
+- **Width:** Max 900px
+- **Height:** Max 90vh with scroll
+- **Animation:** Fade in + slide up
+- **Close:** Click backdrop, [×] button, or ESC key
+- **Scroll:** Smooth scroll within modal
 
-// Auto-initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTitleRotator);
-} else {
-    initTitleRotator();
-}
+---
 
-function initTitleRotator() {
-    // Initialize rotator with 3.5 second interval
-    window.titleRotator = new TitleRotator('.rotating-text', {
-        interval: 3500
-    });
-    
-    console.log('✅ Title Rotator initialized');
-}
+## 📁 FILE STRUCTURE
 
-// Export for potential future use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TitleRotator;
-}
+```
+portfolio-platform/
+├── index.html                          (UPDATE projects section)
+├── css/
+│   ├── theme.css                      (existing - don't touch)
+│   ├── project-cards-minimal.css      (CREATE NEW)
+│   └── project-modal.css              (CREATE NEW)
+├── js/
+│   ├── supabase-client.js             (existing - don't touch)
+│   ├── projects-supabase.js           (UPDATE for new fields)
+│   ├── project-modal.js               (CREATE NEW)
+│   └── main.js                        (existing - don't touch)
 ```
 
 ---
 
-### Step 4: Update Hero HTML in index.html
+## 🔧 IMPLEMENTATION STEPS
+
+### **STEP 1: Update HTML Structure**
 
 **File: `index.html`**
 
-**Find the existing hero section (probably looks like this):**
-
-```html
-<section class="hero">
-    <!-- Old hero content -->
-</section>
-```
-
-**REPLACE with:**
+Find the projects page section (probably `<div id="projects" class="page">`) and REPLACE with:
 
 ```html
 <!-- ============================================
-     MODERN 2025 HERO SECTION
-     Animated gradient background, rotating titles, CSS 3D sphere
+     PROJECTS PAGE - MINIMALIST CARDS
      ============================================ -->
-<section class="hero-2025" id="home">
-    <!-- Animated Gradient Background -->
-    <div class="hero-bg" aria-hidden="true">
-        <div class="gradient-orb orb-1"></div>
-        <div class="gradient-orb orb-2"></div>
-        <div class="gradient-orb orb-3"></div>
-    </div>
-    
-    <!-- Particle Network Overlay -->
-    <div class="particle-network" aria-hidden="true">
-        <div class="particle" style="--x: 15%; --y: 25%; --angle: 30deg;"></div>
-        <div class="particle" style="--x: 35%; --y: 45%; --angle: 60deg;"></div>
-        <div class="particle" style="--x: 65%; --y: 20%; --angle: 120deg;"></div>
-        <div class="particle" style="--x: 85%; --y: 65%; --angle: 150deg;"></div>
-        <div class="particle" style="--x: 25%; --y: 75%; --angle: -45deg;"></div>
-        <div class="particle" style="--x: 55%; --y: 85%; --angle: -30deg;"></div>
-    </div>
-    
-    <!-- Main Content Container -->
-    <div class="hero-container">
-        <div class="hero-content">
-            <!-- Left Side: Profile & Text Content -->
-            <div class="hero-left">
-                <!-- Profile Image -->
-                <div class="profile-card">
-                    <div class="profile-image-wrapper">
-                        <img src="assets/images/profile.jpg" 
-                             alt="Simeon Wansi - Full-Stack Developer" 
-                             class="profile-img"
-                             loading="eager">
-                        <div class="profile-ring" aria-hidden="true"></div>
-                    </div>
-                </div>
-                
-                <!-- Text Content -->
-                <div class="hero-text">
-                    <!-- Name -->
-                    <h1 class="hero-name">Simeon Wansi</h1>
-                    
-                    <!-- Rotating Job Titles -->
-                    <div class="title-rotator" role="text" aria-live="polite">
-                        <span class="title-prefix">I build</span>
-                        <span class="rotating-text">
-                            <span class="title-item active">AI Solutions</span>
-                            <span class="title-item">Secure Systems</span>
-                            <span class="title-item">Scalable Applications</span>
-                        </span>
-                    </div>
-                    
-                    <!-- Bio -->
-                    <p class="hero-bio">
-                        Building intelligent applications that solve real business problems 
-                        through AI integration, cybersecurity, and modern web technologies. 
-                        Helping UAE and international clients gain competitive advantages.
-                    </p>
-                    
-                    <!-- Meta Info -->
-                    <div class="hero-meta">
-                        <span class="meta-item">📍 Dubai, UAE</span>
-                        <span class="meta-divider">•</span>
-                        <span class="meta-item">💼 Available for Projects</span>
-                    </div>
-                    
-                    <!-- CTA Buttons -->
-                    <div class="hero-ctas">
-                        <a href="#projects" 
-                           onclick="showPage('projects'); return false;" 
-                           class="cta-primary">
-                            <span>View My Work</span>
-                            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                        <a href="#contact" 
-                           onclick="showPage('contact'); return false;" 
-                           class="cta-secondary">
-                            Let's Talk
-                        </a>
-                    </div>
-                    
-```html
-                    <!-- Skill Tags -->
-                    <div class="hero-tags">
-                        <span class="hero-tag">Full Stack</span>
-                        <span class="hero-tag">AI/ML</span>
-                        <span class="hero-tag">Cybersecurity</span>
-                    </div>
+<div id="projects" class="page">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="section-header">
+            <h1 class="section-title">Projects</h1>
+            <p class="section-subtitle">
+                Building intelligent applications that solve real-world problems
+            </p>
+        </div>
+        
+        <!-- Filter Tabs (Optional - can add later) -->
+        <div class="projects-filters">
+            <button class="filter-btn active" data-filter="all">All Projects</button>
+            <button class="filter-btn" data-filter="AI/ML">AI/ML</button>
+            <button class="filter-btn" data-filter="Web Development">Web Development</button>
+            <button class="filter-btn" data-filter="Cybersecurity">Cybersecurity</button>
+        </div>
+        
+        <!-- Featured Projects Section -->
+        <div class="featured-section">
+            <h2 class="subsection-title">Featured Projects</h2>
+            <div class="projects-grid" id="featuredProjectsGrid">
+                <!-- Featured project cards loaded here by JS -->
+                <div class="loading-skeleton">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
                 </div>
             </div>
-            
-            <!-- Right Side: CSS 3D Sphere -->
-            <div class="hero-right" aria-hidden="true">
-                <div class="sphere-container">
-                    <div class="sphere">
-                        <div class="sphere-ring ring-1"></div>
-                        <div class="sphere-ring ring-2"></div>
-                        <div class="sphere-ring ring-3"></div>
-                        <div class="sphere-core"></div>
-                    </div>
+        </div>
+        
+        <!-- All Projects Section -->
+        <div class="all-projects-section">
+            <h2 class="subsection-title">All Projects</h2>
+            <div class="projects-grid" id="allProjectsGrid">
+                <!-- All project cards loaded here by JS -->
+                <div class="loading-skeleton">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
+
+<!-- ============================================
+     PROJECT DETAILS MODAL
+     ============================================ -->
+<div id="projectModal" class="project-modal" style="display: none;">
+    <div class="modal-backdrop" onclick="closeProjectModal()"></div>
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeProjectModal()" aria-label="Close modal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        
+        <div class="modal-scroll" id="modalScrollContent">
+            <!-- Content dynamically loaded by JS -->
+        </div>
+    </div>
+</div>
 ```
 
 ---
 
-### Step 5: Update CSS Imports in index.html
+### **STEP 2: Create Minimalist Card CSS**
+
+**File: `css/project-cards-minimal.css` (CREATE NEW)**
+
+```css
+/* ============================================
+   MINIMALIST PROJECT CARDS - 2026 STYLE
+   Grid view optimized for 50+ projects
+   ============================================ */
+
+/* === SECTION LAYOUT === */
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 900;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* === FILTERS === */
+.projects-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 2px solid var(--border-primary);
+    border-radius: 9999px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: rgba(139, 92, 246, 0.1);
+}
+
+.filter-btn.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+}
+
+/* === SECTION SPACING === */
+.featured-section {
+    margin-bottom: 4rem;
+}
+
+.subsection-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-primary);
+}
+
+/* === GRID LAYOUT === */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 1200px) {
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+}
+
+/* === MINIMALIST PROJECT CARD === */
+.project-card-minimal {
+    background: var(--bg-secondary);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card-minimal:hover {
+    transform: translateY(-8px);
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
+}
+
+/* === CARD IMAGE === */
+.project-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    background: var(--bg-tertiary);
+}
+
+.project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card-minimal:hover .project-image {
+    transform: scale(1.05);
+}
+
+/* Image overlay on hover */
+.project-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.project-card-minimal:hover .project-image-overlay {
+    opacity: 1;
+}
+
+.overlay-text {
+    color: white;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.overlay-text svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* === STATUS BADGES === */
+.project-badges {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.project-badge {
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge-featured {
+    background: rgba(245, 158, 11, 0.9);
+    color: white;
+}
+
+.badge-completed {
+    background: rgba(34, 197, 94, 0.9);
+    color: white;
+}
+
+.badge-in-progress {
+    background: rgba(139, 92, 246, 0.9);
+    color: white;
+}
+
+/* === CARD CONTENT === */
+.project-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.project-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* === TECH TAGS === */
+.project-techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tech-tag-minimal {
+    font-size: 0.75rem;
+    color: var(--color-primary-light);
+    opacity: 0.9;
+    white-space: nowrap;
+}
+
+.tech-tag-minimal::after {
+    content: '·';
+    margin-left: 0.5rem;
+    opacity: 0.5;
+}
+
+.tech-tag-minimal:last-child::after {
+    content: '';
+}
+
+/* === TAGLINE === */
+.project-tagline {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* === FOOTER === */
+.project-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-secondary);
+    margin-top: auto;
+}
+
+.project-category {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-weight: 500;
+}
+
+.project-date {
+    opacity: 0.8;
+}
+
+/* === LOADING SKELETON === */
+.loading-skeleton {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+@media (max-width: 1200px) {
+    .loading-skeleton {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .loading-skeleton {
+        grid-template-columns: 1fr;
+    }
+}
+
+.skeleton-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 16px;
+    overflow: hidden;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.skeleton-card::before {
+    content: '';
+    display: block;
+    padding-top: 140%; /* Approximate card aspect ratio */
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(139, 92, 246, 0.1),
+        transparent
+    );
+    animation: shimmer 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* === EMPTY STATE === */
+.projects-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.projects-empty h3 {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.projects-empty p {
+    color: var(--text-muted);
+}
+```
+
+---
+
+### **STEP 3: Create Modal CSS**
+
+**File: `css/project-modal.css` (CREATE NEW)**
+
+```css
+/* ============================================
+   PROJECT DETAILS MODAL - RICH CONTENT
+   ============================================ */
+
+/* === MODAL OVERLAY === */
+.project-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+}
+
+/* === MODAL CONTENT === */
+.modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    background: var(--bg-primary);
+    border-radius: 24px;
+    border: 1px solid var(--border-primary);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* === CLOSE BUTTON === */
+.modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    transform: rotate(90deg);
+}
+
+.modal-close svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--text-primary);
+}
+
+.modal-close:hover svg {
+    stroke: white;
+}
+
+/* === SCROLLABLE CONTENT === */
+.modal-scroll {
+    overflow-y: auto;
+    padding: 2rem;
+    flex: 1;
+}
+
+.modal-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-scroll::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 4px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-dark);
+}
+
+/* === MODAL HERO IMAGE === */
+.modal-hero-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .modal-hero-image {
+        height: 250px;
+    }
+}
+
+/* === MODAL HEADER === */
+.modal-header {
+    margin-bottom: 2rem;
+}
+
+.modal-badges {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.modal-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.modal-tagline {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.modal-techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.modal-tech-tag {
+    padding: 0.5rem 1rem;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* === KEY METRICS === */
+.modal-section {
+    margin-bottom: 2.5rem;
+}
+
+.modal-section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.modal-section-title::before {
+    content: '';
+    width: 4px;
+    height: 1.5rem;
+    background: var(--color-accent);
+    border-radius: 2px;
+}
+
+.key-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-primary);
+}
+
+.metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.metric-label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.metric-value {
+    font-size: 1.125rem;
+    color: var(--color-primary-light);
+    font-weight: 700;
+}
+
+/* === HIGHLIGHTS === */
+.highlights-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.highlight-item {
+    padding: 1rem 1.25rem;
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.highlight-item::before {
+    content: '✓';
+    color: var(--color-accent);
+    font-weight: 700;
+    margin-right: 0.75rem;
+}
+
+/* === AI SCORES === */
+.ai-scores {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(245, 158, 11, 0.1));
+    border-radius: 12px;
+    border: 1px solid var(--border-primary);
+}
+
+.score-item {
+    margin-bottom: 1.25rem;
+}
+
+.score-item:last-child {
+    margin-bottom: 0;
+}
+
+.score-header {
+    display: flex;
+    justify-content: space-between;
+    ```css
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.score-label {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.score-value {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-accent);
+}
+
+.score-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    border-radius: 4px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* === TEXT CONTENT === */
+.modal-text-content {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.modal-text-content p {
+    margin-bottom: 1rem;
+}
+
+.modal-text-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* === LESSONS LEARNED === */
+.lessons-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.lesson-item {
+    padding: 1rem 1.25rem;
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.lesson-item::before {
+    content: '💡';
+    margin-right: 0.75rem;
+}
+
+/* === PROJECT INFO === */
+.project-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-primary);
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.info-label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.info-value {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* === ACTION BUTTONS === */
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-primary);
+    flex-wrap: wrap;
+}
+
+.modal-btn {
+    flex: 1;
+    min-width: 200px;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.modal-btn-primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    color: white;
+    border: none;
+}
+
+.modal-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+}
+
+.modal-btn-secondary {
+    background: transparent;
+    color: var(--color-primary-light);
+    border: 2px solid var(--border-primary);
+}
+
+.modal-btn-secondary:hover {
+    background: rgba(139, 92, 246, 0.1);
+    border-color: var(--color-primary);
+}
+
+.modal-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* === MODAL FOOTER === */
+.modal-footer {
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .project-modal {
+        padding: 0;
+    }
+    
+    .modal-content {
+        max-height: 100vh;
+        border-radius: 0;
+        max-width: 100%;
+    }
+    
+    .modal-scroll {
+        padding: 1.5rem;
+    }
+    
+    .modal-close {
+        top: 1rem;
+        right: 1rem;
+    }
+    
+    .modal-title {
+        font-size: 1.75rem;
+    }
+    
+    .modal-tagline {
+        font-size: 1rem;
+    }
+    
+    .key-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .project-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .modal-btn {
+        width: 100%;
+    }
+}
+
+/* === ANIMATIONS === */
+.modal-scroll > * {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+}
+
+.modal-scroll > *:nth-child(1) { animation-delay: 0.1s; }
+.modal-scroll > *:nth-child(2) { animation-delay: 0.2s; }
+.modal-scroll > *:nth-child(3) { animation-delay: 0.3s; }
+.modal-scroll > *:nth-child(4) { animation-delay: 0.4s; }
+.modal-scroll > *:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+```
+
+---
+
+### **STEP 4: Update Projects JavaScript**
+
+**File: `js/projects-supabase.js` (UPDATE EXISTING)**
+
+Replace the entire file with:
+
+```javascript
+/**
+ * PROJECTS SUPABASE INTEGRATION
+ * Fetches projects with all new fields and renders minimalist cards
+ */
+
+// Import supabase client
+// Assumes supabase client is already initialized in supabase-client.js
+
+// ============================================
+// FETCH PROJECTS FROM SUPABASE
+// ============================================
+
+async function fetchProjects(featured = null) {
+    try {
+        let query = supabase
+            .from('projects')
+            .select(`
+                id,
+                slug,
+                title,
+                tagline,
+                description,
+                full_description,
+                image_url,
+                thumbnail_url,
+                preview_gif_url,
+                video_url,
+                gallery_urls,
+                technologies,
+                primary_tech,
+                category,
+                tags,
+                status,
+                featured,
+                published,
+                github_url,
+                demo_url,
+                blog_post_url,
+                case_study_url,
+                key_metrics,
+                highlights,
+                challenges,
+                solutions,
+                results,
+                lessons_learned,
+                start_date,
+                completed_date,
+                project_duration,
+                team_size,
+                role,
+                collaborators,
+                complexity_score,
+                innovation_score,
+                business_impact_score,
+                view_count,
+                github_clicks,
+                demo_clicks,
+                blog_clicks,
+                details_views,
+                created_at,
+                updated_at
+            `)
+            .eq('published', true)
+            .order('created_at', { ascending: false });
+        
+        // Filter by featured status if specified
+        if (featured !== null) {
+            query = query.eq('featured', featured);
+        }
+        
+        const { data, error } = await query;
+        
+        if (error) {
+            console.error('Error fetching projects:', error);
+            return [];
+        }
+        
+        console.log(`✅ Fetched ${data.length} projects`);
+        return data;
+        
+    } catch (error) {
+        console.error('Unexpected error fetching projects:', error);
+        return [];
+    }
+}
+
+// ============================================
+// RENDER MINIMALIST PROJECT CARD
+// ============================================
+
+function createProjectCard(project) {
+    const card = document.createElement('div');
+    card.className = 'project-card-minimal';
+    card.setAttribute('data-project-id', project.id);
+    card.setAttribute('data-project-slug', project.slug);
+    card.onclick = () => openProjectModal(project);
+    
+    // Status badges
+    const badges = [];
+    if (project.featured) {
+        badges.push(`
+            <span class="project-badge badge-featured">
+                ⭐ Featured
+            </span>
+        `);
+    }
+    
+    const statusBadge = project.status === 'completed' 
+        ? '<span class="project-badge badge-completed">✅ Completed</span>'
+        : '<span class="project-badge badge-in-progress">🔨 In Progress</span>';
+    badges.push(statusBadge);
+    
+    // Tech tags (show first 3)
+    const techTags = project.technologies.slice(0, 3).map(tech => 
+        `<span class="tech-tag-minimal">${tech}</span>`
+    ).join('');
+    
+    // Format date
+    const date = new Date(project.completed_date || project.created_at);
+    const formattedDate = date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short' 
+    });
+    
+    // Use thumbnail if available, otherwise use main image
+    const imageUrl = project.thumbnail_url || project.image_url;
+    
+    card.innerHTML = `
+        <div class="project-image-wrapper">
+            <img src="${imageUrl}" 
+                 alt="${project.title}" 
+                 class="project-image"
+                 loading="lazy">
+            <div class="project-image-overlay">
+                <span class="overlay-text">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                    View Details
+                </span>
+            </div>
+            <div class="project-badges">
+                ${badges.join('')}
+            </div>
+        </div>
+        
+        <div class="project-content">
+            <h3 class="project-title">${project.title}</h3>
+            
+            <div class="project-techs">
+                ${techTags}
+            </div>
+            
+            <p class="project-tagline">
+                ${project.tagline || project.description}
+            </p>
+            
+            <div class="project-footer">
+                <span class="project-category">
+                    🎯 ${project.category}
+                </span>
+                <span class="project-date">
+                    ${formattedDate}
+                </span>
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
+
+// ============================================
+// RENDER PROJECTS GRID
+// ============================================
+
+async function renderFeaturedProjects() {
+    const grid = document.getElementById('featuredProjectsGrid');
+    if (!grid) return;
+    
+    // Show loading
+    grid.innerHTML = `
+        <div class="loading-skeleton">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+        </div>
+    `;
+    
+    const projects = await fetchProjects(true); // Only featured
+    
+    if (projects.length === 0) {
+        grid.innerHTML = `
+            <div class="projects-empty">
+                <h3>No featured projects yet</h3>
+                <p>Check back soon for featured projects!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    grid.innerHTML = '';
+    projects.forEach(project => {
+        const card = createProjectCard(project);
+        grid.appendChild(card);
+    });
+    
+    console.log(`✅ Rendered ${projects.length} featured projects`);
+}
+
+async function renderAllProjects() {
+    const grid = document.getElementById('allProjectsGrid');
+    if (!grid) return;
+    
+    // Show loading
+    grid.innerHTML = `
+        <div class="loading-skeleton">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+        </div>
+    `;
+    
+    const projects = await fetchProjects(false); // Non-featured only
+    
+    if (projects.length === 0) {
+        grid.innerHTML = `
+            <div class="projects-empty">
+                <h3>No projects yet</h3>
+                <p>Projects coming soon!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    grid.innerHTML = '';
+    projects.forEach(project => {
+        const card = createProjectCard(project);
+        grid.appendChild(card);
+    });
+    
+    console.log(`✅ Rendered ${projects.length} projects`);
+}
+
+// ============================================
+// INCREMENT VIEW COUNT
+// ============================================
+
+async function incrementProjectViews(projectId) {
+    try {
+        const { error } = await supabase.rpc('increment_project_details_views', {
+            project_id: projectId
+        });
+        
+        if (error) {
+            console.error('Error incrementing views:', error);
+        }
+    } catch (error) {
+        console.error('Unexpected error incrementing views:', error);
+    }
+}
+
+// ============================================
+// TRACK LINK CLICKS
+// ============================================
+
+async function trackProjectClick(projectId, clickType) {
+    try {
+        const field = `${clickType}_clicks`; // github_clicks, demo_clicks, blog_clicks
+        
+        const { error } = await supabase.rpc('increment_project_clicks', {
+            project_id: projectId,
+            click_field: field
+        });
+        
+        if (error) {
+            console.error(`Error tracking ${clickType} click:`, error);
+        }
+    } catch (error) {
+        console.error('Unexpected error tracking click:', error);
+    }
+}
+
+// ============================================
+// INITIALIZE ON PAGE LOAD
+// ============================================
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProjects);
+} else {
+    initProjects();
+}
+
+async function initProjects() {
+    console.log('🚀 Initializing projects...');
+    
+    await renderFeaturedProjects();
+    await renderAllProjects();
+    
+    console.log('✅ Projects initialized');
+}
+
+// ============================================
+// FILTER FUNCTIONALITY (Optional)
+// ============================================
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // Remove active from all buttons
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('active');
+        });
+        
+        // Add active to clicked button
+        this.classList.add('active');
+        
+        const filter = this.getAttribute('data-filter');
+        filterProjects(filter);
+    });
+});
+
+async function filterProjects(category) {
+    const grid = document.getElementById('allProjectsGrid');
+    if (!grid) return;
+    
+    grid.innerHTML = '<div class="loading-skeleton"><div class="skeleton-card"></div></div>';
+    
+    let projects = await fetchProjects(false);
+    
+    if (category !== 'all') {
+        projects = projects.filter(p => p.category === category);
+    }
+    
+    grid.innerHTML = '';
+    projects.forEach(project => {
+        const card = createProjectCard(project);
+        grid.appendChild(card);
+    });
+}
+```
+
+---
+
+### **STEP 5: Create Modal JavaScript**
+
+**File: `js/project-modal.js` (CREATE NEW)**
+
+```javascript
+/**
+ * PROJECT DETAILS MODAL
+ * Handles opening, closing, and rendering rich project details
+ */
+
+// ============================================
+// OPEN MODAL WITH PROJECT DATA
+// ============================================
+
+function openProjectModal(project) {
+    const modal = document.getElementById('projectModal');
+    const content = document.getElementById('modalScrollContent');
+    
+    if (!modal || !content) {
+        console.error('Modal elements not found');
+        return;
+    }
+    
+    // Increment views
+    if (project.id) {
+        incrementProjectDetailsViews(project.id);
+    }
+    
+    // Render modal content
+    content.innerHTML = renderModalContent(project);
+    
+    // Show modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    
+    // Animate score bars
+    setTimeout(() => {
+        animateScoreBars();
+    }, 300);
+    
+    // Add ESC key listener
+    document.addEventListener('keydown', handleEscapeKey);
+    
+    console.log('📖 Opened modal for:', project.title);
+}
+
+// ============================================
+// CLOSE MODAL
+// ============================================
+
+function closeProjectModal() {
+    const modal = document.getElementById('projectModal');
+    
+    if (!modal) return;
+    
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+    
+    // Remove ESC key listener
+    document.removeEventListener('keydown', handleEscapeKey);
+    
+    console.log('✖️ Closed modal');
+}
+
+function handleEscapeKey(e) {
+    if (e.key === 'Escape') {
+        closeProjectModal();
+    }
+}
+
+// ============================================
+// RENDER MODAL CONTENT
+// ============================================
+
+function renderModalContent(project) {
+    // Status badges
+    const badges = [];
+    if (project.featured) {
+        badges.push('<span class="modal-badge badge-featured">⭐ Featured</span>');
+    }
+    
+    const statusBadge = project.status === 'completed'
+        ? '<span class="modal-badge badge-completed">✅ Completed</span>'
+        : '<span class="modal-badge badge-in-progress">🔨 In Progress</span>';
+    badges.push(statusBadge);
+    badges.push(`<span class="modal-badge">${project.category}</span>`);
+    
+    // Technologies
+    const techTags = project.technologies.map(tech => 
+        `<span class="modal-tech-tag">${tech}</span>`
+    ).join('');
+    
+    // Key metrics
+    const keyMetricsHTML = project.key_metrics 
+        ? renderKeyMetrics(project.key_metrics)
+        : '';
+    
+    // Highlights
+    const highlightsHTML = project.highlights && project.highlights.length > 0
+        ? `
+        <div class="modal-section">
+            <h2 class="modal-section-title">🎯 Highlights</h2>
+            <ul class="highlights-list">
+                ${project.highlights.map(h => `<li class="highlight-item">${h}</li>`).join('')}
+            </ul>
+        </div>
+        ` : '';
+    
+    // AI Scores
+    const aiScoresHTML = (project.complexity_score || project.innovation_score || project.business_impact_score)
+        ? `
+        <div class="modal-section">
+            <h2 class="modal-section-title">🤖 AI Analysis</h2>
+            <div class="ai-scores">
+                ${project.complexity_score ? renderScoreBar('Technical Complexity', project.complexity_score) : ''}
+                ${project.innovation_score ? renderScoreBar('Innovation Score', project.innovation_score) : ''}
+                ${project.business_impact_score ? renderScoreBar('Business Impact', project.business_impact_score) : ''}
+            </div>
+        </div>
+        ` : '';
+    
+    // Challenges, Solutions, Results
+    const challengesHTML = project.challenges ? `
+        <div class="modal-section">
+            <h2 class="modal-section-title">💪 Challenges</h2>
+            <div class="modal-text-content">
+                <p>${project.challenges}</p>
+            </div>
+        </div>
+    ` : '';
+    
+    const solutionsHTML = project.solutions ? `
+        <div class="modal-section">
+            <h2 class="modal-section-title">✨ Solutions</h2>
+            <div class="modal-text-content">
+                <p>${project.solutions}</p>
+            </div>
+        </div>
+    ` : '';
+    
+    const resultsHTML = project.results ? `
+        <div class="modal-section">
+            <h2 class="modal-section-title">🎉 Results</h2>
+            <div class="modal-text-content">
+                <p>${project.results}</p>
+            </div>
+        </div>
+    ` : '';
+    
+    // Lessons Learned
+    const lessonsHTML = project.lessons_learned && project.lessons_learned.length > 0
+        ? `
+        <div class="modal-section">
+            <h2 class="modal-section-title">📚 Lessons Learned</h2>
+            <ul class="lessons-list">
+                ${project.lessons_learned.map(l => `<li class="lesson-item">${l}</li>`).join('')}
+            </ul>
+        </div>
+        ` : '';
+    
+    // Project Info
+    const projectInfoHTML = `
+        <div class="modal-section">
+            <h2 class="modal-section-title">👥 Project Info</h2>
+            <div class="project-info-grid">
+                ${project.project_duration ? `
+                    <div class="info-item">
+                        <span class="info-label">Duration</span>
+                        <span class="info-value">${project.project_duration}</span>
+                    </div>
+                ` : ''}
+                ${project.team_size ? `
+                    <div class="info-item">
+                        <span class="info-label">Team Size</span>
+                        <span class="info-value">${project.team_size === 1 ? 'Solo Developer' : `${project.team_size} Developers`}</span>
+                    </div>
+                ` : ''}
+                ${project.role ? `
+                    <div class="info-item">
+                        <span class="info-label">Role</span>
+                        <span class="info-value">${project.role}</span>
+                    </div>
+                ` : ''}
+                ${project.completed_date ? `
+                    <div class="info-item">
+                        <span class="info-label">Completed</span>
+                        <span class="info-value">${new Date(project.completed_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    </div>
+                ` : ''}
+            </div>
+        </div>
+    `;
+    
+    // Action Buttons
+    const actionsHTML = `
+        <div class="modal-actions">
+            ${project.demo_url ? `
+                <a href="${project.demo_url}" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="modal-btn modal-btn-primary"
+                   onclick="trackProjectClick('${project.id}', 'demo')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    Live Demo
+                </a>
+            ` : ''}
+            ${project.github_url ? `
+                <a href="${project.github_url}" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="modal-btn modal-btn-secondary"
+                   onclick="trackProjectClick('${project.id}', 'github')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/>
+                    </svg>
+                    GitHub
+                </a>
+            ` : ''}
+            ${project.blog_post_url ? `
+                <a href="${project.blog_post_url}" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="modal-btn modal-btn-secondary"
+                   onclick="trackProjectClick('${project.id}', 'blog')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    Read Blog Post
+                </a>
+            ` : ''}
+        </div>
+    `;
+    
+    // Footer Stats
+    const footerHTML = `
+        <div class="modal-footer">
+            <div class="footer-stats">
+                <span class="stat-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                    ${project.view_count || 0} views
+                </span>
+                ${project.github_clicks !== undefined ? `
+                    <span class="stat-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                        </svg>
+                        ${project.github_clicks} GitHub clicks
+                    </span>
+                ` : ''}
+            </div>
+        </div>
+    `;
+    
+    return `
+        <img src="${project.image_url}" alt="${project.title}" class="modal-hero-image">
+        
+        <div class="modal-header">
+            <div class="modal-badges">
+                ${badges.join('')}
+            </div>
+            
+            <h1 class="modal-title">${project.title}</h1>
+            
+            <p class="modal-tagline">${project.tagline || project.description}</p>
+            
+            <div class="modal-techs">
+                ${techTags}
+            </div>
+        </div>
+        
+        ${keyMetricsHTML}
+        ${highlightsHTML}
+        ${aiScoresHTML}
+        
+        ${project.full_description ? `
+            <div class="modal-section">
+                <h2 class="modal-section-title">📝 Overview</h2>
+                <div class="modal-text-content">
+                    <p>${project.full_description}</p>
+                </div>
+            </div>
+        ` : ''}
+        
+        ${challengesHTML}
+        ${solutionsHTML}
+        ${resultsHTML}
+        ${lessonsHTML}
+        ${projectInfoHTML}
+        ${actionsHTML}
+        ${footerHTML}
+    `;
+}
+
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+
+function renderKeyMetrics(metrics) {
+    const items = Object.entries(metrics).map(([key, value]) => {
+        const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        return `
+            <div class="metric-item">
+                <span class="metric-label">${label}</span>
+                <span class="metric-value">${value}</span>
+            </div>
+        `;
+    }).join('');
+    
+    return `
+        <div class="modal-section">
+            <h2 class="modal-section-title">📊 Key Metrics</h2>
+            <div class="key-metrics-grid">
+                ${items}
+            </div>
+        </div>
+    `;
+}
+
+function renderScoreBar(label, score) {
+    return `
+        <div class="score-item">
+            <div class="score-header">
+                <span class="score-label">${label}</span>
+                <span class="score-value">${score}%</span>
+            </div>
+            <div class="score-bar">
+                <div class="score-fill" data-score="${score}" style="width: 0%"></div>
+```javascript
+            </div>
+        </div>
+    `;
+}
+
+function animateScoreBars() {
+    const scoreFills = document.querySelectorAll('.score-fill');
+    scoreFills.forEach((fill, index) => {
+        const score = fill.getAttribute('data-score');
+        setTimeout(() => {
+            fill.style.width = score + '%';
+        }, index * 150); // Stagger animation
+    });
+}
+
+// ============================================
+// INCREMENT DETAILS VIEWS
+// ============================================
+
+async function incrementProjectDetailsViews(projectId) {
+    try {
+        const { data, error } = await supabase
+            .from('projects')
+            .update({ details_views: supabase.raw('details_views + 1') })
+            .eq('id', projectId);
+        
+        if (error) {
+            console.error('Error incrementing details views:', error);
+        }
+    } catch (error) {
+        console.error('Unexpected error:', error);
+    }
+}
+
+// ============================================
+// TRACK CLICKS
+// ============================================
+
+function trackProjectClick(projectId, type) {
+    // Track click in database
+    const field = `${type}_clicks`;
+    
+    supabase
+        .from('projects')
+        .update({ [field]: supabase.raw(`${field} + 1`) })
+        .eq('id', projectId)
+        .then(({ error }) => {
+            if (error) {
+                console.error(`Error tracking ${type} click:`, error);
+            } else {
+                console.log(`✅ Tracked ${type} click`);
+            }
+        });
+}
+
+// Make functions globally available
+window.openProjectModal = openProjectModal;
+window.closeProjectModal = closeProjectModal;
+window.trackProjectClick = trackProjectClick;
+```
+
+---
+
+### **STEP 6: Update CSS Imports in index.html**
 
 **File: `index.html` - In the `<head>` section**
 
-**Find the CSS imports section and ADD this new line:**
+Add the new CSS files:
 
 ```html
 <head>
@@ -1037,17 +2012,19 @@ if (typeof module !== 'undefined' && module.exports) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SimeonDev | Full-Stack Developer & AI Solutions Architect</title>
     
-    <!-- Existing CSS files -->
+    <!-- Existing CSS -->
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/typography.css">
     <link rel="stylesheet" href="css/layouts.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/navigation.css">
-    
-    <!-- ADD THIS NEW LINE -->
     <link rel="stylesheet" href="css/hero-2025.css">
     
-    <!-- Rest of existing CSS -->
+    <!-- ADD THESE NEW LINES -->
+    <link rel="stylesheet" href="css/project-cards-minimal.css">
+    <link rel="stylesheet" href="css/project-modal.css">
+    
+    <!-- Existing CSS -->
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/utilities.css">
@@ -1057,390 +2034,122 @@ if (typeof module !== 'undefined' && module.exports) {
 
 ---
 
-### Step 6: Add JavaScript Import
+### **STEP 7: Update JavaScript Imports**
 
 **File: `index.html` - Before closing `</body>` tag**
 
-**Find the JavaScript imports section and ADD:**
+Add the new JS file:
 
 ```html
-    <!-- Existing JavaScript files -->
+    <!-- Existing JavaScript -->
     <script src="js/supabase-client.js"></script>
     <script src="js/projects-supabase.js"></script>
     <script src="js/blog-supabase.js"></script>
+    <script src="js/title-rotator.js"></script>
     <script src="js/main.js"></script>
     
     <!-- ADD THIS NEW LINE -->
-    <script src="js/title-rotator.js"></script>
+    <script src="js/project-modal.js"></script>
     
 </body>
 ```
 
 ---
 
-### Step 7: Add Profile Image (If Missing)
+### **STEP 8: Create Database Functions for Analytics**
 
-**Create folder structure if it doesn't exist:**
+**Run this in Supabase SQL Editor:**
 
-```
-assets/
-└── images/
-    └── profile.jpg  ← Your professional photo
-```
+```sql
+-- ============================================
+-- DATABASE FUNCTIONS FOR ANALYTICS
+-- ============================================
 
-**If you don't have a profile image yet, add a temporary placeholder:**
+-- Function to increment details views
+CREATE OR REPLACE FUNCTION increment_project_details_views(project_id UUID)
+RETURNS void AS $$
+BEGIN
+    UPDATE projects 
+    SET details_views = COALESCE(details_views, 0) + 1
+    WHERE id = project_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
-In `index.html`, replace the img src with:
+-- Function to increment various click counts
+CREATE OR REPLACE FUNCTION increment_project_clicks(
+    project_id UUID,
+    click_field TEXT
+)
+RETURNS void AS $$
+BEGIN
+    EXECUTE format(
+        'UPDATE projects SET %I = COALESCE(%I, 0) + 1 WHERE id = $1',
+        click_field,
+        click_field
+    ) USING project_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
-```html
-<img src="https://ui-avatars.com/api/?name=Simeon+Wansi&size=400&background=8B5CF6&color=fff&bold=true" 
-     alt="Simeon Wansi - Full-Stack Developer" 
-     class="profile-img"
-     loading="eager">
-```
-
-**Note:** Replace with your actual professional photo as soon as possible.
-
----
-
-### Step 8: Remove or Hide Old Hero CSS
-
-**File: `css/hero.css` (if it exists)**
-
-**Option A: Rename the old file (safest)**
-```
-css/hero.css → css/hero-old.css
-```
-
-**Option B: Comment out old hero styles**
-
-Add this at the top of the old `css/hero.css`:
-
-```css
-/* ============================================
-   OLD HERO SECTION - DEPRECATED
-   Replaced by hero-2025.css
-   Keeping for reference only
-   ============================================ */
-
-/* Comment out or remove all old hero styles */
-```
-
-**Option C: Add namespace to old styles**
-
-If the old hero section is still being used elsewhere, wrap all old hero styles:
-
-```css
-/* Only apply old styles if old hero exists */
-.hero-old {
-    /* ... old hero styles ... */
-}
+-- Grant execute permissions
+GRANT EXECUTE ON FUNCTION increment_project_details_views(UUID) TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION increment_project_clicks(UUID, TEXT) TO anon, authenticated;
 ```
 
 ---
 
-## TESTING CHECKLIST
-
-After implementation, verify:
-
-### Visual Tests:
-- [ ] Hero section displays correctly at 100% zoom
-- [ ] Profile image shows with purple border and pulsing ring
-- [ ] Name displays with purple-to-gold gradient
-- [ ] Job titles rotate smoothly every 3.5 seconds
-- [ ] "I build [rotating text]" animation works
-- [ ] Blinking cursor appears after rotating text
-- [ ] Bio text is readable and properly formatted
-- [ ] CTAs (View My Work, Let's Talk) are visible and styled
-- [ ] Buttons have hover effects (lift up, change shadow)
-- [ ] Arrow icon animates on hover
-- [ ] Tags (Full Stack, AI/ML, Cybersecurity) display correctly
-- [ ] CSS 3D sphere is visible and rotating
-- [ ] Sphere has pulsing core and rotating rings
-- [ ] Gradient orbs animate in background
-- [ ] Particle network is visible and pulsing
-- [ ] Overall design looks modern and professional
-
-### Functional Tests:
-- [ ] "View My Work" button navigates to projects page
-- [ ] "Let's Talk" button navigates to contact page
-- [ ] Navigation still works (other pages accessible)
-- [ ] No JavaScript errors in console
-- [ ] Page loads quickly (< 2 seconds)
-- [ ] Rotation pauses when hovering over titles
-- [ ] Rotation pauses when tab is not visible
-- [ ] All animations are smooth (no jank)
-
-### Responsive Tests:
-- [ ] Desktop (1920px): Two-column layout, sphere visible
-- [ ] Laptop (1440px): Layout still comfortable
-- [ ] Tablet landscape (1024px): Slightly adjusted spacing
-- [ ] Tablet portrait (768px): Single column, centered content
-- [ ] Mobile (375px): Single column, sphere hidden, full-width buttons
-- [ ] No horizontal scroll at any width
-- [ ] All text remains readable on small screens
-- [ ] Buttons stack vertically on mobile
-- [ ] Profile image scales appropriately
-
-### Cross-Browser Tests:
-- [ ] Chrome: All features work
-- [ ] Firefox: All features work
-- [ ] Safari: All features work
-- [ ] Edge: All features work
-- [ ] Mobile Safari: Works on iPhone
-- [ ] Mobile Chrome: Works on Android
-
-### Performance Tests:
-- [ ] Lighthouse Performance Score > 90
-- [ ] First Contentful Paint < 1.5s
-- [ ] Largest Contentful Paint < 2.5s
-- [ ] No layout shifts (CLS score 0)
-- [ ] Animations don't cause dropped frames
-- [ ] Mobile performance acceptable (no battery drain)
-
-### Accessibility Tests:
-- [ ] Title rotator has aria-live="polite"
-- [ ] Decorative elements have aria-hidden="true"
-- [ ] Images have proper alt text
-- [ ] Focus indicators visible on keyboard navigation
-- [ ] Color contrast meets WCAG AA standards
-- [ ] Reduced motion preference respected
-- [ ] Screen reader can read all content
-
----
-
-## DEBUGGING GUIDE
-
-### If titles don't rotate:
-
-1. **Check console for errors:**
-   ```javascript
-   // Open DevTools (F12), look for errors
-   ```
-
-2. **Verify script loaded:**
-   ```javascript
-   // In console, type:
-   console.log(window.titleRotator);
-   // Should show TitleRotator object
-   ```
-
-3. **Check HTML structure:**
-   - Verify `.rotating-text` class exists
-   - Verify `.title-item` elements exist
-   - Check that first item has `active` class
-
-### If sphere doesn't appear:
-
-1. **Check CSS file loaded:**
-   ```javascript
-   // In console:
-   console.log(getComputedStyle(document.querySelector('.sphere')));
-   ```
-
-2. **Verify 3D transforms supported:**
-   - Check browser supports `transform-style: preserve-3d`
-   - Try different browser if issue persists
-
-3. **Check for CSS conflicts:**
-   - Look for `display: none` on `.hero-right`
-   - Verify no `overflow: hidden` on parent elements
-
-### If animations are laggy:
-
-1. **Reduce animation complexity:**
-   - Remove some particles
-   - Increase animation durations
-   - Disable sphere on lower-end devices
-
-2. **Check hardware acceleration:**
-   - Ensure `will-change` property is working
-   - Verify GPU is being used for animations
-
-### If layout breaks on mobile:
-
-1. **Check viewport meta tag:**
-   ```html
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   ```
-
-2. **Verify media queries:**
-   - Ensure responsive CSS is loading
-   - Check breakpoints match screen sizes
-
-3. **Test with browser DevTools:**
-   - Use device emulation
-   - Test various screen sizes
-
----
-
-## ROLLBACK PLAN
-
-If something goes wrong, you can quickly rollback:
-
-### Emergency Rollback Steps:
-
-1. **Remove new CSS import:**
-   ```html
-   <!-- Comment out this line in index.html -->
-   <!-- <link rel="stylesheet" href="css/hero-2025.css"> -->
-   ```
-
-2. **Remove new JS import:**
-   ```html
-   <!-- Comment out this line in index.html -->
-   <!-- <script src="js/title-rotator.js"></script> -->
-   ```
-
-3. **Restore old hero HTML:**
-   - Keep a backup of the old hero section
-   - Replace new hero with old HTML
-
-4. **Restore old hero CSS:**
-   ```
-   css/hero-old.css → css/hero.css
-   ```
-
-5. **Hard refresh browser:**
-   ```
-   Ctrl + Shift + R (Windows/Linux)
-   Cmd + Shift + R (Mac)
-   ```
-
----
-
-## POST-IMPLEMENTATION OPTIMIZATION
-
-Once everything works, consider these optimizations:
-
-### Performance Enhancements:
-
-1. **Lazy load sphere on mobile:**
-   ```javascript
-   // Only initialize sphere if screen width > 768px
-   if (window.innerWidth > 768) {
-       initSphere();
-   }
-   ```
-
-2. **Reduce particle count on low-end devices:**
-   ```javascript
-   // Detect device capabilities
-   const isLowEndDevice = navigator.hardwareConcurrency < 4;
-   if (isLowEndDevice) {
-       // Show fewer particles
-   }
-   ```
-
-3. **Optimize images:**
-   - Compress profile image (WebP format recommended)
-   - Use responsive images with `srcset`
-   - Lazy load below-the-fold images
-
-### SEO Enhancements:
-
-1. **Add structured data:**
-   ```html
-   <script type="application/ld+json">
-   {
-       "@context": "https://schema.org",
-       "@type": "Person",
-       "name": "Simeon Wansi",
-       "jobTitle": "Full-Stack Developer & AI Solutions Architect",
-       "url": "https://simeondev.com",
-       "sameAs": [
-           "https://linkedin.com/in/simeondevs",
-           "https://github.com/simeon-wansi"
-       ]
-   }
-   </script>
-   ```
-
-2. **Optimize meta tags:**
-   ```html
-   <meta name="description" content="Simeon Wansi - Full-Stack Developer & AI Solutions Architect based in Dubai. Building intelligent applications for businesses.">
-   <meta property="og:title" content="SimeonDev | Full-Stack Developer & AI Architect">
-   <meta property="og:description" content="Building intelligent applications that solve real business problems.">
-   <meta property="og:image" content="https://simeondev.com/assets/images/og-image.jpg">
-   ```
-
----
-
-## FINAL VERIFICATION
-
-Before considering this complete, verify:
-
-1. ✅ **Old hero section completely replaced**
-2. ✅ **New hero section displays correctly**
-3. ✅ **All animations work smoothly**
-4. ✅ **Navigation to other pages still works**
-5. ✅ **Projects page unaffected**
-6. ✅ **Blog page unaffected**
-7. ✅ **Contact form unaffected**
-8. ✅ **Footer unchanged**
-9. ✅ **Mobile responsive**
-10. ✅ **No console errors**
-11. ✅ **Performance acceptable**
-12. ✅ **Looks modern and professional**
-
----
-
-## SUCCESS CRITERIA
-
-The implementation is successful when:
-
-- ✅ Hero section looks modern and cutting-edge (2025 style)
-- ✅ Job titles rotate smoothly with 3D flip animation
-- ✅ CSS 3D sphere rotates continuously with pulsing core
-- ✅ Gradient orbs float in background creating atmosphere
-- ✅ Particle network adds subtle depth
-- ✅ Profile image has elegant purple border with pulse effect
-- ✅ CTAs are prominent and have smooth hover effects
-- ✅ Page loads fast (< 2 seconds)
-- ✅ Works perfectly on mobile devices
-- ✅ No JavaScript errors
-- ✅ No broken functionality on other pages
-- ✅ Client looks at it and thinks "I want to hire this developer"
-
----
-
-## SUPPORT & MAINTENANCE
-
-### Common Issues and Solutions:
-
-**Issue:** Titles rotate too fast/slow
-**Solution:** Change `interval` in `js/title-rotator.js` line 14
-
-**Issue:** Sphere too big/small
-**Solution:** Adjust width/height of `.sphere-container` in CSS
-
-**Issue:** Background too busy
-**Solution:** Reduce `opacity` of `.hero-bg` in CSS
-
-**Issue:** Animations causing performance issues
-**Solution:** Add `@media (prefers-reduced-motion: reduce)` handling
-
----
-
-## EXPECTED RESULT
-
-**Before:** Glitchy text "BBuuiilldd.. HHaacckk..", spinning profile picture, chaotic design
-
-**After:** 
-- Clean, modern hero section
-- Professional profile photo with elegant border
-- Smoothly rotating job titles with 3D animation
-- Stunning CSS 3D sphere with pulsing core
-- Animated gradient background creating depth
-- Fast-loading, performant, mobile-friendly
-- Professional design that converts visitors to clients
-
----
-
-**IMPLEMENTATION ESTIMATE:**
-- File creation: 10 minutes
-- Testing: 15 minutes
-- Debugging: 10 minutes
-- **Total: ~35 minutes**
-
-Please implement these changes carefully, test thoroughly, and report any issues. The design will transform from amateur to professional-grade while maintaining all existing functionality.
+## 📊 TESTING CHECKLIST
+
+After implementation, verify these items:
+
+### **Visual Tests:**
+- [ ] Projects page loads without errors
+- [ ] Featured projects section displays correctly
+- [ ] All projects section displays correctly
+- [ ] Project cards show images properly
+- [ ] Cards display title, tagline, tech tags, and footer
+- [ ] Featured and status badges visible
+- [ ] Hover effects work (lift, glow, image zoom)
+- [ ] Grid is responsive (3 cols → 2 cols → 1 col)
+- [ ] Loading skeletons appear during data fetch
+- [ ] Empty states show if no projects
+
+### **Modal Tests:**
+- [ ] Click card opens modal
+- [ ] Modal displays hero image
+- [ ] All sections render (metrics, highlights, AI scores, etc.)
+- [ ] AI score bars animate on open
+- [ ] Close button works
+- [ ] Click backdrop closes modal
+- [ ] ESC key closes modal
+- [ ] Modal is scrollable
+- [ ] Action buttons (Demo, GitHub, Blog) work
+- [ ] Stats display in footer
+
+### **Functional Tests:**
+- [ ] All 4 sample projects load from database
+- [ ] Featured projects separated from all projects
+- [ ] Filter buttons work (if implemented)
+- [ ] Links open in new tabs
+- [ ] Analytics increment (check database)
+- [ ] No console errors
+- [ ] Images load properly
+- [ ] Placeholders display if no data
+
+### **Responsive Tests:**
+- [ ] Desktop (1920px): 3 columns, modal centered
+- [ ] Laptop (1440px): 3 columns, comfortable spacing
+- [ ] Tablet (1024px): 2 columns, adjusted spacing
+- [ ] Tablet portrait (768px): 2 columns or 1 column
+- [ ] Mobile (375px): 1 column, full-width cards
+- [ ] Modal adapts to mobile (full-screen)
+- [ ] All text remains readable
+- [ ] Buttons stack on mobile
+- [ ] No horizontal scroll
+
+### **Performance Tests:**
+- [ ] Page loads in < 2 seconds
+- [ ] Images lazy load
+- [ ] Smooth animations (no jank)
+- [ ] Modal opens smoothly
+- [ ] No memory leaks (open/close modal multiple times)
+- [ ] Supabase queries optimized

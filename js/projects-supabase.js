@@ -1,262 +1,205 @@
-// ============================================
-// PROJECTS - SUPABASE INTEGRATION
-// Real-time project management with analytics
-// ============================================
+/**
+ * PROJECTS SUPABASE INTEGRATION
+ * Fetches projects with all new fields and renders minimalist cards
+ */
 
-let projectsData = []; // Will be populated from Supabase
-let realtimeSubscription = null; // Store subscription for cleanup
+// Import supabase client
+// Assumes supabase client is already initialized in supabase-client.js
+
+/**
+ * Check if image URL is valid and accessible
+ * @param {string} url - Image URL to check
+ * @returns {boolean} - True if image exists
+ */
+function isValidImageUrl(url) {
+    if (!url || typeof url !== 'string' || url.trim() === '') {
+        return false;
+    }
+    
+    // Check if it's a valid URL format
+    try {
+        new URL(url);
+        return true;
+    } catch {
+        return false;
+    }
+}
 
 // ============================================
 // FETCH PROJECTS FROM SUPABASE
 // ============================================
-async function fetchProjects() {
-    console.log('🔄 Fetching projects from Supabase...');
-    
+
+async function fetchProjects(featured = null) {
     try {
-        const { data, error } = await supabaseClient
+        let query = supabaseClient
             .from('projects')
-            .select('*')
+            .select(`
+                id,
+                slug,
+                title,
+                tagline,
+                description,
+                full_description,
+                image_url,
+                thumbnail_url,
+                preview_gif_url,
+                video_url,
+                gallery_urls,
+                technologies,
+                primary_tech,
+                category,
+                tags,
+                status,
+                featured,
+                published,
+                github_url,
+                demo_url,
+                blog_post_url,
+                case_study_url,
+                key_metrics,
+                highlights,
+                challenges,
+                solutions,
+                results,
+                lessons_learned,
+                start_date,
+                completed_date,
+                project_duration,
+                team_size,
+                role,
+                collaborators,
+                complexity_score,
+                innovation_score,
+                business_impact_score,
+                view_count,
+                github_clicks,
+                demo_clicks,
+                blog_clicks,
+                details_views,
+                created_at,
+                updated_at
+            `)
             .eq('published', true)
             .order('created_at', { ascending: false });
-        
+
+        // Filter by featured status if specified
+        if (featured !== null) {
+            query = query.eq('featured', featured);
+        }
+
+        const { data, error } = await query;
+
         if (error) {
-            console.error('❌ Error fetching projects:', error);
-            showProjectsError();
+            console.error('Error fetching projects:', error);
             return [];
         }
-        
-        console.log(`✅ Fetched ${data.length} projects from Supabase`);
-        projectsData = data;
+
+        console.log(`✅ Fetched ${data.length} projects`);
         return data;
-        
-    } catch (err) {
-        console.error('❌ Projects fetch exception:', err);
-        showProjectsError();
+
+    } catch (error) {
+        console.error('Unexpected error fetching projects:', error);
         return [];
     }
 }
 
 // ============================================
-// SETUP REAL-TIME SUBSCRIPTION
+// RENDER MINIMALIST PROJECT CARD
 // ============================================
-function setupRealtimeSubscription() {
-    console.log('⚡ Setting up real-time subscription for projects...');
-    
-    // Subscribe to INSERT, UPDATE, DELETE events
-    realtimeSubscription = supabaseClient
-        .channel('projects-changes')
-        .on(
-            'postgres_changes',
-            {
-                event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
-                schema: 'public',
-                table: 'projects',
-                filter: 'published=eq.true' // Only listen to published projects
-            },
-            (payload) => {
-                console.log('⚡ Real-time update received:', payload);
-                handleRealtimeUpdate(payload);
-            }
-        )
-        .subscribe((status) => {
-            if (status === 'SUBSCRIBED') {
-                console.log('✅ Real-time subscription active');
-            }
-        });
-}
 
-// ============================================
-// HANDLE REAL-TIME UPDATES
-// ============================================
-async function handleRealtimeUpdate(payload) {
-    const { eventType, new: newRecord, old: oldRecord } = payload;
-    
-    switch (eventType) {
-        case 'INSERT':
-            console.log('➕ New project added:', newRecord);
-            projectsData.push(newRecord);
-            renderAllProjects(); // Re-render to show new project
-            showNotification('New project added!', 'success');
-            break;
-            
-        case 'UPDATE':
-            console.log('🔄 Project updated:', newRecord);
-            const updateIndex = projectsData.findIndex(p => p.id === newRecord.id);
-            if (updateIndex !== -1) {
-                projectsData[updateIndex] = newRecord;
-                renderAllProjects(); // Re-render with updated data
-                showNotification('Project updated!', 'info');
-            }
-            break;
-            
-        case 'DELETE':
-            console.log('🗑️ Project deleted:', oldRecord);
-            projectsData = projectsData.filter(p => p.id !== oldRecord.id);
-            renderAllProjects(); // Re-render without deleted project
-            showNotification('Project removed!', 'warning');
-            break;
-    }
-    
-    updateProjectStats(); // Update statistics
-}
-
-// ============================================
-// INITIALIZE PROJECTS (Called on page load)
-// ============================================
-async function initializeProjects() {
-    console.log('🚀 Initializing projects module...');
-    
-    // Check if projects page is active
-    const projectsPage = document.getElementById('projects');
-    if (!projectsPage || !projectsPage.classList.contains('active')) {
-        console.log('⚠️  Projects page not active, skipping render');
-        return;
-    }
-    
-    // Fetch projects from Supabase
-    await fetchProjects();
-    
-    // Render projects
-    renderAllProjects();
-    updateProjectStats();
-    
-    // Setup real-time subscription
-    setupRealtimeSubscription();
-    
-    console.log('✅ Projects module initialized');
-}
-
-// ============================================
-// RENDER ALL PROJECTS
-// ============================================
-function renderAllProjects() {
-    console.log('🔄 Rendering all projects...');
-    
-    const projectsPage = document.getElementById('projects');
-    if (!projectsPage || !projectsPage.classList.contains('active')) {
-        console.log('⚠️  Projects page not active, cannot render');
-        return;
-    }
-    
-    const allProjectsContainer = document.getElementById('allProjectsGrid');
-    if (!allProjectsContainer) {
-        console.error('❌ allProjectsGrid container not found!');
-        return;
-    }
-    
-    renderProjects(projectsData, allProjectsContainer);
-    console.log(`✅ Rendered ${projectsData.length} projects`);
-}
-
-// ============================================
-// RENDER PROJECTS TO CONTAINER
-// ============================================
-function renderProjects(projects, container) {
-    if (!container) {
-        console.error('❌ No container provided for rendering projects');
-        return;
-    }
-    
-    if (!projects || projects.length === 0) {
-        container.innerHTML = `
-            <div class="no-projects-message">
-                <h3>🚀 No projects yet!</h3>
-                <p>Check back soon for exciting new projects.</p>
-            </div>
-        `;
-        return;
-    }
-    
-    console.log(`🔄 Rendering ${projects.length} projects to container`);
-    
-    // Clear container
-    container.innerHTML = '';
-    
-    // Render projects
-    projects.forEach((project, index) => {
-        try {
-            const projectCard = createProjectCard(project);
-            container.appendChild(projectCard);
-        } catch (error) {
-            console.error(`❌ Error rendering project ${index + 1}:`, error);
-        }
-    });
-    
-    console.log(`✅ Projects rendered successfully - ${container.children.length} cards`);
-}
-
-// ============================================
-// CREATE PROJECT CARD ELEMENT
-// ============================================
 function createProjectCard(project) {
     const card = document.createElement('div');
-    card.className = 'project-card';
-    card.setAttribute('data-category', project.category);
-    card.setAttribute('data-status', project.status);
-    card.setAttribute('data-id', project.id);
+    card.className = 'project-card-minimal';
+    card.setAttribute('data-project-id', project.id);
+    card.setAttribute('data-project-slug', project.slug);
+    card.onclick = () => openProjectModal(project);
 
-    const statusBadge = project.status === 'completed' ?
-        '<span class="status-badge completed">✅ Completed</span>' :
-        '<span class="status-badge in-progress">🚧 In Progress</span>';
+    // Status badges
+    const badges = [];
+    if (project.featured) {
+        badges.push(`
+            <span class="project-badge badge-featured">
+                ⭐ Featured
+            </span>
+        `);
+    }
 
-    const featuredBadge = project.featured ?
-        '<span class="featured-badge">⭐ Featured</span>' : '';
+    const statusBadge = project.status === 'completed'
+        ? '<span class="project-badge badge-completed">✅ Completed</span>'
+        : '<span class="project-badge badge-in-progress">🔨 In Progress</span>';
+    badges.push(statusBadge);
 
-    // Format technologies array
-    const techString = Array.isArray(project.technologies) ?
-        project.technologies.join(' • ') :
-        (project.technologies || '');
+    // Tech tags (show first 3)
+    const techTags = project.technologies.slice(0, 3).map(tech =>
+        `<span class="tech-tag-minimal">${tech}</span>`
+    ).join('');
 
     // Format date
-    const dateString = project.completed_date ? formatDate(project.completed_date) : '';
+    const date = new Date(project.completed_date || project.created_at);
+    const formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short'
+    });
 
-    // Calculate total clicks (github + demo)
-    const totalClicks = (project.github_clicks || 0) + (project.demo_clicks || 0);
+    // Handle missing images with gradient fallback
+    const imageUrl = project.thumbnail_url || project.image_url;
+    const hasImage = isValidImageUrl(imageUrl);
+
+    // Create image HTML or gradient fallback
+    const imageHTML = hasImage ? `
+        <img src="${imageUrl}" 
+             alt="${project.title}" 
+             class="project-image"
+             loading="lazy"
+             onerror="this.style.display='none'; this.parentElement.classList.add('no-image')">
+    ` : `
+        <div class="project-image-placeholder">
+            <div class="placeholder-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                </svg>
+            </div>
+            <div class="placeholder-text">${project.title}</div>
+        </div>
+    `;
 
     card.innerHTML = `
-        <div class="project-header">
+        <div class="project-image-wrapper ${!hasImage ? 'no-image' : ''}">
+            ${imageHTML}
+            <div class="project-image-overlay">
+                <span class="overlay-text">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                    View Details
+                </span>
+            </div>
             <div class="project-badges">
-                ${statusBadge}
-                ${featuredBadge}
+                ${badges.join('')}
             </div>
-            <h3>${escapeHtml(project.title)}</h3>
-            <p class="project-tech">${escapeHtml(techString)}</p>
         </div>
+
         <div class="project-content">
-            <p class="project-description">${escapeHtml(project.description)}</p>
-            <div class="project-meta">
-                <span class="project-category">${escapeHtml(project.category)}</span>
-                ${dateString ? `<span class="project-date">${dateString}</span>` : ''}
-            </div>
-            <div class="project-stats-inline">
-                <span class="stat-item">👁️ ${project.view_count || 0} views</span>
-                <span class="stat-item">🔗 ${totalClicks} clicks</span>
-            </div>
-            <div class="project-links">
-                ${project.github_url ? `
-                    <a href="${escapeHtml(project.github_url)}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="project-link"
-                       onclick="trackProjectClick('${project.id}', 'github'); return true;">
-                        <span class="link-icon">🔗</span> GitHub
-                    </a>
-                ` : ''}
+            <h3 class="project-title">${project.title}</h3>
 
-                ${project.demo_url ? `
-                    <a href="${escapeHtml(project.demo_url)}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="project-link"
-                       onclick="trackProjectClick('${project.id}', 'demo'); return true;">
-                        <span class="link-icon">📺</span> Demo
-                    </a>
-                ` : ''}
+            <div class="project-techs">
+                ${techTags}
+            </div>
 
-                <button class="project-link details-btn"
-                        onclick="showProjectDetails('${project.id}')">
-                    <span class="link-icon">📖</span> Details
-                </button>
+            <p class="project-tagline">
+                ${project.tagline || project.description}
+            </p>
+
+            <div class="project-footer">
+                <span class="project-category">
+                    🎯 ${project.category}
+                </span>
+                <span class="project-date">
+                    ${formattedDate}
+                </span>
             </div>
         </div>
     `;
@@ -265,402 +208,179 @@ function createProjectCard(project) {
 }
 
 // ============================================
-// UTILITY: ESCAPE HTML (Prevent XSS)
+// RENDER PROJECTS GRID
 // ============================================
-function escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
 
-// ============================================
-// SETUP PROJECT FILTERS
-// ============================================
-function setupProjectFilters() {
-    console.log('🔄 Setting up project filters...');
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    if (!filterButtons.length) {
-        console.warn('⚠️  No filter buttons found');
-        return;
-    }
-    
-    filterButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const filter = this.getAttribute('data-filter');
-            filterProjects(filter);
-            
-            // Update active button
-            filterButtons.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-    
-    console.log(`✅ Set up ${filterButtons.length} filter buttons`);
-}
+async function renderFeaturedProjects() {
+    const grid = document.getElementById('featuredProjectsGrid');
+    if (!grid) return;
 
-// ============================================
-// FILTER PROJECTS
-// ============================================
-function filterProjects(filter) {
-    console.log(`🔄 Filtering projects by: ${filter}`);
-    let filteredProjects = projectsData;
-    
-    if (filter === 'featured') {
-        filteredProjects = projectsData.filter(p => p.featured);
-    } else if (filter === 'completed') {
-        filteredProjects = projectsData.filter(p => p.status === 'completed');
-    } else if (filter === 'in-progress') {
-        filteredProjects = projectsData.filter(p => p.status === 'in-progress');
-    } else if (filter !== 'all') {
-        filteredProjects = projectsData.filter(p => p.category === filter);
-    }
-    
-    const allProjectsContainer = document.getElementById('allProjectsGrid');
-    if (allProjectsContainer) {
-        renderProjects(filteredProjects, allProjectsContainer);
-        updateFilteredStats(filteredProjects);
-        console.log(`✅ Filtered to ${filteredProjects.length} projects`);
-    } else {
-        console.error('❌ Could not find allProjectsGrid container for filtering');
-    }
-}
-
-// ============================================
-// UPDATE FILTERED STATS
-// ============================================
-function updateFilteredStats(projects) {
-    const totalElement = document.getElementById('totalProjects');
-    const completedElement = document.getElementById('completedProjects');
-    const inProgressElement = document.getElementById('inProgressProjects');
-    
-    if (totalElement) totalElement.textContent = projects.length;
-    if (completedElement) completedElement.textContent = projects.filter(p => p.status === 'completed').length;
-    if (inProgressElement) inProgressElement.textContent = projects.filter(p => p.status === 'in-progress').length;
-}
-
-// ============================================
-// UPDATE PROJECT STATISTICS
-// ============================================
-function updateProjectStats() {
-    console.log('🔄 Updating project statistics...');
-    const stats = {
-        total: projectsData.length,
-        completed: projectsData.filter(p => p.status === 'completed').length,
-        inProgress: projectsData.filter(p => p.status === 'in-progress').length,
-        featured: projectsData.filter(p => p.featured).length
-    };
-    
-    console.log('📊 Project Stats:', stats);
-    
-    // Update stats display
-    updateStatElement('total-projects', stats.total);
-    updateStatElement('completed-projects', stats.completed);
-    updateStatElement('totalProjects', stats.total);
-    updateStatElement('completedProjects', stats.completed);
-    updateStatElement('inProgressProjects', stats.inProgress);
-    updateStatElement('featured-projects', stats.featured);
-    
-    console.log('✅ Project statistics updated');
-}
-
-// ============================================
-// UPDATE STAT ELEMENT
-// ============================================
-function updateStatElement(id, value) {
-    const element = document.getElementById(id);
-    if (element) {
-        element.textContent = value;
-        console.log(`📊 Updated ${id}: ${value}`);
-    }
-}
-
-// ============================================
-// FORMAT DATE
-// ============================================
-function formatDate(dateString) {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-    });
-}
-
-// ============================================
-// SHOW PROJECT DETAILS MODAL
-// ============================================
-async function showProjectDetails(projectId) {
-    console.log(`🔄 Showing details for project ${projectId}`);
-
-    // Track click
-    await trackProjectClick(projectId, 'details');
-
-    const project = projectsData.find(p => p.id === projectId);
-    if (!project) {
-        console.error(`❌ Project with ID ${projectId} not found`);
-        return;
-    }
-
-    // Increment view count in database
-    try {
-        await supabaseClient
-            .from('projects')
-            .update({ view_count: supabaseClient.raw('view_count + 1') })
-            .eq('id', projectId);
-    } catch (err) {
-        console.warn('View count update failed:', err);
-    }
-
-    // Format technologies as individual tags
-    const techList = Array.isArray(project.technologies) ?
-        project.technologies.map(tech => `<span class="tech-tag">${escapeHtml(tech)}</span>`).join('') :
-        `<span class="tech-tag">${escapeHtml(project.technologies || 'N/A')}</span>`;
-
-    // Format date
-    const dateString = project.completed_date ?
-        formatDate(project.completed_date) : 'In Progress';
-
-    // Create modal HTML
-    const modalHTML = `
-        <div class="project-modal-overlay" onclick="closeProjectModal()">
-            <div class="project-modal" onclick="event.stopPropagation()">
-                <button class="modal-close" onclick="closeProjectModal()">✕</button>
-
-                <div class="modal-header">
-                    <h2>${escapeHtml(project.title)}</h2>
-                    <div class="modal-badges">
-                        ${project.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
-                        <span class="status-badge ${project.status}">${project.status === 'completed' ? '✅ Completed' : '🚧 In Progress'}</span>
-                    </div>
-                </div>
-
-                <div class="modal-content">
-                    <div class="modal-section">
-                        <h3>📋 Description</h3>
-                        <p>${escapeHtml(project.description)}</p>
-                    </div>
-
-                    <div class="modal-section">
-                        <h3>🛠️ Technologies</h3>
-                        <div class="tech-tags">
-                            ${techList}
-                        </div>
-                    </div>
-
-                    <div class="modal-section">
-                        <h3>ℹ️ Project Info</h3>
-                        <ul class="project-info-list">
-                            <li><strong>Category:</strong> ${escapeHtml(project.category)}</li>
-                            <li><strong>Status:</strong> ${escapeHtml(project.status)}</li>
-                            <li><strong>Completed:</strong> ${dateString}</li>
-                            <li><strong>Views:</strong> ${project.view_count || 0}</li>
-                        </ul>
-                    </div>
-
-                    <div class="modal-actions">
-                        ${project.github_url ? `
-                            <a href="${escapeHtml(project.github_url)}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="modal-link github-link"
-                               onclick="trackProjectClick('${project.id}', 'github'); return true;">
-                                🔗 View on GitHub
-                            </a>
-                        ` : ''}
-
-                        ${project.demo_url ? `
-                            <a href="${escapeHtml(project.demo_url)}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="modal-link demo-link"
-                               onclick="trackProjectClick('${project.id}', 'demo'); return true;">
-                                📺 Live Demo
-                            </a>
-                        ` : ''}
-                    </div>
-                </div>
-            </div>
+    // Show loading
+    grid.innerHTML = `
+        <div class="loading-skeleton">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
         </div>
     `;
 
-    // Add modal to page
-    const modalContainer = document.createElement('div');
-    modalContainer.innerHTML = modalHTML;
-    document.body.appendChild(modalContainer.firstElementChild);
+    const projects = await fetchProjects(true); // Only featured
 
-    // Prevent body scroll
-    document.body.style.overflow = 'hidden';
-
-    console.log(`✅ Project details modal shown for ${project.title}`);
-}
-
-// ============================================
-// CLOSE PROJECT MODAL
-// ============================================
-function closeProjectModal() {
-    const modal = document.querySelector('.project-modal-overlay');
-    if (modal) {
-        modal.remove();
-        // Restore body scroll
-        document.body.style.overflow = '';
-        console.log('✅ Project modal closed');
-    }
-}
-
-// ============================================
-// SHOW ERROR MESSAGE
-// ============================================
-function showProjectsError() {
-    const container = document.getElementById('allProjectsGrid');
-    if (container) {
-        container.innerHTML = `
-            <div class="error-message">
-                <h3>⚠️ Unable to load projects</h3>
-                <p>Please check your internet connection and try again.</p>
-                <button class="cta-button" onclick="initializeProjects()">Retry</button>
-            </div>
-        `;
-    }
-}
-
-// ============================================
-// SHOW NOTIFICATION
-// ============================================
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 80px;
-        right: 20px;
-        padding: 1rem 1.5rem;
-        background: rgba(157, 78, 221, 0.9);
-        color: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        z-index: 10000;
-        animation: slideIn 0.3s ease-out;
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease-out';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
-
-// ============================================
-// CLEANUP ON PAGE UNLOAD
-// ============================================
-window.addEventListener('beforeunload', () => {
-    if (realtimeSubscription) {
-        supabaseClient.removeChannel(realtimeSubscription);
-        console.log('🔌 Real-time subscription cleaned up');
-    }
-});
-
-// ============================================
-// INITIALIZE ON DOM READY
-// ============================================
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Projects Supabase module loaded');
-    setupProjectFilters();
-});
-
-// ============================================
-// FETCH AND RENDER FEATURED PROJECTS (Homepage)
-// ============================================
-async function loadFeaturedProjects() {
-    console.log('🌟 Loading featured projects for homepage...');
-
-    try {
-        const { data, error } = await supabaseClient
-            .from('projects')
-            .select('*')
-            .eq('published', true)
-            .eq('featured', true)  // Only featured projects
-            .order('created_at', { ascending: false })
-            .limit(3);  // Show max 3 featured projects on homepage
-
-        if (error) {
-            console.error('❌ Error loading featured projects:', error);
-            showFeaturedProjectsError();
-            return;
-        }
-
-        console.log(`✅ Loaded ${data.length} featured projects`);
-        renderFeaturedProjects(data);
-
-    } catch (err) {
-        console.error('❌ Featured projects fetch exception:', err);
-        showFeaturedProjectsError();
-    }
-}
-
-// ============================================
-// RENDER FEATURED PROJECTS TO HOMEPAGE
-// ============================================
-function renderFeaturedProjects(projects) {
-    const container = document.getElementById('featuredProjectsGrid');
-
-    if (!container) {
-        console.error('❌ featuredProjectsGrid container not found!');
-        return;
-    }
-
-    if (!projects || projects.length === 0) {
-        container.innerHTML = `
-            <div class="no-featured-message">
-                <p>🚀 No featured projects yet. Check back soon!</p>
+    if (projects.length === 0) {
+        grid.innerHTML = `
+            <div class="projects-empty">
+                <h3>No featured projects yet</h3>
+                <p>Check back soon for featured projects!</p>
             </div>
         `;
         return;
     }
 
-    // Clear container
-    container.innerHTML = '';
-
-    // Render each featured project
+    grid.innerHTML = '';
     projects.forEach(project => {
-        try {
-            const card = createProjectCard(project);
-            card.classList.add('featured-project-card');
-            container.appendChild(card);
-        } catch (error) {
-            console.error(`❌ Error rendering featured project:`, error);
-        }
+        const card = createProjectCard(project);
+        grid.appendChild(card);
     });
 
-    console.log(`✅ Rendered ${projects.length} featured projects on homepage`);
+    console.log(`✅ Rendered ${projects.length} featured projects`);
+}
+
+async function renderAllProjects() {
+    const grid = document.getElementById('allProjectsGrid');
+    if (!grid) return;
+
+    // Show loading
+    grid.innerHTML = `
+        <div class="loading-skeleton">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+        </div>
+    `;
+
+    const projects = await fetchProjects(false); // Non-featured only
+
+    if (projects.length === 0) {
+        grid.innerHTML = `
+            <div class="projects-empty">
+                <h3>No projects yet</h3>
+                <p>Projects coming soon!</p>
+            </div>
+        `;
+        return;
+    }
+
+    grid.innerHTML = '';
+    projects.forEach(project => {
+        const card = createProjectCard(project);
+        grid.appendChild(card);
+    });
+
+    console.log(`✅ Rendered ${projects.length} projects`);
 }
 
 // ============================================
-// SHOW FEATURED PROJECTS ERROR
+// INCREMENT VIEW COUNT
 // ============================================
-function showFeaturedProjectsError() {
-    const container = document.getElementById('featuredProjectsGrid');
-    if (container) {
-        container.innerHTML = `
-            <div class="error-message">
-                <h3>⚠️ Unable to load featured projects</h3>
-                <p>Please check your internet connection and try again.</p>
-                <button class="cta-button" onclick="loadFeaturedProjects()">Retry</button>
-            </div>
-        `;
+
+async function incrementProjectViews(projectId) {
+    try {
+        const { error } = await supabaseClient.rpc('increment_project_details_views', {
+            project_id: projectId
+        });
+
+        if (error) {
+            console.error('Error incrementing views:', error);
+        }
+    } catch (error) {
+        console.error('Unexpected error incrementing views:', error);
     }
 }
 
 // ============================================
-// EXPORT FUNCTIONS
+// TRACK LINK CLICKS
 // ============================================
-window.initializeProjects = initializeProjects;
-window.showProjectDetails = showProjectDetails;
-window.closeProjectModal = closeProjectModal;
-window.filterProjects = filterProjects;
+
+async function trackProjectClick(projectId, clickType) {
+    try {
+        const field = `${clickType}_clicks`; // github_clicks, demo_clicks, blog_clicks
+
+        const { error } = await supabaseClient.rpc('increment_project_clicks', {
+            project_id: projectId,
+            click_field: field
+        });
+
+        if (error) {
+            console.error(`Error tracking ${clickType} click:`, error);
+        }
+    } catch (error) {
+        console.error('Unexpected error tracking click:', error);
+    }
+}
+
+// ============================================
+// INITIALIZE ON PAGE LOAD
+// ============================================
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProjects);
+} else {
+    initProjects();
+}
+
+async function initProjects() {
+    console.log('🚀 Initializing projects...');
+
+    await renderFeaturedProjects();
+    await renderAllProjects();
+
+    console.log('✅ Projects initialized');
+}
+
+// ============================================
+// FILTER FUNCTIONALITY
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active from all buttons
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+
+            // Add active to clicked button
+            this.classList.add('active');
+
+            const filter = this.getAttribute('data-filter');
+            filterProjects(filter);
+        });
+    });
+});
+
+async function filterProjects(category) {
+    const grid = document.getElementById('allProjectsGrid');
+    if (!grid) return;
+
+    grid.innerHTML = '<div class="loading-skeleton"><div class="skeleton-card"></div></div>';
+
+    let projects = await fetchProjects(false);
+
+    if (category !== 'all') {
+        projects = projects.filter(p => p.category === category);
+    }
+
+    grid.innerHTML = '';
+    projects.forEach(project => {
+        const card = createProjectCard(project);
+        grid.appendChild(card);
+    });
+}
+
+// ============================================
+// EXPORT FUNCTIONS FOR GLOBAL ACCESS
+// ============================================
+
 window.fetchProjects = fetchProjects;
-window.loadFeaturedProjects = loadFeaturedProjects;
+window.renderFeaturedProjects = renderFeaturedProjects;
+window.renderAllProjects = renderAllProjects;
+window.filterProjects = filterProjects;

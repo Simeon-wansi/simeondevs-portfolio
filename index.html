@@ -17,10 +17,12 @@
     <link rel="stylesheet" href="css/components.css">      <!-- 4. Components -->
     <link rel="stylesheet" href="css/navigation.css">      <!-- 5. Navigation -->
     <link rel="stylesheet" href="css/hero-2025.css">       <!-- 6. Modern Hero 2025 -->
-    <link rel="stylesheet" href="css/footer.css">          <!-- 7. Footer -->
-    <link rel="stylesheet" href="css/animations.css">      <!-- 8. Animations -->
-    <link rel="stylesheet" href="css/utilities.css">       <!-- 9. Utilities -->
-    <link rel="stylesheet" href="css/responsive.css">      <!-- 10. Responsive -->
+    <link rel="stylesheet" href="css/project-cards-minimal.css"> <!-- 7. Minimalist Project Cards -->
+    <link rel="stylesheet" href="css/project-modal.css">   <!-- 8. Project Details Modal -->
+    <link rel="stylesheet" href="css/footer.css">          <!-- 9. Footer -->
+    <link rel="stylesheet" href="css/animations.css">      <!-- 10. Animations -->
+    <link rel="stylesheet" href="css/utilities.css">       <!-- 11. Utilities -->
+    <link rel="stylesheet" href="css/responsive.css">      <!-- 12. Responsive -->
 
     <!-- Legacy compatibility -->
     <link rel="stylesheet" href="css/main.css">
@@ -227,55 +229,68 @@
             </div>
         </div>
 
-        <!-- Projects Page -->
+        <!-- ============================================
+             PROJECTS PAGE - MINIMALIST CARDS
+             ============================================ -->
         <div id="projects" class="page">
             <div class="container">
+                <!-- Page Header -->
                 <div class="section-header">
-                    <h2>My Projects</h2>
-                    <p>Explore my latest work in AI, cybersecurity, and software development</p>
+                    <h1 class="section-title">Projects</h1>
+                    <p class="section-subtitle">
+                        Building intelligent applications that solve real-world problems
+                    </p>
                 </div>
-                
-                <!-- Project Filters -->
-                <div class="project-filters">
+
+                <!-- Filter Tabs -->
+                <div class="projects-filters">
                     <button class="filter-btn active" data-filter="all">All Projects</button>
-                    <button class="filter-btn" data-filter="AI/ML">AI & ML</button>
+                    <button class="filter-btn" data-filter="AI/ML">AI/ML</button>
+                    <button class="filter-btn" data-filter="Web Development">Web Development</button>
                     <button class="filter-btn" data-filter="Cybersecurity">Cybersecurity</button>
-                    <button class="filter-btn" data-filter="Web Development">Web Dev</button>
-                    <button class="filter-btn" data-filter="Blockchain">Blockchain</button>
-                    <button class="filter-btn" data-filter="completed">Completed</button>
-                    <button class="filter-btn" data-filter="in-progress">In Progress</button>
                 </div>
-                
-                <!-- Project Stats -->
-                <div class="project-stats">
-                    <div class="stat-item">
-                        <span class="stat-number" id="totalProjects">0</span>
-                        <span class="stat-label">Total Projects</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="completedProjects">0</span>
-                        <span class="stat-label">Completed</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="inProgressProjects">0</span>
-                        <span class="stat-label">In Progress</span>
+
+                <!-- Featured Projects Section -->
+                <div class="featured-section">
+                    <h2 class="subsection-title">Featured Projects</h2>
+                    <div class="projects-grid" id="featuredProjectsGrid">
+                        <!-- Featured project cards loaded here by JS -->
+                        <div class="loading-skeleton">
+                            <div class="skeleton-card"></div>
+                            <div class="skeleton-card"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="projects-grid" id="allProjectsGrid">
-                    <!-- TEMPORARY TEST: Hardcoded card to verify CSS -->
-                    <div class="project-card" style="border: 3px solid lime !important;">
-                        <div class="project-header">
-                            <h3>🧪 TEST PROJECT CARD</h3>
-                            <div class="project-tech">If you see this, CSS works!</div>
-                        </div>
-                        <div class="project-content">
-                            <div class="project-description">
-                                This is a hardcoded test card. JavaScript will replace this with real projects from Supabase.
-                            </div>
+                <!-- All Projects Section -->
+                <div class="all-projects-section">
+                    <h2 class="subsection-title">All Projects</h2>
+                    <div class="projects-grid" id="allProjectsGrid">
+                        <!-- All project cards loaded here by JS -->
+                        <div class="loading-skeleton">
+                            <div class="skeleton-card"></div>
+                            <div class="skeleton-card"></div>
+                            <div class="skeleton-card"></div>
                         </div>
                     </div>
-                    <!-- Dynamic projects from Supabase will be added by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             PROJECT DETAILS MODAL
+             ============================================ -->
+        <div id="projectModal" class="project-modal" style="display: none;">
+            <div class="modal-backdrop" onclick="closeProjectModal()"></div>
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeProjectModal()" aria-label="Close modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+
+                <div class="modal-scroll" id="modalScrollContent">
+                    <!-- Content dynamically loaded by JS -->
                 </div>
             </div>
         </div>
@@ -537,7 +552,10 @@
 
     <!-- STEP 7: Hero title rotator -->
     <script src="js/title-rotator.js"></script>
-    
+
+    <!-- STEP 8: Project modal functionality -->
+    <script src="js/project-modal.js"></script>
+
    <!-- ============================================ -->
 <!-- CARD VISIBILITY DIAGNOSTIC SCRIPT -->
 <!-- ============================================ -->
