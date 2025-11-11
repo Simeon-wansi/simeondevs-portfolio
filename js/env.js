@@ -1,7 +1,6 @@
 // ============================================
 // ENVIRONMENT VARIABLES LOADER
-// This file gets modified during Vercel build
-// Placeholders are replaced with actual values
+// Production configuration
 // ============================================
 
 (function() {
@@ -13,22 +12,9 @@
         return;
     }
     
-    // Production: Use environment variables injected during build
-    const supabaseUrl = '%%SUPABASE_URL%%';
-    const supabaseAnonKey = '%%SUPABASE_ANON_KEY%%';
-    
-    // Validate that placeholders were replaced
-    if (supabaseUrl.includes('%%') || supabaseAnonKey.includes('%%')) {
-        console.error('❌ ERROR: Environment variables not injected!');
-        console.error('   This usually means the build script did not run.');
-        console.error('   Check Vercel build logs for errors.');
-        
-        // Show user-friendly error
-        if (typeof showGlobalError === 'function') {
-            showGlobalError('Configuration error. Please contact site administrator.');
-        }
-        return;
-    }
+    // Production: Use hardcoded values (public anon key is safe to expose)
+    const supabaseUrl = 'https://eupbdsihwpptnxuyauuo.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1cGJkc2lod3BwdG54dXlhdXVvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODE3NzIsImV4cCI6MjA3MjU1Nzc3Mn0.uVJpDIapM1f12_ubKg35EmAHDAv6W79ikjxaJ-fx-js';
     
     // Set global config
     window.SUPABASE_CONFIG = {
@@ -36,6 +22,6 @@
         anonKey: supabaseAnonKey
     };
     
-    console.log('✅ Environment variables loaded from Vercel');
+    console.log('✅ Environment variables loaded');
     console.log('   Supabase URL:', supabaseUrl.substring(0, 30) + '...');
 })();
