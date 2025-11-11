@@ -41,11 +41,7 @@
     line-height: 1.8;
 }
 
-.about-stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-lg);
-}
+/* REMOVED: about-stats grid - now handled in about-enhanced.css */
 
 /* ============================================
    CONTACT PAGE - RESPONSIVE LAYOUT
