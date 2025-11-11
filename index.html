@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="css/animations.css">      <!-- 14. Animations -->
     <link rel="stylesheet" href="css/utilities.css">       <!-- 15. Utilities -->
     <link rel="stylesheet" href="css/responsive.css">      <!-- 16. Responsive -->
+    <link rel="stylesheet" href="css/main.css">            <!-- 17. Main base styles -->
+    <link rel="stylesheet" href="css/sections.css">        <!-- 18. Section layouts -->
 
     <!-- ============================================ -->
     <!-- SUPABASE JS SDK - Load BEFORE your scripts -->
@@ -1994,29 +1996,21 @@
     <!-- STEP 3: Initialize Supabase client -->
     <script src="js/supabase-client.js"></script>
 
-    <!-- STEP 4: Core functionality -->
-    <script src="js/main.js"></script>
-
-    <!-- STEP 5: Supabase integrations -->
+    <!-- STEP 4: Page-specific modules (MUST load BEFORE main.js) -->
     <script src="js/projects-supabase.js"></script>
     <script src="js/blog-supabase.js"></script>
     <script src="js/contact-supabase.js"></script>
     <script src="js/newsletter-supabase.js"></script>
 
-    <!-- STEP 6: Non-critical scripts (deferred) -->
-    <script src="js/animations.js" defer></script>
-    <!-- Theme switcher disabled - using Tech Purple only -->
-    <!-- <script src="js/colorEngine.js" defer></script> -->
-    <script src="js/footer.js" defer></script>
+    <!-- STEP 5: Main controller (loads AFTER page modules) -->
+    <script src="js/main.js"></script>
 
-    <!-- STEP 7: Hero title rotator -->
-    <script src="js/title-rotator.js"></script>
-
-    <!-- STEP 8: Project modal functionality -->
+    <!-- STEP 6: UI Enhancement modules -->
     <script src="js/project-modal.js"></script>
-
-    <!-- STEP 9: Photo carousel for About page -->
     <script src="js/photo-carousel.js"></script>
+    <script src="js/title-rotator.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/footer.js"></script>
 
    <!-- ============================================ -->
 <!-- ANALYTICS INITIALIZATION -->
