@@ -4,10 +4,66 @@
  */
 
 // ============================================
+// GLOBAL NAVIGATION STATE
+// ============================================
+
+let allProjects = [];
+let currentProjectIndex = 0;
+
+// ============================================
+// CREATE LOADING MODAL
+// ============================================
+
+function createLoadingModal() {
+    return `
+        <div class="modal-hero-placeholder skeleton skeleton-image"></div>
+
+        <div class="modal-header loading-state">
+            <div class="modal-badges skeleton-badges">
+                <span class="skeleton skeleton-badge"></span>
+                <span class="skeleton skeleton-badge"></span>
+                <span class="skeleton skeleton-badge"></span>
+            </div>
+
+            <div class="skeleton skeleton-header"></div>
+
+            <div class="skeleton skeleton-text long" style="margin-bottom: 1.5rem;"></div>
+
+            <div class="modal-techs skeleton-tech">
+                <span class="skeleton skeleton-tech-tag"></span>
+                <span class="skeleton skeleton-tech-tag"></span>
+                <span class="skeleton skeleton-tech-tag"></span>
+                <span class="skeleton skeleton-tech-tag"></span>
+            </div>
+        </div>
+
+        <div class="modal-section loading-state">
+            <div class="skeleton skeleton-header" style="width: 40%; margin-bottom: 1rem;"></div>
+            <div class="skeleton skeleton-text long"></div>
+            <div class="skeleton skeleton-text medium"></div>
+            <div class="skeleton skeleton-text long"></div>
+            <div class="skeleton skeleton-text short"></div>
+        </div>
+
+        <div class="modal-section loading-state">
+            <div class="skeleton skeleton-header" style="width: 30%; margin-bottom: 1rem;"></div>
+            <div class="skeleton skeleton-text long"></div>
+            <div class="skeleton skeleton-text long"></div>
+            <div class="skeleton skeleton-text medium"></div>
+        </div>
+
+        <div class="loading-state skeleton-buttons">
+            <div class="skeleton skeleton-button"></div>
+            <div class="skeleton skeleton-button"></div>
+        </div>
+    `;
+}
+
+// ============================================
 // OPEN MODAL WITH PROJECT DATA
 // ============================================
 
-function openProjectModal(project) {
+function openProjectModal(project, projectList = null, index = null) {
     const modal = document.getElementById('projectModal');
     const content = document.getElementById('modalScrollContent');
 
@@ -16,27 +72,161 @@ function openProjectModal(project) {
         return;
     }
 
-    // Increment views
-    if (project.id) {
-        incrementProjectDetailsViews(project.id);
+    // Set navigation state
+    if (projectList && index !== null) {
+        allProjects = projectList;
+        currentProjectIndex = index;
+    } else {
+        allProjects = [project];
+        currentProjectIndex = 0;
     }
 
-    // Render modal content
-    content.innerHTML = renderModalContent(project);
+    // Show loading skeleton
+    content.innerHTML = createLoadingModal();
 
-    // Show modal
+    // Show modal immediately with loading state
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Animate score bars
+    // Simulate loading delay and then show actual content
     setTimeout(() => {
-        animateScoreBars();
-    }, 300);
+        // Increment views
+        if (project.id) {
+            incrementProjectDetailsViews(project.id);
+        }
 
-    // Add ESC key listener
-    document.addEventListener('keydown', handleEscapeKey);
+        // Render actual modal content
+        content.innerHTML = renderModalContent(project);
+
+        // Add navigation buttons
+        addNavigationButtons(modal);
+
+        // Initialize gallery if present
+        setTimeout(() => {
+            initializeGallery();
+        }, 50);
+
+        // Animate score bars
+        setTimeout(() => {
+            animateScoreBars();
+        }, 100);
+    }, 500); // 500ms loading delay
+
+    // Add keyboard listeners
+    document.addEventListener('keydown', handleModalKeyboard);
 
     console.log('📖 Opened modal for:', project.title);
+}
+
+// ============================================
+// ADD NAVIGATION BUTTONS
+// ============================================
+
+function addNavigationButtons(modal) {
+    // Remove existing navigation if any
+    const existingNav = modal.querySelectorAll('.modal-nav, .modal-nav-counter');
+    existingNav.forEach(el => el.remove());
+
+    // Only add navigation if there are multiple projects
+    if (allProjects.length <= 1) return;
+
+    const hasPrev = currentProjectIndex > 0;
+    const hasNext = currentProjectIndex < allProjects.length - 1;
+
+    // Create Previous button
+    const prevNav = document.createElement('div');
+    prevNav.className = 'modal-nav nav-left';
+    prevNav.innerHTML = `
+        <button class="modal-nav-btn" id="modalPrevBtn" ${!hasPrev ? 'disabled' : ''}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
+    `;
+    modal.appendChild(prevNav);
+
+    // Create Next button
+    const nextNav = document.createElement('div');
+    nextNav.className = 'modal-nav nav-right';
+    nextNav.innerHTML = `
+        <button class="modal-nav-btn" id="modalNextBtn" ${!hasNext ? 'disabled' : ''}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M9 18l6-6-6-6"/>
+            </svg>
+        </button>
+    `;
+    modal.appendChild(nextNav);
+
+    // Create counter
+    const counter = document.createElement('div');
+    counter.className = 'modal-nav-counter';
+    counter.textContent = `${currentProjectIndex + 1} / ${allProjects.length}`;
+    modal.appendChild(counter);
+
+    // Add event listeners
+    if (hasPrev) {
+        document.getElementById('modalPrevBtn').addEventListener('click', navigateToPrevProject);
+    }
+    if (hasNext) {
+        document.getElementById('modalNextBtn').addEventListener('click', navigateToNextProject);
+    }
+}
+
+// ============================================
+// NAVIGATION FUNCTIONS
+// ============================================
+
+function navigateToPrevProject() {
+    if (currentProjectIndex > 0) {
+        currentProjectIndex--;
+        const prevProject = allProjects[currentProjectIndex];
+        updateModalContent(prevProject);
+    }
+}
+
+function navigateToNextProject() {
+    if (currentProjectIndex < allProjects.length - 1) {
+        currentProjectIndex++;
+        const nextProject = allProjects[currentProjectIndex];
+        updateModalContent(nextProject);
+    }
+}
+
+function updateModalContent(project) {
+    const content = document.getElementById('modalScrollContent');
+    const modal = document.getElementById('projectModal');
+
+    if (!content || !modal) return;
+
+    // Show loading skeleton
+    content.innerHTML = createLoadingModal();
+
+    // Scroll to top
+    content.scrollTop = 0;
+
+    // Update content after delay
+    setTimeout(() => {
+        // Increment views
+        if (project.id) {
+            incrementProjectDetailsViews(project.id);
+        }
+
+        // Render new content
+        content.innerHTML = renderModalContent(project);
+
+        // Update navigation buttons
+        addNavigationButtons(modal);
+
+        // Initialize gallery if present
+        setTimeout(() => {
+            initializeGallery();
+        }, 50);
+
+        // Animate score bars
+        setTimeout(() => {
+            animateScoreBars();
+        }, 100);
+    }, 500);
 }
 
 // ============================================
@@ -51,16 +241,35 @@ function closeProjectModal() {
     modal.style.display = 'none';
     document.body.style.overflow = '';
 
-    // Remove ESC key listener
-    document.removeEventListener('keydown', handleEscapeKey);
+    // Remove keyboard listeners
+    document.removeEventListener('keydown', handleModalKeyboard);
+
+    // Stop gallery auto-play
+    stopGalleryAutoPlay();
+
+    // Reset navigation state
+    allProjects = [];
+    currentProjectIndex = 0;
+    currentGalleryIndex = 0;
 
     console.log('✖️ Closed modal');
 }
 
-function handleEscapeKey(e) {
+function handleModalKeyboard(e) {
     if (e.key === 'Escape') {
         closeProjectModal();
+    } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigateToPrevProject();
+    } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigateToNextProject();
     }
+}
+
+// For backward compatibility
+function handleEscapeKey(e) {
+    handleModalKeyboard(e);
 }
 
 // ============================================
@@ -251,23 +460,23 @@ function renderModalContent(project) {
         </div>
     `;
 
-    return `
-        ${project.image_url && project.image_url.trim() !== '' ? `
-            <img src="${project.image_url}" 
-                 alt="${project.title}" 
-                 class="modal-hero-image"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="modal-hero-placeholder" style="display: none;">
-                <div class="placeholder-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <circle cx="8.5" cy="8.5" r="1.5"/>
-                        <polyline points="21 15 16 10 5 21"/>
-                    </svg>
-                </div>
-                <h2 class="placeholder-title">${project.title}</h2>
-            </div>
-        ` : `
+    // Prepare gallery images
+    const galleryImages = [];
+    
+    // Add main image if exists
+    if (project.image_url && project.image_url.trim() !== '') {
+        galleryImages.push(project.image_url);
+    }
+    
+    // Add gallery images if exists
+    if (project.gallery_images && Array.isArray(project.gallery_images)) {
+        galleryImages.push(...project.gallery_images.filter(img => img && img.trim() !== ''));
+    }
+
+    // Render gallery or placeholder
+    const imageGalleryHTML = galleryImages.length > 0 
+        ? renderImageGallery(galleryImages, project.title)
+        : `
             <div class="modal-hero-placeholder">
                 <div class="placeholder-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -278,7 +487,10 @@ function renderModalContent(project) {
                 </div>
                 <h2 class="placeholder-title">${project.title}</h2>
             </div>
-        `}
+        `;
+
+    return `
+        ${imageGalleryHTML}
 
         <div class="modal-header">
             <div class="modal-badges">
@@ -367,6 +579,149 @@ function animateScoreBars() {
 }
 
 // ============================================
+// IMAGE GALLERY
+// ============================================
+
+let currentGalleryIndex = 0;
+let galleryAutoPlayInterval = null;
+
+function renderImageGallery(images, projectTitle) {
+    if (images.length === 1) {
+        // Single image - no gallery controls
+        return `
+            <img src="${images[0]}" 
+                 alt="${projectTitle}" 
+                 class="modal-hero-image"
+                 onerror="this.style.display='none';">
+        `;
+    }
+
+    // Multiple images - full gallery
+    const imagesHTML = images.map((img, index) => `
+        <img src="${img}" 
+             alt="${projectTitle} - Image ${index + 1}" 
+             class="gallery-image"
+             data-index="${index}"
+             onerror="this.style.display='none';">
+    `).join('');
+
+    const dotsHTML = images.map((_, index) => `
+        <span class="gallery-dot ${index === 0 ? 'active' : ''}" 
+              data-index="${index}"
+              onclick="goToGalleryImage(${index})"></span>
+    `).join('');
+
+    return `
+        <div class="modal-gallery" id="modalGallery">
+            <div class="gallery-main">
+                <div class="gallery-images" id="galleryImages">
+                    ${imagesHTML}
+                </div>
+                
+                <button class="gallery-arrow prev" onclick="previousGalleryImage()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </button>
+                
+                <button class="gallery-arrow next" onclick="nextGalleryImage()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </button>
+                
+                <div class="gallery-counter">
+                    <span id="galleryCounter">1 / ${images.length}</span>
+                </div>
+            </div>
+            
+            <div class="gallery-dots" id="galleryDots">
+                ${dotsHTML}
+            </div>
+        </div>
+    `;
+}
+
+function initializeGallery() {
+    const gallery = document.getElementById('modalGallery');
+    if (!gallery) return;
+
+    currentGalleryIndex = 0;
+
+    // Start auto-play (optional - 4 seconds per image)
+    startGalleryAutoPlay();
+
+    // Pause auto-play on hover
+    gallery.addEventListener('mouseenter', stopGalleryAutoPlay);
+    gallery.addEventListener('mouseleave', startGalleryAutoPlay);
+}
+
+function goToGalleryImage(index) {
+    const imagesContainer = document.getElementById('galleryImages');
+    const dots = document.querySelectorAll('.gallery-dot');
+    const counter = document.getElementById('galleryCounter');
+    const images = document.querySelectorAll('.gallery-image');
+
+    if (!imagesContainer || !images.length) return;
+
+    // Ensure index is within bounds
+    currentGalleryIndex = Math.max(0, Math.min(index, images.length - 1));
+
+    // Update transform
+    const offset = -currentGalleryIndex * 100;
+    imagesContainer.style.transform = `translateX(${offset}%)`;
+
+    // Update dots
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentGalleryIndex);
+    });
+
+    // Update counter
+    if (counter) {
+        counter.textContent = `${currentGalleryIndex + 1} / ${images.length}`;
+    }
+
+    // Reset auto-play
+    stopGalleryAutoPlay();
+    startGalleryAutoPlay();
+}
+
+function previousGalleryImage() {
+    const images = document.querySelectorAll('.gallery-image');
+    if (currentGalleryIndex > 0) {
+        goToGalleryImage(currentGalleryIndex - 1);
+    }
+}
+
+function nextGalleryImage() {
+    const images = document.querySelectorAll('.gallery-image');
+    if (currentGalleryIndex < images.length - 1) {
+        goToGalleryImage(currentGalleryIndex + 1);
+    } else {
+        // Loop back to first image
+        goToGalleryImage(0);
+    }
+}
+
+function startGalleryAutoPlay() {
+    stopGalleryAutoPlay(); // Clear any existing interval
+    
+    const images = document.querySelectorAll('.gallery-image');
+    if (images.length <= 1) return; // Don't auto-play single image
+
+    galleryAutoPlayInterval = setInterval(() => {
+        nextGalleryImage();
+    }, 4000); // 4 seconds per image
+}
+
+function stopGalleryAutoPlay() {
+    if (galleryAutoPlayInterval) {
+        clearInterval(galleryAutoPlayInterval);
+        galleryAutoPlayInterval = null;
+    }
+}
+
+// ============================================
 // INCREMENT DETAILS VIEWS
 // ============================================
 
@@ -410,3 +765,6 @@ function trackProjectClick(projectId, type) {
 window.openProjectModal = openProjectModal;
 window.closeProjectModal = closeProjectModal;
 window.trackProjectClick = trackProjectClick;
+window.goToGalleryImage = goToGalleryImage;
+window.previousGalleryImage = previousGalleryImage;
+window.nextGalleryImage = nextGalleryImage;

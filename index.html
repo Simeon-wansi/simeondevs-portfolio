@@ -20,14 +20,13 @@
     <link rel="stylesheet" href="css/project-cards-minimal.css"> <!-- 7. Minimalist Project Cards -->
     <link rel="stylesheet" href="css/project-modal.css">   <!-- 8. Project Details Modal -->
     <link rel="stylesheet" href="css/skills-enhanced.css">  <!-- 9. Enhanced Skills Section -->
-    <link rel="stylesheet" href="css/footer.css">          <!-- 10. Footer -->
-    <link rel="stylesheet" href="css/animations.css">      <!-- 11. Animations -->
-    <link rel="stylesheet" href="css/utilities.css">       <!-- 12. Utilities -->
-    <link rel="stylesheet" href="css/responsive.css">      <!-- 13. Responsive -->
-
-    <!-- Legacy compatibility -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/about-enhanced.css">  <!-- 10. Enhanced About Page -->
+    <link rel="stylesheet" href="css/services-enhanced.css"> <!-- 11. Enhanced Services Page -->
+    <link rel="stylesheet" href="css/contact-enhanced.css"> <!-- 12. Enhanced Contact Page -->
+    <link rel="stylesheet" href="css/footer.css">          <!-- 13. Footer -->
+    <link rel="stylesheet" href="css/animations.css">      <!-- 14. Animations -->
+    <link rel="stylesheet" href="css/utilities.css">       <!-- 15. Utilities -->
+    <link rel="stylesheet" href="css/responsive.css">      <!-- 16. Responsive -->
 
     <!-- ============================================ -->
     <!-- SUPABASE JS SDK - Load BEFORE your scripts -->
@@ -111,7 +110,7 @@
                                     <span class="rotating-text">
                                         <span class="title-item active">AI Solutions</span>
                                         <span class="title-item">Secure Systems</span>
-                                        <span class="title-item">Scalable Applications</span>
+                                        <span class="title-item">Scalable Apps</span>
                                     </span>
                                 </div>
 
@@ -445,28 +444,13 @@
                     <button class="filter-btn" data-filter="Cybersecurity">Cybersecurity</button>
                 </div>
 
-                <!-- Featured Projects Section -->
-                <div class="featured-section">
-                    <h2 class="subsection-title">Featured Projects</h2>
-                    <div class="projects-grid" id="featuredProjectsGrid">
-                        <!-- Featured project cards loaded here by JS -->
-                        <div class="loading-skeleton">
-                            <div class="skeleton-card"></div>
-                            <div class="skeleton-card"></div>
-                        </div>
-                    </div>
-                </div>
+
 
                 <!-- All Projects Section -->
                 <div class="all-projects-section">
-                    <h2 class="subsection-title">All Projects</h2>
+                    <!-- <h2 class="subsection-title">All Projects</h2> -->
                     <div class="projects-grid" id="allProjectsGrid">
-                        <!-- All project cards loaded here by JS -->
-                        <div class="loading-skeleton">
-                            <div class="skeleton-card"></div>
-                            <div class="skeleton-card"></div>
-                            <div class="skeleton-card"></div>
-                        </div>
+                        <!-- All project cards loaded dynamically by JS -->
                     </div>
                 </div>
             </div>
@@ -504,122 +488,1407 @@
             </div>
         </div>
 
-        <!-- About Page -->
-        <div id="about" class="page">
+        <!-- ============================================
+             ABOUT PAGE - ENHANCED DESIGN
+             ============================================ -->
+        <div id="about" class="page about-page">
             <div class="container">
-                <div class="section-header">
-                    <h2>About Me</h2>
-                    <p>Get to know the person behind the code</p>
-                </div>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>I'm a passionate developer and cybersecurity enthusiast who loves turning complex problems into elegant solutions. With a background in AI/ML and security research, I focus on building systems that are both powerful and secure.</p>
-                        <p>My journey began with curiosity about how things work under the hood, which led me to explore everything from low-level systems programming to high-level AI architectures. I believe in the power of open source and continuous learning.</p>
-                        <p>When I'm not coding, you can find me participating in CTF competitions, contributing to open source projects, or exploring the latest developments in quantum computing and blockchain technology.</p>
-                    </div>
-                    <div class="about-stats">
-                        <div class="stat-item">
-                            <div class="stat-number">50</div>
-                            <div class="stat-label">Projects Completed</div>
+
+                <!-- SECTION 1: Hero Introduction -->
+                <section class="about-hero">
+                    <div class="hero-content">
+                        <!-- Profile Photo -->
+                        <div class="profile-photo-wrapper">
+                            <div class="profile-photo-ring"></div>
+                            <img src="images/profile.jpg"
+                                 alt="Simeon Wansi - Full-Stack Developer"
+                                 class="profile-photo"
+                                 onerror="this.src='https://ui-avatars.com/api/?name=Simeon+Wansi&size=400&background=8B5CF6&color=fff&bold=true'">
+                            <div class="profile-badges">
+                                <span class="profile-badge">42 Network</span>
+                                <span class="profile-badge">5x Winner</span>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-number">5</div>
+
+                        <!-- Hero Text -->
+                        <div class="hero-text">
+                            <h1 class="hero-greeting">Hi, I'm Simeon 👋</h1>
+                            <h2 class="hero-title">Full-Stack Developer & AI Solutions Architect</h2>
+                            <p class="hero-location">
+                                📍 UAE (Dubai • Abu Dhabi) | 🎓 42 Network Student
+                            </p>
+
+                            <p class="hero-description">
+                                I build intelligent applications that bridge innovation and impact.
+                                From winning AI hackathons to shipping production systems, I turn
+                                complex challenges into elegant solutions.
+                            </p>
+
+                            <p class="hero-journey">
+                                🇨🇲 → 🇦🇪 Cameroon roots, global reach
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 2: By The Numbers -->
+                <section class="about-stats">
+                    <h2 class="section-title">In Numbers</h2>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">40+</div>
+                            <div class="stat-label">Projects Built</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-number">5+</div>
                             <div class="stat-label">Years Experience</div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-number">25</div>
-                            <div class="stat-label">Technologies</div>
+
+                        <div class="stat-card">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Hackathons Participated</div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-number">100</div>
-                            <div class="stat-label">CTF Challenges</div>
+
+                        <div class="stat-card stat-highlight">
+                            <div class="stat-number">5+</div>
+                            <div class="stat-label">AI Wins 🏆</div>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                <!-- SECTION 3: The Journey -->
+                <section class="about-journey">
+                    <h2 class="section-title">The Journey</h2>
+
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker">💻</div>
+                            <div class="timeline-content">
+                                <div class="timeline-year">2017</div>
+                                <div class="timeline-title">Foundation</div>
+                                <div class="timeline-description">
+                                    Systems programming in C, algorithms
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker">🌐</div>
+                            <div class="timeline-content">
+                                <div class="timeline-year">2019</div>
+                                <div class="timeline-title">Full-Stack Evolution</div>
+                                <div class="timeline-description">
+                                    Web development, Php, Laravel, React, Node.js
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker">🤖</div>
+                            <div class="timeline-content">
+                                <div class="timeline-year">2023</div>
+                                <div class="timeline-title">AI Integration</div>
+                                <div class="timeline-description">
+                                    OpenAI, LangChain, multi-agents
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker">🎓</div>
+                            <div class="timeline-content">
+                                <div class="timeline-year">2024</div>
+                                <div class="timeline-title">42 Network</div>
+                                <div class="timeline-description">
+                                    Rigorous peer-learning environment
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item timeline-current">
+                            <div class="timeline-marker">🏆</div>
+                            <div class="timeline-content">
+                                <div class="timeline-year">2025</div>
+                                <div class="timeline-title">Competition Proven</div>
+                                <div class="timeline-description">
+                                    5+ AI hackathon wins
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 4: Competition Wins (HERO SECTION) -->
+                <section class="about-competitions">
+                    <h2 class="section-title">Competition Wins</h2>
+                    <p class="section-subtitle">
+                        Winning at the intersection of AI, healthcare, safety, and finance
+                    </p>
+
+                    <div class="competition-grid">
+                        <!-- Win 1: Smart Health AI -->
+                        <div class="competition-card card-gold">
+                            <div class="card-medal">🥇</div>
+                            <div class="card-place">1st Place</div>
+                            <h3 class="card-competition">Smart Health AI Hackathon</h3>
+                            <div class="card-divider"></div>
+                            <div class="card-organization">UAE Department of Health</div>
+                            <div class="card-spacer"></div>
+                            <div class="card-project">Gym of the Future</div>
+                            <div class="card-description">AI fitness with posture tracking</div>
+                        </div>
+
+                        <!-- Win 2: TotalEnergies -->
+                        <div class="competition-card card-gold">
+                            <div class="card-medal">🥇</div>
+                            <div class="card-place">1st Place</div>
+                            <h3 class="card-competition">TotalEnergies AI Hackathon</h3>
+                            <div class="card-divider"></div>
+                            <div class="card-organization">Energy Sector Innovation</div>
+                            <div class="card-spacer"></div>
+                            <div class="card-project">Smart Safety Suit</div>
+                            <div class="card-description">Worker monitoring & prevention</div>
+                        </div>
+
+                        <!-- Win 3: WIO Bank -->
+                        <div class="competition-card card-gold">
+                            <div class="card-medal">🥇</div>
+                            <div class="card-place">1st Place</div>
+                            <h3 class="card-competition">WIO Bank AI Hackathon</h3>
+                            <div class="card-divider"></div>
+                            <div class="card-organization">Financial Technology</div>
+                            <div class="card-spacer"></div>
+                            <div class="card-project">CrediSync</div>
+                            <div class="card-description">SMS parser for credit cards</div>
+                        </div>
+
+                        <!-- Win 4: Cleveland Clinic -->
+                        <div class="competition-card card-silver">
+                            <div class="card-medal">🥈</div>
+                            <div class="card-place">2nd Place</div>
+                            <h3 class="card-competition">Cleveland Clinic Hackathon</h3>
+                            <div class="card-divider"></div>
+                            <div class="card-organization">Healthcare Innovation</div>
+                            <div class="card-spacer"></div>
+                            <div class="card-project">CleveCare</div>
+                            <div class="card-description">7 AI agents for patient triage</div>
+                        </div>
+                    </div>
+
+                    <p class="competitions-more">+ 11 more international hackathons</p>
+                </section>
+
+                <!-- SECTION 5: What I Bring -->
+                <section class="about-value">
+                    <h2 class="section-title">What I Bring to the Table</h2>
+
+                    <div class="value-grid">
+                        <div class="value-item">
+                            <div class="value-icon">🏆</div>
+                            <h3 class="value-title">Competition-Tested</h3>
+                            <p class="value-description">
+                                Ideas battle-tested in high-pressure hackathons with real judges
+                            </p>
+                        </div>
+
+                        <div class="value-item">
+                            <div class="value-icon">🤖</div>
+                            <h3 class="value-title">AI-First Mindset</h3>
+                            <p class="value-description">
+                                Multi-agent systems, RAG, computer vision - not just API calls
+                            </p>
+                        </div>
+
+                        <div class="value-item">
+                            <div class="value-icon">🔐</div>
+                            <h3 class="value-title">Security-Conscious</h3>
+                            <p class="value-description">
+                                42 School rigor + CTF experience = production-ready, secure code
+                            </p>
+                        </div>
+
+                        <div class="value-item">
+                            <div class="value-icon">🌍</div>
+                            <h3 class="value-title">Rapid Execution</h3>
+                            <p class="value-description">
+                                48-hour hackathon winner → Fast MVP delivery guaranteed
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 6: Beyond Code -->
+                <section class="about-beyond">
+                    <h2 class="section-title">Beyond Code</h2>
+                    <p class="section-subtitle">When I'm not coding:</p>
+
+                    <ul class="beyond-list">
+                        <li class="beyond-item">
+                            <span class="beyond-icon">⚔️</span>
+                            <span class="beyond-text">Solving CTF cybersecurity challenges</span>
+                        </li>
+                        <li class="beyond-item">
+                            <span class="beyond-icon">🏀</span>
+                            <span class="beyond-text">Playing basketball & hitting the gym</span>
+                        </li>
+                        <li class="beyond-item">
+                            <span class="beyond-icon">🚀</span>
+                            <span class="beyond-text">Exploring UAE's startup ecosystem</span>
+                        </li>
+                        <li class="beyond-item">
+                            <span class="beyond-icon">🎓</span>
+                            <span class="beyond-text">Mentoring peers at 42 Network</span>
+                        </li>
+                        <!-- <li class="beyond-item">
+                            <span class="beyond-icon">💻</span>
+                            <span class="beyond-text">Contributing to open source projects</span>
+                        </li> -->
+                    </ul>
+                </section>
+
+                <!-- SECTION 7: Let's Collaborate -->
+                <section class="about-cta">
+                    <h2 class="section-title">Let's Build Something Together</h2>
+
+                    <div class="cta-content">
+                        <p class="cta-intro">I'm currently open to:</p>
+
+                        <div class="cta-cards-grid">
+                            <div class="cta-card">
+                                <span class="cta-icon">🚀</span>
+                                <span class="cta-text">Full-stack development projects</span>
+                            </div>
+
+                            <div class="cta-card">
+                                <span class="cta-icon">🤖</span>
+                                <span class="cta-text">AI/ML integration & consulting</span>
+                            </div>
+
+                            <div class="cta-card">
+                                <span class="cta-icon">🏆</span>
+                                <span class="cta-text">Hackathon team collaborations</span>
+                            </div>
+
+                            <div class="cta-card">
+                                <span class="cta-icon">🤝</span>
+                                <span class="cta-text">Technical partnerships</span>
+                            </div>
+
+                            <div class="cta-card">
+                                <span class="cta-icon">💻</span>
+                                <span class="cta-text">Open source contributions</span>
+                            </div>
+                        </div>
+
+                        <p class="cta-location">
+                            <span class="location-icon">📍</span>
+                            Based between Dubai and Abu Dhabi
+                            <br>
+                            <span class="location-icon">🌍</span>
+                            Working with clients across UAE, Europe, and beyond
+                        </p>
+
+                        <div class="cta-buttons">
+                            <a href="#projects" class="cta-btn cta-btn-primary" onclick="showPage('projects')">
+                                <span class="btn-text">View Projects</span>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                            <a href="#contact" class="cta-btn cta-btn-secondary" onclick="showPage('contact')">
+                                <span class="btn-text">Let's Connect</span>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </div>
 
         <!-- Services Page -->
-        <div id="services" class="page">
+        <!-- ============================================
+             SERVICES PAGE - ENHANCED DESIGN
+             ============================================ -->
+        <div id="services" class="page services-page">
             <div class="container">
-                <div class="section-header">
-                    <h2>Services</h2>
-                    <p>How I can help bring your ideas to life</p>
-                </div>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <div class="service-icon">🤖</div>
-                        <h3>AI/ML Development</h3>
-                        <p>Custom machine learning solutions, from data preprocessing to model deployment. Specializing in NLP, computer vision, and predictive analytics.</p>
+                
+                <!-- Hero Section -->
+                <section class="services-hero">
+                    <h1 class="page-title">Services</h1>
+                    <p class="page-subtitle">
+                        How I can help bring your ideas to life
+                    </p>
+                </section>
+                
+                <!-- Competition Banner -->
+                <section class="services-banner">
+                    <div class="banner-content">
+                        <span class="banner-icon">🏆</span>
+                        <div class="banner-text">
+                            <h3>Competition-Proven Development</h3>
+                            <p>5+ AI Hackathon Wins | 40+ Projects Delivered | 8+ Years Experience</p>
+                        </div>
+                        <a href="#about" onclick="showPage('about')" class="banner-cta">View My Journey</a>
                     </div>
-                    <div class="service-card">
-                        <div class="service-icon">🔐</div>
-                        <h3>Cybersecurity Consulting</h3>
-                        <p>Security assessments, penetration testing, and secure system design. Helping organizations protect their digital assets.</p>
+                </section>
+                
+                <!-- Featured Service -->
+                <section class="featured-service">
+                    <div class="featured-badge">⭐ MOST POPULAR</div>
+                    <div class="featured-content">
+                        <div class="featured-icon">🤖</div>
+                        <h2 class="featured-title">AI-Powered Web Applications</h2>
+                        <p class="featured-description">
+                            The service that won me 5+ hackathons. Build intelligent applications 
+                            that automate processes, enhance customer experiences, and deliver 
+                            measurable ROI through advanced AI integration.
+                        </p>
+                        
+                        <div class="featured-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Complexity</span>
+                                <div class="complexity-dots">
+                                    <span class="dot filled"></span>
+                                    <span class="dot filled"></span>
+                                    <span class="dot filled"></span>
+                                    <span class="dot filled"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <span class="meta-value">Advanced</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Investment</span>
+                                <span class="meta-value investment-premium">Premium</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Timeline</span>
+                                <span class="meta-value">6-12 weeks typical*</span>
+                            </div>
+                        </div>
+                        
+                        <div class="featured-ctas">
+                            <a href="#contact" onclick="showPage('contact')" class="btn btn-primary">Schedule Consultation</a>
+                            <a href="#projects" onclick="showPage('projects')" class="btn btn-secondary">View Examples</a>
+                        </div>
                     </div>
-                    <div class="service-card">
-                        <div class="service-icon">💻</div>
-                        <h3>Full-Stack Development</h3>
-                        <p>End-to-end web application development using modern technologies. From concept to deployment and maintenance.</p>
+                </section>
+                
+                <!-- All Services Grid -->
+                <section class="all-services">
+                    <h2 class="section-title">All Services</h2>
+                    
+                    <div class="services-grid">
+                        
+                        <!-- Service 1: AI-Powered Web Apps -->
+                        <div class="service-card">
+                            <div class="card-icon">🤖</div>
+                            <h3 class="card-title">AI-Powered Web Applications</h3>
+                            <p class="card-description">
+                                Build intelligent applications with multi-agent AI systems, 
+                                automation, and advanced integrations.
+                            </p>
+                            
+                            <div class="card-meta">
+                                <div class="complexity">
+                                    <span class="label">Complexity:</span>
+                                    <div class="dots">
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="investment">
+                                    <span class="badge badge-premium">Premium</span>
+                                </div>
+                                <div class="timeline">
+                                    <span class="icon">⏱️</span>
+                                    <span class="text">6-12 weeks typical</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <div class="perfect-for">
+                                    <h4>Perfect for:</h4>
+                                    <ul>
+                                        <li>UAE SMEs ready to scale with AI</li>
+                                        <li>Startups seeking competitive edge</li>
+                                        <li>Businesses automating workflows</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="whats-included">
+                                    <h4>What's Included:</h4>
+                                    <ul>
+                                        <li>Multi-agent AI systems</li>
+                                        <li>OpenAI/Anthropic integration</li>
+                                        <li>Custom ML models</li>
+                                        <li>Admin dashboard</li>
+                                        <li>Production deployment</li>
+                                        <li>3 months support</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="example-project">
+                                    <span class="label">Example:</span>
+                                    <a href="#projects" onclick="showPage('projects')">GulfValidate (11 AI agents)</a>
+                                </div>
+                            </div>
+                            
+                            <div class="card-ctas">
+                                <a href="#contact" onclick="showPage('contact')" class="btn btn-primary btn-sm">Get Consultation</a>
+                                <a href="#projects" onclick="showPage('projects')" class="btn btn-secondary btn-sm">View Examples</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Service 2: Full-Stack Development -->
+                        <div class="service-card">
+                            <div class="card-icon">💻</div>
+                            <h3 class="card-title">Full-Stack Development</h3>
+                            <p class="card-description">
+                                End-to-end web application development using modern technologies 
+                                from concept to deployment and maintenance.
+                            </p>
+                            
+                            <div class="card-meta">
+                                <div class="complexity">
+                                    <span class="label">Complexity:</span>
+                                    <div class="dots">
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="investment">
+                                    <span class="badge badge-standard">Standard</span>
+                                </div>
+                                <div class="timeline">
+                                    <span class="icon">⏱️</span>
+                                    <span class="text">4-10 weeks typical</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <div class="perfect-for">
+                                    <h4>Perfect for:</h4>
+                                    <ul>
+                                        <li>Businesses needing custom platforms</li>
+                                        <li>SaaS applications</li>
+                                        <li>Internal business tools</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="whats-included">
+                                    <h4>What's Included:</h4>
+                                    <ul>
+                                        <li>React/Next.js frontend</li>
+                                        <li>Node.js/Python backend</li>
+                                        <li>Database design & setup</li>
+                                        <li>API development</li>
+                                        <li>Responsive design</li>
+                                        <li>Deployment & hosting</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="example-project">
+                                    <span class="label">Example:</span>
+                                    <a href="#projects" onclick="showPage('projects')">CrediSync Platform</a>
+                                </div>
+                            </div>
+                            
+                            <div class="card-ctas">
+                                <a href="#contact" onclick="showPage('contact')" class="btn btn-primary btn-sm">Get Consultation</a>
+                                <a href="#projects" onclick="showPage('projects')" class="btn btn-secondary btn-sm">View Examples</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Service 3: MVP Development -->
+                        <div class="service-card popular">
+                            <div class="card-badge">⚡ FAST DELIVERY</div>
+                            <div class="card-icon">🚀</div>
+                            <h3 class="card-title">MVP Development for Startups</h3>
+                            <p class="card-description">
+                                Rapid prototyping and MVP development with hackathon speed. 
+                                Launch-ready products in weeks, not months.
+                            </p>
+                            
+                            <div class="card-meta">
+                                <div class="complexity">
+                                    <span class="label">Complexity:</span>
+                                    <div class="dots">
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="investment">
+                                    <span class="badge badge-budget">Accessible</span>
+                                </div>
+                                <div class="timeline">
+                                    <span class="icon">⏱️</span>
+                                    <span class="text">2-4 weeks typical</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <div class="perfect-for">
+                                    <h4>Perfect for:</h4>
+                                    <ul>
+                                        <li>Startups validating ideas</li>
+                                        <li>Entrepreneurs testing market fit</li>
+                                        <li>Hackathon winners needing polish</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="whats-included">
+                                    <h4>What's Included:</h4>
+                                    <ul>
+                                        <li>Core feature development</li>
+                                        <li>User authentication</li>
+                                        <li>Basic admin panel</li>
+                                        <li>Mobile-responsive design</li>
+                                        <li>Cloud deployment</li>
+                                        <li>1 month support</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="example-project">
+                                    <span class="label">Approach:</span>
+                                    <span>Hackathon speed, production quality</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-ctas">
+                                <a href="#contact" onclick="showPage('contact')" class="btn btn-primary btn-sm">Get Consultation</a>
+                                <a href="#projects" onclick="showPage('projects')" class="btn btn-secondary btn-sm">View Examples</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Service 4: Mobile App Development -->
+                        <div class="service-card">
+                            <div class="card-icon">📱</div>
+                            <h3 class="card-title">Mobile App Development</h3>
+                            <p class="card-description">
+                                Cross-platform iOS and Android applications using React Native 
+                                for native performance and feel.
+                            </p>
+                            
+                            <div class="card-meta">
+                                <div class="complexity">
+                                    <span class="label">Complexity:</span>
+                                    <div class="dots">
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="investment">
+                                    <span class="badge badge-premium">Premium</span>
+                                </div>
+                                <div class="timeline">
+                                    <span class="icon">⏱️</span>
+                                    <span class="text">8-16 weeks typical</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <div class="perfect-for">
+                                    <h4>Perfect for:</h4>
+                                    <ul>
+                                        <li>Businesses reaching mobile users</li>
+                                        <li>Service-based companies</li>
+                                        <li>E-commerce platforms</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="whats-included">
+                                    <h4>What's Included:</h4>
+                                    <ul>
+                                        <li>iOS & Android apps</li>
+                                        <li>Push notifications</li>
+                                        <li>Offline functionality</li>
+                                        <li>Payment integration</li>
+                                        <li>App store deployment</li>
+                                        <li>3 months support</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="example-project">
+                                    <span class="label">Example:</span>
+                                    <a href="#projects" onclick="showPage('projects')">CleveCare Mobile</a>
+                                </div>
+                            </div>
+                            
+                            <div class="card-ctas">
+                                <a href="#contact" onclick="showPage('contact')" class="btn btn-primary btn-sm">Get Consultation</a>
+                                <a href="#projects" onclick="showPage('projects')" class="btn btn-secondary btn-sm">View Examples</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Service 5: Business Automation -->
+                        <div class="service-card">
+                            <div class="card-icon">⚙️</div>
+                            <h3 class="card-title">Business Automation Systems</h3>
+                            <p class="card-description">
+                                Automate repetitive tasks and workflows. Save 20+ hours per week 
+                                with custom automation solutions.
+                            </p>
+                            
+                            <div class="card-meta">
+                                <div class="complexity">
+                                    <span class="label">Complexity:</span>
+                                    <div class="dots">
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="investment">
+                                    <span class="badge badge-standard">Standard</span>
+                                </div>
+                                <div class="timeline">
+                                    <span class="icon">⏱️</span>
+                                    <span class="text">4-8 weeks typical</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <div class="perfect-for">
+                                    <h4>Perfect for:</h4>
+                                    <ul>
+                                        <li>UAE SMEs reducing manual work</li>
+                                        <li>Teams with repetitive tasks</li>
+                                        <li>Growing businesses scaling ops</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="whats-included">
+                                    <h4>What's Included:</h4>
+                                    <ul>
+                                        <li>Workflow analysis</li>
+                                        <li>Custom automation scripts</li>
+                                        <li>CRM integration</li>
+                                        <li>Email automation</li>
+                                        <li>Reporting dashboards</li>
+                                        <li>Training & documentation</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="example-project">
+                                    <span class="label">Value:</span>
+                                    <span>Save 20+ hours/week on manual tasks</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-ctas">
+                                <a href="#contact" onclick="showPage('contact')" class="btn btn-primary btn-sm">Get Consultation</a>
+                                <a href="#projects" onclick="showPage('projects')" class="btn btn-secondary btn-sm">View Examples</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Service 6: Cybersecurity Consulting -->
+                        <div class="service-card">
+                            <div class="card-icon">🔐</div>
+                            <h3 class="card-title">Cybersecurity Consulting</h3>
+                            <p class="card-description">
+                                Security assessments, penetration testing, and secure system 
+                                design from a CTF competition background.
+                            </p>
+                            
+                            <div class="card-meta">
+                                <div class="complexity">
+                                    <span class="label">Complexity:</span>
+                                    <div class="dots">
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="investment">
+                                    <span class="badge badge-standard">Standard</span>
+                                </div>
+                                <div class="timeline">
+                                    <span class="icon">⏱️</span>
+                                    <span class="text">2-6 weeks typical</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <div class="perfect-for">
+                                    <h4>Perfect for:</h4>
+                                    <ul>
+                                        <li>Businesses handling sensitive data</li>
+                                        <li>Compliance requirements (GDPR, etc.)</li>
+                                        <li>Pre-launch security audits</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="whats-included">
+                                    <h4>What's Included:</h4>
+                                    <ul>
+                                        <li>Security audit & assessment</li>
+                                        <li>Penetration testing</li>
+                                        <li>Vulnerability reports</li>
+                                        <li>Security recommendations</li>
+                                        <li>Implementation support</li>
+                                        <li>Follow-up testing</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="example-project">
+                                    <span class="label">Background:</span>
+                                    <span>CTF experience + secure coding</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-ctas">
+                                <a href="#contact" onclick="showPage('contact')" class="btn btn-primary btn-sm">Get Consultation</a>
+                                <a href="#projects" onclick="showPage('projects')" class="btn btn-secondary btn-sm">View Examples</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Service 7: E-commerce Solutions -->
+                        <div class="service-card">
+                            <div class="card-icon">🛒</div>
+                            <h3 class="card-title">E-commerce Solutions</h3>
+                            <p class="card-description">
+                                Custom online stores with payment integration, inventory 
+                                management, and AI-powered recommendations.
+                            </p>
+                            
+                            <div class="card-meta">
+                                <div class="complexity">
+                                    <span class="label">Complexity:</span>
+                                    <div class="dots">
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="investment">
+                                    <span class="badge badge-standard">Standard</span>
+                                </div>
+                                <div class="timeline">
+                                    <span class="icon">⏱️</span>
+                                    <span class="text">6-12 weeks typical</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <div class="perfect-for">
+                                    <h4>Perfect for:</h4>
+                                    <ul>
+                                        <li>Retailers going online</li>
+                                        <li>Product-based businesses</li>
+                                        <li>Multi-vendor marketplaces</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="whats-included">
+                                    <h4>What's Included:</h4>
+                                    <ul>
+                                        <li>Custom storefront design</li>
+                                        <li>Payment gateway integration</li>
+                                        <li>Inventory management</li>
+                                        <li>Order tracking system</li>
+                                        <li>AI product recommendations</li>
+                                        <li>Admin dashboard</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="example-project">
+                                    <span class="label">Feature:</span>
+                                    <span>AI-powered recommendations included</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-ctas">
+                                <a href="#contact" onclick="showPage('contact')" class="btn btn-primary btn-sm">Get Consultation</a>
+                                <a href="#projects" onclick="showPage('projects')" class="btn btn-secondary btn-sm">View Examples</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Service 8: AI/ML Integration & Consulting -->
+                        <div class="service-card">
+                            <div class="card-icon">🧠</div>
+                            <h3 class="card-title">AI/ML Integration & Consulting</h3>
+                            <p class="card-description">
+                                Strategic AI consulting and integration of OpenAI, Anthropic, 
+                                LangChain, and custom ML models into existing systems.
+                            </p>
+                            
+                            <div class="card-meta">
+                                <div class="complexity">
+                                    <span class="label">Complexity:</span>
+                                    <div class="dots">
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot filled"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="investment">
+                                    <span class="badge badge-standard">Standard</span>
+                                </div>
+                                <div class="timeline">
+                                    <span class="icon">⏱️</span>
+                                    <span class="text">4-8 weeks typical</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <div class="perfect-for">
+                                    <h4>Perfect for:</h4>
+                                    <ul>
+                                        <li>Businesses adding AI capabilities</li>
+                                        <li>Existing platforms needing intelligence</li>
+                                        <li>Teams exploring AI opportunities</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="whats-included">
+                                    <h4>What's Included:</h4>
+                                    <ul>
+                                        <li>AI readiness assessment</li>
+                                        <li>Strategy & recommendations</li>
+                                        <li>API integrations</li>
+                                        <li>Custom model training</li>
+                                        <li>Implementation support</li>
+                                        <li>Performance optimization</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="example-project">
+                                    <span class="label">Expertise:</span>
+                                    <span>Multi-agent systems, RAG, vision</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-ctas">
+                                <a href="#contact" onclick="showPage('contact')" class="btn btn-primary btn-sm">Get Consultation</a>
+                                <a href="#projects" onclick="showPage('projects')" class="btn btn-secondary btn-sm">View Examples</a>
+                            </div>
+                        </div>
+                        
                     </div>
-                    <div class="service-card">
-                        <div class="service-icon">⛓️</div>
-                        <h3>Blockchain Solutions</h3>
-                        <p>Smart contract development, DeFi protocols, and blockchain integration for transparent and secure systems.</p>
+                </section>
+                
+                <!-- Pricing Note -->
+                <section class="pricing-note">
+                    <div class="note-content">
+                        <h3>About Pricing & Timelines</h3>
+                        <p>
+                            Every project is unique. We provide custom quotes and detailed timelines 
+                            after understanding your specific needs, scope, and requirements during 
+                            a free consultation call.
+                        </p>
+                        <p class="note-disclaimer">
+                            *Timelines shown are typical ranges and may vary based on project complexity, 
+                            scope, and your availability for feedback cycles.
+                        </p>
                     </div>
-                </div>
+                </section>
+                
+                <!-- My Process -->
+                <section class="my-process">
+                    <h2 class="section-title">My Development Process</h2>
+                    <p class="section-subtitle">
+                        A proven 5-step approach from discovery to launch
+                    </p>
+                    
+                    <div class="process-timeline">
+                        <div class="process-step">
+                            <div class="step-number">1</div>
+                            <div class="step-icon">🔍</div>
+                            <h3 class="step-title">Discovery</h3>
+                            <p class="step-description">
+                                Understanding your vision, goals, and technical requirements. 
+                                Stakeholder interviews and requirement gathering.
+                            </p>
+                        </div>
+                        
+                        <div class="process-connector"></div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">2</div>
+                            <div class="step-icon">🎨</div>
+                            <h3 class="step-title">Design</h3>
+                            <p class="step-description">
+                                Wireframes, prototypes, and system architecture. User experience 
+                                flows and technical specifications.
+                            </p>
+                        </div>
+                        
+                        <div class="process-connector"></div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">3</div>
+                            <div class="step-icon">⚙️</div>
+                            <h3 class="step-title">Develop</h3>
+                            <p class="step-description">
+                                Agile development with weekly updates. Clean, maintainable code 
+                                with comprehensive testing throughout.
+                            </p>
+                        </div>
+                        
+                        <div class="process-connector"></div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">4</div>
+                            <div class="step-icon">🚀</div>
+                            <h3 class="step-title">Deploy</h3>
+                            <p class="step-description">
+                                Production deployment, performance optimization, and final testing. 
+                                Training and documentation delivery.
+                            </p>
+                        </div>
+                        
+                        <div class="process-connector"></div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">5</div>
+                            <div class="step-icon">🛠️</div>
+                            <h3 class="step-title">Support</h3>
+                            <p class="step-description">
+                                Ongoing support, bug fixes, and feature enhancements. Monitoring, 
+                                updates, and continuous improvement.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Final CTA -->
+                <section class="final-cta">
+                    <div class="cta-content">
+                        <h2 class="cta-title">Ready to Build Your Vision?</h2>
+                        <p class="cta-description">
+                            Every project starts with a simple conversation. Let's discuss your needs, 
+                            explore possibilities, and determine the best path forward together.
+                        </p>
+                        
+                        <div class="cta-features">
+                            <div class="cta-feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">Free 30-minute consultation</span>
+                            </div>
+                            <div class="cta-feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">Custom timeline & scope estimate</span>
+                            </div>
+                            <div class="cta-feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">No obligation, just exploration</span>
+                            </div>
+                        </div>
+                        
+                        <div class="cta-buttons">
+                            <a href="#contact" onclick="showPage('contact')" class="btn btn-primary btn-lg">Schedule Free Consultation</a>
+                            <a href="mailto:contact@simeondev.com" class="btn btn-secondary btn-lg">Email Me</a>
+                        </div>
+                        
+                        <p class="cta-location">
+                            📍 Based in Dubai & Abu Dhabi, UAE<br>
+                            🌍 Working with clients across UAE, Europe, and beyond
+                        </p>
+                    </div>
+                </section>
+                
             </div>
         </div>
 
         <!-- Contact Page -->
-        <div id="contact" class="page">
+        <div id="contact" class="page contact-page">
             <div class="container">
-                <div class="section-header">
-                    <h2>Get In Touch</h2>
-                    <p>Let's discuss your next project</p>
+                
+                <!-- Hero Section -->
+                <div class="contact-hero">
+                    <h1 class="hero-title">Let's Build Something Amazing Together</h1>
+                    <p class="hero-subtitle">
+                        Competition-proven developer ready to transform your ideas into reality
+                    </p>
                 </div>
-                <div class="contact-grid">
-                    <div class="contact-info">
-                        <h3>Contact Information</h3>
-                        <div class="contact-item">
-                            <span class="contact-icon">📧</span>
-                            <span>contacSimeonDevdev.com</span>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">💬</span>
-                            <span>Available for freelance projects</span>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">🌍</span>
-                            <span>Remote work preferred</span>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">⚡</span>
-                            <span>Usually responds within 24 hours</span>
-                        </div>
+                
+                <!-- Response Time Banner -->
+                <div class="response-banner">
+                    <div class="banner-item">
+                        <span class="banner-icon">⚡</span>
+                        <span class="banner-text">24-hour response time</span>
                     </div>
-                    <div class="contact-form">
-                        <form id="contact-form">
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="subject">Subject</label>
-                                <input type="text" id="subject" name="subject" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Message</label>
-                                <textarea id="message" name="message" rows="5" required></textarea>
-                            </div>
-                            <button type="submit" class="form-submit">Send Message</button>
-                        </form>
+                    <div class="banner-item">
+                        <span class="banner-icon">🌍</span>
+                        <span class="banner-text">Dubai/Abu Dhabi, UAE (GST +4)</span>
+                    </div>
+                    <div class="banner-item">
+                        <span class="banner-icon">✅</span>
+                        <span class="banner-text">Available for new projects</span>
                     </div>
                 </div>
+                
+                <!-- Contact Methods Grid -->
+                <section class="contact-methods-section">
+                    <h2 class="section-title">Choose Your Preferred Way to Connect</h2>
+                    
+                    <!-- Primary Contact Methods (2 Featured Cards) -->
+                    <div class="contact-methods-grid">
+                        
+                        <!-- Calendly - Highlighted -->
+                        <a href="https://calendly.com/simeondev/30min" target="_blank" rel="noopener noreferrer" class="contact-method featured">
+                            <div class="method-badge">⭐ Quickest Response</div>
+                            <div class="method-icon">📅</div>
+                            <h3 class="method-title">Schedule a Call</h3>
+                            <p class="method-description">Book a free 30-minute consultation</p>
+                            <span class="method-cta">Schedule Now →</span>
+                        </a>
+                        
+                        <!-- Email - Primary -->
+                        <a href="mailto:simeondevs1@gmail.com" class="contact-method primary">
+                            <div class="method-badge">Primary Contact</div>
+                            <div class="method-icon">📧</div>
+                            <h3 class="method-title">Email</h3>
+                            <p class="method-description">simeondevs1@gmail.com</p>
+                            <span class="method-cta">Send Email →</span>
+                        </a>
+                        
+                    </div>
+                    
+                    <!-- Social Links (Compact Icons) -->
+                    <div class="social-links-section">
+                        <p class="social-label">Or find me on:</p>
+                        <div class="social-icons">
+                            
+                            <a href="https://linkedin.com/in/simeondevs" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="social-icon"
+                               data-tooltip="LinkedIn"
+                               aria-label="LinkedIn">
+                                <span class="icon">💼</span>
+                            </a>
+                            
+                            <a href="https://github.com/simeondevs" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="social-icon"
+                               data-tooltip="GitHub"
+                               aria-label="GitHub">
+                                <span class="icon">💻</span>
+                            </a>
+                            
+                            <a href="https://x.com/simeondevs" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="social-icon"
+                               data-tooltip="X (Twitter)"
+                               aria-label="X (Twitter)">
+                                <span class="icon">🐦</span>
+                            </a>
+                            
+                            <a href="https://medium.com/@simeondevs" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="social-icon"
+                               data-tooltip="Medium"
+                               aria-label="Medium">
+                                <span class="icon">✍️</span>
+                            </a>
+                            
+                            <a href="https://discord.gg/sime_nova" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="social-icon"
+                               data-tooltip="Discord"
+                               aria-label="Discord">
+                                <span class="icon">💬</span>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Contact Form Section -->
+                <section class="contact-form-section">
+                    <h2 class="section-title">Or Send Me a Message</h2>
+                    <p class="section-subtitle">I'll get back to you within 24 hours</p>
+                    
+                    <form id="contact-form" class="enhanced-contact-form">
+                        
+                        <!-- Honeypot (spam protection - hidden from humans) -->
+                        <input type="text" 
+                               name="website" 
+                               id="website" 
+                               style="position:absolute;left:-9999px;width:1px;height:1px;" 
+                               tabindex="-1" 
+                               autocomplete="off"
+                               aria-hidden="true">
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Your Name *</label>
+                                <input type="text" 
+                                       id="name" 
+                                       name="name" 
+                                       placeholder="John Doe" 
+                                       required 
+                                       autocomplete="name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Your Email *</label>
+                                <input type="email" 
+                                       id="email" 
+                                       name="email" 
+                                       placeholder="john@example.com" 
+                                       required 
+                                       autocomplete="email">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select id="subject" name="subject">
+                                <option value="">Select a topic (optional)</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="ai-ml">AI/ML Project</option>
+                                <option value="fullstack">Full-Stack Development</option>
+                                <option value="cybersecurity">Cybersecurity Consultation</option>
+                                <option value="mvp">MVP Development</option>
+                                <option value="mobile">Mobile App Development</option>
+                                <option value="automation">Business Automation</option>
+                                <option value="ecommerce">E-commerce Solution</option>
+                                <option value="hackathon">Hackathon Collaboration</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" 
+                                      name="message" 
+                                      rows="6" 
+                                      placeholder="Tell me about your project or inquiry..." 
+                                      required 
+                                      minlength="20"></textarea>
+                            <small class="char-counter">Minimum 20 characters</small>
+                        </div>
+                        
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-primary btn-lg form-submit">
+                                <span class="btn-text">Send Message</span>
+                                <span class="btn-loading" style="display:none;">
+                                    <span class="loading-spinner"></span> Sending...
+                                </span>
+                            </button>
+                            <p class="form-privacy">
+                                🔒 Your information is secure and will never be shared.
+                            </p>
+                        </div>
+                        
+                        <!-- Success/Error Messages -->
+                        <div id="form-message" class="form-message" style="display:none;"></div>
+                        
+                    </form>
+                </section>
+                
+                <!-- Trust Signals -->
+                <section class="trust-signals">
+                    <h3 class="trust-title">Why Reach Out?</h3>
+                    <div class="trust-grid">
+                        <div class="trust-item">
+                            <span class="trust-icon">🏆</span>
+                            <span class="trust-text">5+ AI Hackathon Wins</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">✅</span>
+                            <span class="trust-text">40+ Projects Delivered</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">⚡</span>
+                            <span class="trust-text">24-Hour Response Time</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">🔒</span>
+                            <span class="trust-text">NDA Available</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">🎓</span>
+                            <span class="trust-text">42 Network Student</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">🌍</span>
+                            <span class="trust-text">International Experience</span>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- FAQ Section -->
+                <section class="faq-section">
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                    
+                    <div class="faq-list">
+                        
+                        <div class="faq-item">
+                            <button class="faq-question" onclick="toggleFAQ(this)">
+                                <span>What information do you need to provide a quote?</span>
+                                <span class="faq-icon">+</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>
+                                    A brief description of your project, your goals, and your preferred timeline. 
+                                    We'll discuss all the details during our free consultation call and provide a 
+                                    detailed proposal with transparent pricing.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <button class="faq-question" onclick="toggleFAQ(this)">
+                                <span>How long does it take to get a response?</span>
+                                <span class="faq-icon">+</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>
+                                    Usually within 24 hours on weekdays (Sunday-Thursday, GST timezone). 
+                                    For immediate scheduling, use my <a href="https://calendly.com/simeondev/30min" target="_blank">Calendly link</a> 
+                                    to book a consultation at your convenience.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <button class="faq-question" onclick="toggleFAQ(this)">
+                                <span>Do you offer free consultations?</span>
+                                <span class="faq-icon">+</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>
+                                    Yes! All projects start with a free 30-minute consultation where we'll 
+                                    discuss your needs, explore potential solutions, and determine if we're 
+                                    a good fit. No obligation, just exploration.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <button class="faq-question" onclick="toggleFAQ(this)">
+                                <span>Where are you located and what timezone?</span>
+                                <span class="faq-icon">+</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>
+                                    I'm based between Dubai and Abu Dhabi, UAE (GST +4 timezone). 
+                                    Working hours are Sunday through Thursday, 9AM-6PM GST. However, 
+                                    I'm available for international clients and can accommodate different 
+                                    timezones for meetings.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <button class="faq-question" onclick="toggleFAQ(this)">
+                                <span>Do you work with international clients?</span>
+                                <span class="faq-icon">+</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>
+                                    Absolutely! I've successfully collaborated with clients across UAE, 
+                                    Europe, and other regions. Remote work is seamless with modern tools 
+                                    like Zoom, Slack, and GitHub. Distance is not a barrier to great work.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <button class="faq-question" onclick="toggleFAQ(this)">
+                                <span>What happens after I submit the form?</span>
+                                <span class="faq-icon">+</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>
+                                    You'll receive a confirmation email within 24 hours acknowledging your 
+                                    inquiry. We can then schedule a call to discuss your project in detail, 
+                                    answer your questions, and outline the next steps. I'll also provide 
+                                    references and examples of similar work if relevant.
+                                </p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </section>
+                
+                <!-- Location & Timezone Info -->
+                <section class="location-section">
+                    <h2 class="section-title">Location & Availability</h2>
+                    
+                    <div class="location-grid">
+                        <div class="location-item">
+                            <span class="location-icon">📍</span>
+                            <div class="location-details">
+                                <h4>Location</h4>
+                                <p>Dubai & Abu Dhabi, UAE</p>
+                            </div>
+                        </div>
+                        
+                        <div class="location-item">
+                            <span class="location-icon">🌍</span>
+                            <div class="location-details">
+                                <h4>Timezone</h4>
+                                <p>GST (GMT +4)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="location-item">
+                            <span class="location-icon">⏰</span>
+                            <div class="location-details">
+                                <h4>Working Hours</h4>
+                                <p>Sun-Thu, 9AM-6PM GST</p>
+                            </div>
+                        </div>
+                        
+                        <div class="location-item">
+                            <span class="location-icon">🌐</span>
+                            <div class="location-details">
+                                <h4>Remote-First</h4>
+                                <p>International collaboration welcome</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Final CTA -->
+                <section class="contact-final-cta">
+                    <h2 class="cta-title">Ready to Start Your Project?</h2>
+                    <p class="cta-subtitle">
+                        Let's turn your vision into reality. Choose the option that works best for you.
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="https://calendly.com/simeondev/30min" target="_blank" class="btn btn-primary btn-lg">
+                            📅 Schedule Free Call
+                        </a>
+                        <a href="mailto:simeondevs1@gmail.com" class="btn btn-secondary btn-lg">
+                            📧 Send Email
+                        </a>
+                    </div>
+                </section>
+                
             </div>
         </div>
     </main>
@@ -701,7 +1970,7 @@
                 <!-- Footer Bottom -->
                 <div class="footer-bottom">
                     <div class="footer-bottom-content">
-                        <p>&copy; 2025 SimeonDevv. All rights reserved.</p>
+                        <p>&copy; 2025 SimeonDev. All rights reserved.</p>
                         <div class="footer-bottom-links">
                             <a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a>
                             <a href="#" onclick="showTermsOfService()">Terms of Service</a>
@@ -711,11 +1980,6 @@
                 </div>
             </div>
         </footer>
-
-    <!-- ============================================ -->
-    <!-- SUPABASE JS SDK - Load BEFORE your scripts -->
-    <!-- ============================================ -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- ============================================ -->
     <!-- JAVASCRIPT FILES - CORRECT LOADING ORDER -->
@@ -751,72 +2015,8 @@
     <!-- STEP 8: Project modal functionality -->
     <script src="js/project-modal.js"></script>
 
-   <!-- ============================================ -->
-<!-- CARD VISIBILITY DIAGNOSTIC SCRIPT -->
-<!-- ============================================ -->
-<script>
-    // Debug card visibility
-    window.debugCardVisibility = function() {
-        console.log('\n=== CARD VISIBILITY DIAGNOSTIC ===\n');
-
-        const selectors = ['.blog-card', '.project-card', '.featured-project-card'];
-
-        selectors.forEach(selector => {
-            const cards = document.querySelectorAll(selector);
-            console.log(`\n${selector}: Found ${cards.length} cards`);
-
-            cards.forEach((card, i) => {
-                const styles = window.getComputedStyle(card);
-                const rect = card.getBoundingClientRect();
-
-                console.log(`  Card ${i + 1}:`);
-                console.log(`    - Opacity: ${styles.opacity}`);
-                console.log(`    - Visibility: ${styles.visibility}`);
-                console.log(`    - Display: ${styles.display}`);
-                console.log(`    - Width: ${styles.width} (${rect.width}px)`);
-                console.log(`    - Height: ${styles.height} (${rect.height}px)`);
-                console.log(`    - Transform: ${styles.transform}`);
-                console.log(`    - Position: ${styles.position}`);
-                console.log(`    - Background: ${styles.background.substring(0, 50)}...`);
-                console.log(`    - Border: ${styles.border}`);
-
-                if (styles.opacity === '0' || styles.visibility === 'hidden' || styles.display === 'none') {
-                    console.error(`    ❌ CARD IS INVISIBLE!`);
-                } else if (rect.width === 0 || rect.height === 0) {
-                    console.error(`    ❌ CARD HAS NO DIMENSIONS!`);
-                } else {
-                    console.log(`    ✅ Card is visible`);
-                }
-            });
-        });
-
-        // Check containers
-        console.log('\n=== CONTAINER DIAGNOSTIC ===\n');
-        const containers = ['.blog-grid', '#allProjectsGrid', '#featuredProjectsGrid'];
-
-        containers.forEach(selector => {
-            const container = document.querySelector(selector);
-            if (container) {
-                const styles = window.getComputedStyle(container);
-                console.log(`${selector}:`);
-                console.log(`  - Display: ${styles.display}`);
-                console.log(`  - Opacity: ${styles.opacity}`);
-                console.log(`  - Visibility: ${styles.visibility}`);
-                console.log(`  - Children: ${container.children.length}`);
-            } else {
-                console.warn(`${selector}: NOT FOUND`);
-            }
-        });
-
-        console.log('\n=== END DIAGNOSTIC ===\n');
-    };
-
-    // Auto-run diagnostic 3 seconds after page load
-    setTimeout(() => {
-        console.log('🔍 Running automatic card visibility diagnostic...');
-        window.debugCardVisibility();
-    }, 3000);
-</script>
+    <!-- STEP 9: Photo carousel for About page -->
+    <script src="js/photo-carousel.js"></script>
 
    <!-- ============================================ -->
 <!-- ANALYTICS INITIALIZATION -->
@@ -881,93 +2081,5 @@
     
     window.showGlobalError = showGlobalError;
 </script>
-    <!-- OLD JAVASCRIPT FILES - NO LONGER USED
-    These scripts have been replaced with the new modular structure above
-    <script src="js/main.js"></script>
-    <script src="js/projects_complex.js"></script>
-    <script src="js/forms.js"></script>
-    <script src="js/animations.js" defer></script>
-    <script src="js/blog.js" defer></script>
-    <script src="js/footer.js" defer></script>
-    -->
-    
-    <!-- Debug overlay functions
-    <script>
-        function toggleDebugOverlay() {
-            const overlay = document.getElementById('debugOverlay');
-            const isVisible = overlay.style.display !== 'none';
-            overlay.style.display = isVisible ? 'none' : 'block';
-            
-            if (!isVisible) {
-                updateDebugInfo();
-            }
-        }
-        
-        function updateDebugInfo() {
-            const content = document.getElementById('debugContent');
-            if (!content) return;
-            
-            let info = [];
-            
-            // Check projects data
-            if (typeof projectsData !== 'undefined') {
-                info.push('✅ Projects data: ' + projectsData.length + ' items');
-            } else {
-                info.push('❌ Projects data: Not found');
-            }
-            
-            // Check container
-            const container = document.getElementById('allProjectsGrid');
-            if (container) {
-                info.push('✅ Container: Found (' + container.children.length + ' children)');
-            } else {
-                info.push('❌ Container: Not found');
-            }
-            
-            // Check functions
-            const functions = ['initializeProjects', 'renderAllProjects', 'renderProjects'];
-            functions.forEach(funcName => {
-                if (typeof window[funcName] === 'function') {
-                    info.push('✅ ' + funcName + ': Available');
-                } else {
-                    info.push('❌ ' + funcName + ': Missing');
-                }
-            });
-            
-            // Check page visibility
-            const projectsPage = document.getElementById('projects');
-            if (projectsPage) {
-                const isActive = projectsPage.classList.contains('active');
-                info.push('📄 Projects page: ' + (isActive ? 'Active' : 'Inactive'));
-            }
-            
-            // Add manual render button
-            info.push('<br><button onclick="forceRenderProjects()" style="background: #00f5ff; color: #000; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 10px;">Force Render</button>');
-            
-            content.innerHTML = info.join('<br>');
-        }
-        
-        function forceRenderProjects() {
-            console.log('🔧 Force rendering projects...');
-            
-            // Switch to projects page first
-            showPage('projects');
-            
-            // Force render after a delay
-            setTimeout(() => {
-                if (typeof initializeProjects === 'function') {
-                    initializeProjects();
-                }
-            }, 500);
-            
-            updateDebugInfo();
-        }
-        
-        // Auto-update debug info every 2 seconds
-        setInterval(updateDebugInfo, 2000);
-    </script> -->
-    
-    <!-- EmailJS SDK (configure with your keys) - Load asynchronously -->
-    <!-- <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script> -->
 </body>
 </html>
