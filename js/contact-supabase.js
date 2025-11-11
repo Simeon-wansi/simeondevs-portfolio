@@ -1,7 +1,10 @@
 // ============================================
 // CONTACT FORM - SUPABASE INTEGRATION
-// Store contact messages in database
+// Enhanced with spam protection and validation
 // ============================================
+
+// Track form load time for spam detection
+let formLoadTime = 0;
 
 // ============================================
 // INITIALIZE CONTACT FORM
@@ -13,16 +16,21 @@ function initializeContactForm() {
         return;
     }
     
+    // Record form load time for spam detection
+    formLoadTime = Date.now();
+    
     form.addEventListener('submit', handleContactFormSubmission);
     
-    // Add real-time validation
-    const inputs = form.querySelectorAll('input, textarea');
-    inputs.forEach(input => {
-        input.addEventListener('blur', () => validateField(input));
-        input.addEventListener('input', () => clearFieldError(input));
-    });
+    // Add character counter for message field
+    const messageField = form.querySelector('#message');
+    if (messageField) {
+        messageField.addEventListener('input', updateCharCounter);
+    }
     
-    console.log('✅ Contact form initialized');
+    // Add FAQ toggle functionality
+    setupFAQToggles();
+    
+    console.log('✅ Contact form initialized with spam protection');
 }
 
 // ============================================
@@ -33,219 +41,294 @@ async function handleContactFormSubmission(e) {
     
     const form = e.target;
     const formData = new FormData(form);
+    
     const data = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        subject: formData.get('subject'),
-        message: formData.get('message')
+        name: formData.get('name')?.trim(),
+        email: formData.get('email')?.trim(),
+        subject: formData.get('subject') || 'General Inquiry',
+        message: formData.get('message')?.trim(),
+        honeypot: formData.get('website') // Spam trap
     };
     
     // Show loading state
-    showLoadingState(form);
+    showLoadingState();
     
     try {
-        // Validate form
-        if (!validateForm(form)) {
-            hideLoadingState(form);
+        // === SPAM PROTECTION CHECKS ===
+        
+        // 1. Honeypot check (bots fill hidden field)
+        if (data.honeypot) {
+            console.log('🚫 Spam detected: Honeypot filled');
+            hideLoadingState();
+            // Silent rejection - don't tell spammers
+            showSuccessMessage(); // Fake success
+            form.reset();
             return;
         }
         
-        // Insert into Supabase
+        // 2. Time-based check (bots submit too fast)
+        const submissionTime = Date.now();
+        const timeDifference = submissionTime - formLoadTime;
+        if (timeDifference < 3000) {
+            console.log('🚫 Spam detected: Too fast submission');
+            showErrorMessage('Please take a moment to review your message before sending.');
+            hideLoadingState();
+            return;
+        }
+        
+        // 3. Rate limiting (prevent multiple submissions)
+        const lastSubmission = localStorage.getItem('lastContactSubmit');
+        if (lastSubmission && (submissionTime - parseInt(lastSubmission)) < 60000) {
+            showErrorMessage('Please wait 1 minute between submissions.');
+            hideLoadingState();
+            return;
+        }
+        
+        // 4. Disposable email detection
+        if (isDisposableEmail(data.email)) {
+            showErrorMessage('Please use a permanent email address.');
+            hideLoadingState();
+            return;
+        }
+        
+        // 5. Message quality check
+        if (data.message.length < 20) {
+            showErrorMessage('Please provide more details (minimum 20 characters).');
+            hideLoadingState();
+            return;
+        }
+        
+        // 6. Spam keyword detection
+        if (containsSpamKeywords(data.message)) {
+            console.log('🚫 Spam detected: Spam keywords found');
+            hideLoadingState();
+            showSuccessMessage(); // Fake success
+            form.reset();
+            return;
+        }
+        
+        // === FORM VALIDATION ===
+        if (!validateContactForm(data)) {
+            hideLoadingState();
+            return;
+        }
+        
+        // === INSERT INTO SUPABASE ===
         const { error } = await supabaseClient
-            .from('contact_messages')
+            .from('contact_submissions')
             .insert({
                 name: data.name,
                 email: data.email,
                 subject: data.subject,
                 message: data.message,
-                status: 'new'
+                status: 'new',
+                created_at: new Date().toISOString()
             });
         
         if (error) {
             throw error;
         }
         
+        // Store submission time for rate limiting
+        localStorage.setItem('lastContactSubmit', submissionTime.toString());
+        
         // Show success message
-        showSuccessMessage(form);
+        showSuccessMessage();
         
         // Reset form
         form.reset();
+        updateCharCounter({ target: messageField });
         
         // Track submission
         console.log('✅ Contact form submitted successfully');
-        showNotification('Message sent successfully! 📧', 'success');
+        
+        // Optional: Send email notification (configure in Supabase triggers)
         
     } catch (error) {
         console.error('Contact form submission error:', error);
-        showErrorMessage(form, 'Failed to send message. Please try again or email directly.');
+        showErrorMessage('Failed to send message. Please try emailing directly at simeondevs1@gmail.com');
     } finally {
-        hideLoadingState(form);
+        hideLoadingState();
     }
+}
+
+// ============================================
+// SPAM PROTECTION FUNCTIONS
+// ============================================
+
+// Check for disposable/temporary email addresses
+function isDisposableEmail(email) {
+    const disposableDomains = [
+        'tempmail', 'guerrillamail', '10minutemail', 'throwaway', 
+        'mailinator', 'yopmail', 'temp-mail', 'fakeinbox',
+        'trashmail', 'getnada', 'maildrop', 'sharklasers'
+    ];
+    
+    const emailDomain = email.toLowerCase().split('@')[1];
+    if (!emailDomain) return true;
+    
+    return disposableDomains.some(domain => emailDomain.includes(domain));
+}
+
+// Check for common spam keywords
+function containsSpamKeywords(message) {
+    const spamKeywords = [
+        'viagra', 'casino', 'lottery', 'winner', 'congratulations',
+        'click here', 'buy now', 'limited time', 'act now', 'free money',
+        'nigerian prince', 'inheritance', 'bitcoin wallet', 'trading signals',
+        'make money fast', 'work from home', 'crypto investment'
+    ];
+    
+    const lowerMessage = message.toLowerCase();
+    return spamKeywords.some(keyword => lowerMessage.includes(keyword));
 }
 
 // ============================================
 // FORM VALIDATION
 // ============================================
-const validationRules = {
-    name: {
-        required: true,
-        minLength: 2,
-        pattern: /^[a-zA-Z\s]+$/,
-        message: 'Please enter a valid name (letters only, minimum 2 characters)'
-    },
-    email: {
-        required: true,
-        pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-        message: 'Please enter a valid email address'
-    },
-    subject: {
-        required: true,
-        minLength: 5,
-        message: 'Subject must be at least 5 characters long'
-    },
-    message: {
-        required: true,
-        minLength: 10,
-        message: 'Message must be at least 10 characters long'
-    }
-};
-
-function validateForm(form) {
-    const inputs = form.querySelectorAll('input, textarea');
-    let isValid = true;
-    
-    inputs.forEach(input => {
-        if (!validateField(input)) {
-            isValid = false;
-        }
-    });
-    
-    return isValid;
-}
-
-function validateField(field) {
-    const fieldName = field.name;
-    const fieldValue = field.value.trim();
-    const rules = validationRules[fieldName];
-    
-    if (!rules) return true;
-    
-    // Clear previous errors
-    clearFieldError(field);
-    
-    // Required field validation
-    if (rules.required && !fieldValue) {
-        showFieldError(field, `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required`);
+function validateContactForm(data) {
+    // Name validation
+    if (!data.name || data.name.length < 2) {
+        showErrorMessage('Please enter your name (minimum 2 characters).');
         return false;
     }
     
-    // Minimum length validation
-    if (rules.minLength && fieldValue.length < rules.minLength) {
-        showFieldError(field, rules.message);
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!data.email || !emailPattern.test(data.email)) {
+        showErrorMessage('Please enter a valid email address.');
         return false;
     }
     
-    // Pattern validation
-    if (rules.pattern && !rules.pattern.test(fieldValue)) {
-        showFieldError(field, rules.message);
+    // Message validation
+    if (!data.message || data.message.length < 20) {
+        showErrorMessage('Please provide more details in your message (minimum 20 characters).');
+        return false;
+    }
+    
+    // Check for excessive URLs (spam indicator)
+    const urlPattern = /(https?:\/\/[^\s]+)/g;
+    const urlCount = (data.message.match(urlPattern) || []).length;
+    if (urlCount > 2) {
+        showErrorMessage('Please limit URLs in your message.');
         return false;
     }
     
     return true;
 }
 
-function showFieldError(field, message) {
-    field.classList.add('error');
-    
-    // Remove existing error message
-    const existingError = field.parentNode.querySelector('.error-message');
-    if (existingError) {
-        existingError.remove();
-    }
-    
-    // Add new error message
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-    errorDiv.style.cssText = `
-        color: #ff006e;
-        font-size: 0.8rem;
-        margin-top: 0.25rem;
-        animation: slideIn 0.3s ease-out;
-    `;
-    
-    field.parentNode.appendChild(errorDiv);
-}
+// ============================================
+// UI FUNCTIONS
+// ============================================
 
-function clearFieldError(field) {
-    field.classList.remove('error');
-    const errorMessage = field.parentNode.querySelector('.error-message');
-    if (errorMessage) {
-        errorMessage.remove();
+// Update character counter for message field
+function updateCharCounter(e) {
+    const messageField = e.target;
+    const charCount = messageField.value.length;
+    const counter = document.querySelector('.char-counter');
+    
+    if (counter) {
+        if (charCount === 0) {
+            counter.textContent = 'Minimum 20 characters';
+            counter.style.color = 'var(--text-muted)';
+        } else if (charCount < 20) {
+            counter.textContent = `${20 - charCount} characters remaining`;
+            counter.style.color = '#F59E0B';
+        } else {
+            counter.textContent = `✓ ${charCount} characters`;
+            counter.style.color = '#10B981';
+        }
     }
 }
 
-// ============================================
-// UI STATE MANAGEMENT
-// ============================================
-function showLoadingState(form) {
-    const submitBtn = form.querySelector('button[type="submit"]');
+// Show loading state
+function showLoadingState() {
+    const submitBtn = document.querySelector('.form-submit');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    
     if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = `
-            <span style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                <div class="spinner"></div>
-                Sending...
-            </span>
-        `;
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'flex';
     }
 }
 
-function hideLoadingState(form) {
-    const submitBtn = form.querySelector('button[type="submit"]');
+// Hide loading state
+function hideLoadingState() {
+    const submitBtn = document.querySelector('.form-submit');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    
     if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Send Message';
+        btnText.style.display = 'block';
+        btnLoading.style.display = 'none';
     }
 }
 
-function showSuccessMessage(form) {
-    const message = createStatusMessage('success', '✅ Message sent successfully! I\'ll get back to you soon.');
-    form.parentNode.insertBefore(message, form);
-    
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-        message.remove();
-    }, 5000);
+// Show success message
+function showSuccessMessage() {
+    const messageDiv = document.getElementById('form-message');
+    if (messageDiv) {
+        messageDiv.className = 'form-message success';
+        messageDiv.innerHTML = `
+            <strong>✅ Message sent successfully!</strong><br>
+            Thank you for reaching out. I'll get back to you within 24 hours.<br>
+            <small>Check your email for a confirmation.</small>
+        `;
+        messageDiv.style.display = 'block';
+        
+        // Scroll to message
+        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Hide after 8 seconds
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 8000);
+    }
 }
 
-function showErrorMessage(form, errorText) {
-    const message = createStatusMessage('error', '❌ ' + errorText);
-    form.parentNode.insertBefore(message, form);
-    
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-        message.remove();
-    }, 5000);
+// Show error message
+function showErrorMessage(errorText) {
+    const messageDiv = document.getElementById('form-message');
+    if (messageDiv) {
+        messageDiv.className = 'form-message error';
+        messageDiv.innerHTML = `
+            <strong>❌ ${errorText}</strong><br>
+            <small>Need immediate help? Email me directly at <a href="mailto:simeondevs1@gmail.com">simeondevs1@gmail.com</a></small>
+        `;
+        messageDiv.style.display = 'block';
+        
+        // Scroll to message
+        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Hide after 10 seconds
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 10000);
+    }
 }
 
-function createStatusMessage(type, text) {
-    const message = document.createElement('div');
-    message.className = `status-message ${type}`;
-    message.textContent = text;
-    message.style.cssText = `
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        font-weight: 500;
-        animation: slideIn 0.3s ease-out;
-        ${type === 'success' ? 
-            'background: rgba(0, 255, 65, 0.1); border: 1px solid #00ff41; color: #00ff41;' : 
-            'background: rgba(255, 0, 110, 0.1); border: 1px solid #ff006e; color: #ff006e;'
-        }
-    `;
-    
-    return message;
+// ============================================
+// FAQ TOGGLE FUNCTIONALITY
+// ============================================
+function setupFAQToggles() {
+    // Make toggleFAQ function globally available
+    window.toggleFAQ = function(button) {
+        const faqItem = button.closest('.faq-item');
+        const isActive = faqItem.classList.contains('active');
+        
+        // Close all other FAQs
+        document.querySelectorAll('.faq-item.active').forEach(item => {
+            if (item !== faqItem) {
+                item.classList.remove('active');
+            }
+        });
+        
+        // Toggle current FAQ
+        faqItem.classList.toggle('active');
+    };
 }
 
 // ============================================
@@ -253,7 +336,7 @@ function createStatusMessage(type, text) {
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
     initializeContactForm();
-    console.log('✅ Contact Supabase module loaded');
+    console.log('✅ Contact Supabase module loaded with spam protection');
 });
 
 // ============================================

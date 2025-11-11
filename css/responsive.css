@@ -86,9 +86,10 @@
         grid-template-columns: 1fr;
     }
     
-    .about-stats {
+    /* .about-stats - MOVED TO about-enhanced.css for better responsive control */
+    /* .about-stats {
         grid-template-columns: 1fr;
-    }
+    } */
     
     .projects-grid {
         grid-template-columns: 1fr;
