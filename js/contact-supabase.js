@@ -12,7 +12,6 @@ let formLoadTime = 0;
 function initializeContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) {
-        console.log('ℹ️ Contact form not found');
         return;
     }
     
@@ -30,7 +29,6 @@ function initializeContactForm() {
     // Add FAQ toggle functionality
     setupFAQToggles();
     
-    console.log('✅ Contact form initialized with spam protection');
 }
 
 // ============================================
@@ -58,7 +56,6 @@ async function handleContactFormSubmission(e) {
         
         // 1. Honeypot check (bots fill hidden field)
         if (data.honeypot) {
-            console.log('🚫 Spam detected: Honeypot filled');
             hideLoadingState();
             // Silent rejection - don't tell spammers
             showSuccessMessage(); // Fake success
@@ -70,7 +67,6 @@ async function handleContactFormSubmission(e) {
         const submissionTime = Date.now();
         const timeDifference = submissionTime - formLoadTime;
         if (timeDifference < 3000) {
-            console.log('🚫 Spam detected: Too fast submission');
             showErrorMessage('Please take a moment to review your message before sending.');
             hideLoadingState();
             return;
@@ -100,7 +96,6 @@ async function handleContactFormSubmission(e) {
         
         // 6. Spam keyword detection
         if (containsSpamKeywords(data.message)) {
-            console.log('🚫 Spam detected: Spam keywords found');
             hideLoadingState();
             showSuccessMessage(); // Fake success
             form.reset();
@@ -137,10 +132,10 @@ async function handleContactFormSubmission(e) {
         
         // Reset form
         form.reset();
-        updateCharCounter({ target: messageField });
+        const messageField = form.querySelector('#message');
+        if (messageField) updateCharCounter({ target: messageField });
         
         // Track submission
-        console.log('✅ Contact form submitted successfully');
         
         // Optional: Send email notification (configure in Supabase triggers)
         
@@ -336,10 +331,6 @@ function setupFAQToggles() {
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
     initializeContactForm();
-    console.log('✅ Contact Supabase module loaded with spam protection');
 });
 
-// ============================================
-// EXPORT FUNCTIONS
-// ============================================
-window.initializeContactForm = initializeContactForm;
+// contact-supabase.js self-initializes via DOMContentLoaded above, no external exports needed

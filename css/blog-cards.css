@@ -1,0 +1,321 @@
+/* ============================================
+   BLOG CARDS — EDITORIAL DARK
+   Single source of truth for all blog card styles.
+   ============================================ */
+
+/* === STAGGER ENTRANCE (reuses cardReveal keyframe from project-cards-minimal.css) === */
+@keyframes cardReveal {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ============================================
+   CARD SHELL
+   ============================================ */
+
+.blog-card {
+    background: rgba(22, 8, 44, 0.72);
+    border: 1px solid rgba(157, 78, 221, 0.2);
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    backdrop-filter: blur(4px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+    animation: cardReveal 0.48s cubic-bezier(0.4, 0, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 0.08s);
+}
+
+.blog-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(157, 78, 221, 0.5);
+    box-shadow: 0 16px 40px rgba(157, 78, 221, 0.2),
+                0 0 0 1px rgba(157, 78, 221, 0.1);
+}
+
+/* Gold top-border for featured articles */
+.blog-card.is-featured {
+    border-top: 2px solid rgba(232, 169, 32, 0.55);
+}
+
+/* ============================================
+   CARD IMAGE
+   ============================================ */
+
+.blog-card-image {
+    position: relative;
+    width: 100%;
+    height: 196px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.45);
+    flex-shrink: 0;
+}
+
+.blog-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blog-card:hover .blog-card-img {
+    transform: scale(1.06);
+}
+
+/* Bottom gradient blends image into card body */
+.blog-card-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top,
+        rgba(22, 8, 44, 0.75) 0%,
+        transparent 55%);
+    pointer-events: none;
+}
+
+/* No-image state */
+.blog-card-image.no-image {
+    background: linear-gradient(135deg,
+        rgba(157, 78, 221, 0.22) 0%,
+        rgba(12, 4, 26, 0.97) 55%,
+        rgba(232, 169, 32, 0.08) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.blog-card-image.no-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 30% 50%, rgba(157, 78, 221, 0.25) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 50%, rgba(232, 169, 32, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.blog-card-placeholder-letter {
+    font-size: clamp(3.5rem, 5vw, 5rem);
+    font-weight: 900;
+    color: rgba(192, 132, 252, 0.3);
+    line-height: 1;
+    user-select: none;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================================
+   FEATURED BADGE (on image, top-left)
+   ============================================ */
+
+.blog-featured-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.25rem 0.625rem;
+    background: rgba(232, 169, 32, 0.15);
+    color: #e8a920;
+    border: 1px solid rgba(232, 169, 32, 0.38);
+    border-radius: 6px;
+    font-size: 0.66rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    backdrop-filter: blur(10px);
+    z-index: 2;
+}
+
+.blog-featured-badge svg {
+    width: 9px;
+    height: 9px;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   CARD BODY
+   ============================================ */
+
+.blog-card-body {
+    padding: 1.125rem 1.375rem 1.375rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    flex: 1;
+}
+
+/* ============================================
+   META LINE — category + date
+   ============================================ */
+
+.blog-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.blog-card-category {
+    font-size: 0.63rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--primary-gold);
+    line-height: 1;
+}
+
+.blog-card-date {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.32);
+    font-weight: 500;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+/* ============================================
+   TITLE
+   ============================================ */
+
+.blog-card-title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.4;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    letter-spacing: -0.01em;
+    transition: color 0.2s ease;
+}
+
+.blog-card:hover .blog-card-title {
+    color: #fff;
+}
+
+/* ============================================
+   EXCERPT
+   ============================================ */
+
+.blog-card-excerpt {
+    font-size: 0.84rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.65;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+}
+
+/* ============================================
+   TAGS
+   ============================================ */
+
+.blog-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.32rem;
+}
+
+.blog-card-tag {
+    font-size: 0.66rem;
+    font-weight: 600;
+    color: #c084fc;
+    background: rgba(157, 78, 221, 0.09);
+    border: 1px solid rgba(157, 78, 221, 0.22);
+    border-radius: 4px;
+    padding: 0.18rem 0.5rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+/* ============================================
+   CARD FOOTER — reading time + views
+   ============================================ */
+
+.blog-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(157, 78, 221, 0.12);
+    margin-top: auto;
+}
+
+.blog-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.32);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.blog-stat svg {
+    width: 12px;
+    height: 12px;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   EMPTY / ERROR STATES
+   ============================================ */
+
+.no-blog-message,
+.blog-error-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.no-blog-message h3,
+.blog-error-state h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.no-blog-message p,
+.blog-error-state p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .blog-card-image {
+        height: 172px;
+    }
+
+    .blog-card-body {
+        padding: 1rem 1.125rem 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-card-image {
+        height: 156px;
+    }
+
+    .blog-card-title {
+        font-size: 1rem;
+    }
+}

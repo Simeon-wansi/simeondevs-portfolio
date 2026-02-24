@@ -114,10 +114,5 @@ function initTitleRotator() {
         interval: 3500
     });
 
-    console.log('✅ Title Rotator initialized');
 }
 
-// Export for potential future use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TitleRotator;
-}

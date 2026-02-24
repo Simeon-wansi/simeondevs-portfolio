@@ -2,113 +2,20 @@
 // Newsletter subscription and footer functionality
 
 // Initialize footer functionality
+// Note: newsletter form is handled exclusively by newsletter-supabase.js
 document.addEventListener('DOMContentLoaded', function() {
     initializeFooter();
-    setupNewsletterForm();
     setupFooterAnimations();
 });
 
 // Initialize footer system
 function initializeFooter() {
-    console.log('📧 Footer and newsletter system initialized');
     
     // Add footer scroll animations
     observeFooterElements();
     
     // Setup social link tracking
     setupSocialTracking();
-}
-
-// Newsletter form handling
-function setupNewsletterForm() {
-    const newsletterForm = document.getElementById('newsletter-form');
-    if (!newsletterForm) return;
-    
-    newsletterForm.addEventListener('submit', handleNewsletterSubmission);
-}
-
-// Handle newsletter subscription
-async function handleNewsletterSubmission(e) {
-    e.preventDefault();
-    
-    const emailInput = document.getElementById('newsletter-email');
-    const email = emailInput.value.trim();
-    
-    if (!validateEmail(email)) {
-        showNewsletterMessage('Please enter a valid email address.', 'error');
-        return;
-    }
-    
-    // Show loading state
-    const submitBtn = e.target.querySelector('.newsletter-btn');
-    const originalHTML = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<div class="spinner"></div>';
-    submitBtn.disabled = true;
-    
-    try {
-        // Simulate newsletter subscription (replace with actual API call)
-        await subscribeToNewsletter(email);
-        
-        // Success state
-        showNewsletterMessage('🎉 Successfully subscribed! Welcome to the SimeonDev newsletter.', 'success');
-        emailInput.value = '';
-        
-        // Track subscription
-        trackNewsletterSubscription(email);
-        
-    } catch (error) {
-        console.error('Newsletter subscription failed:', error);
-        showNewsletterMessage('Subscription failed. Please try again later.', 'error');
-    } finally {
-        // Reset button
-        submitBtn.innerHTML = originalHTML;
-        submitBtn.disabled = false;
-    }
-}
-
-// Newsletter subscription API (mock implementation)
-async function subscribeToNewsletter(email) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            // Simulate API call
-            if (email.includes('test@')) {
-                reject(new Error('Test email rejected'));
-            } else {
-                resolve({ success: true, message: 'Subscribed successfully' });
-            }
-        }, 1500);
-    });
-}
-
-// Show newsletter message
-function showNewsletterMessage(message, type) {
-    // Remove existing message
-    const existingMessage = document.querySelector('.newsletter-message');
-    if (existingMessage) {
-        existingMessage.remove();
-    }
-    
-    // Create new message
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `newsletter-message ${type}`;
-    messageDiv.textContent = message;
-    
-    // Add to form
-    const form = document.getElementById('newsletter-form');
-    form.appendChild(messageDiv);
-    
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-        if (messageDiv.parentNode) {
-            messageDiv.remove();
-        }
-    }, 5000);
-}
-
-// Email validation
-function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
 }
 
 // Setup footer animations
@@ -177,29 +84,11 @@ function setupSocialTracking() {
 
 // Track social media clicks
 function trackSocialClick(platform) {
-    console.log(`📊 Social click tracked: ${platform}`);
     
     // Store in localStorage for analytics
     const socialClicks = JSON.parse(localStorage.getItem('socialClicks') || '{}');
     socialClicks[platform] = (socialClicks[platform] || 0) + 1;
     localStorage.setItem('socialClicks', JSON.stringify(socialClicks));
-}
-
-// Track newsletter subscription
-function trackNewsletterSubscription(email) {
-    console.log('📈 Newsletter subscription tracked');
-    
-    // Store subscription data (anonymized)
-    const subscriptionData = {
-        timestamp: new Date().toISOString(),
-        domain: email.split('@')[1],
-        success: true
-    };
-    
-    // Store in localStorage
-    const subscriptions = JSON.parse(localStorage.getItem('newsletterSubscriptions') || '[]');
-    subscriptions.push(subscriptionData);
-    localStorage.setItem('newsletterSubscriptions', JSON.stringify(subscriptions));
 }
 
 // Privacy Policy modal

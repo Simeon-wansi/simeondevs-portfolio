@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(test:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(grep:*)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []

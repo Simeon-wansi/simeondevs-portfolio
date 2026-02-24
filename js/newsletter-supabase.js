@@ -14,7 +14,6 @@ function initializeNewsletterForm() {
     }
     
     newsletterForm.addEventListener('submit', handleNewsletterSubmission);
-    console.log('✅ Newsletter form initialized');
 }
 
 // ============================================
@@ -90,7 +89,6 @@ async function handleNewsletterSubmission(e) {
             emailInput.value = '';
             
             // Track subscription
-            console.log('✅ Newsletter subscription successful:', email);
         }
         
     } catch (error) {
@@ -159,10 +157,6 @@ function showNewsletterMessage(message, type) {
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
     initializeNewsletterForm();
-    console.log('✅ Newsletter Supabase module loaded');
 });
 
-// ============================================
-// EXPORT FUNCTIONS
-// ============================================
-window.initializeNewsletterForm = initializeNewsletterForm;
+// newsletter-supabase.js self-initializes via DOMContentLoaded above, no external exports needed

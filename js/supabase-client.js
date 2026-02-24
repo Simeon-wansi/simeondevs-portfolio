@@ -43,9 +43,7 @@ if (supabaseAnonKey === 'YOUR_SUPABASE_ANON_KEY' || !supabaseAnonKey) {
 
 // Log configuration source (for debugging)
 if (window.SUPABASE_CONFIG) {
-    console.log('✅ Using local config (js/config.js)');
 } else if (window.ENV?.SUPABASE_URL) {
-    console.log('✅ Using environment variables (Vercel)');
 } else {
     console.warn('⚠️  No configuration found - using fallback placeholders');
 }
@@ -96,7 +94,6 @@ async function trackPageView(pageName, pagePath = window.location.pathname) {
         if (error) {
             console.warn('Page view tracking failed:', error);
         } else {
-            console.log(`📊 Page view tracked: ${pageName}`);
         }
     } catch (err) {
         console.error('Analytics error:', err);
@@ -108,32 +105,19 @@ async function trackPageView(pageName, pagePath = window.location.pathname) {
 // ============================================
 async function trackProjectClick(projectId, clickType) {
     try {
-        // Insert click record
-        const { error: clickError } = await supabaseClient
+        const { error } = await supabaseClient
             .from('project_clicks')
             .insert({
                 project_id: projectId,
-                click_type: clickType, // 'github', 'demo', 'details'
+                click_type: clickType,
                 visitor_id: getOrCreateVisitorId()
             });
-        
-        if (clickError) {
-            console.warn('Click tracking failed:', clickError);
+
+        if (error) {
+            console.warn('Click tracking failed:', error);
             return;
         }
-        
-        // Increment aggregate counter in projects table
-        const counterField = clickType === 'github' ? 'github_clicks' : 
-                           clickType === 'demo' ? 'demo_clicks' : null;
-        
-        if (counterField) {
-            await supabaseClient
-                .from('projects')
-                .update({ [counterField]: supabaseClient.raw(`${counterField} + 1`) })
-                .eq('id', projectId);
-        }
-        
-        console.log(`📊 Project click tracked: ${clickType} on project ${projectId}`);
+
     } catch (err) {
         console.error('Click tracking error:', err);
     }
@@ -163,7 +147,6 @@ async function trackBlogPostView(blogPostId) {
             .update({ view_count: supabaseClient.raw('view_count + 1') })
             .eq('id', blogPostId);
         
-        console.log(`📊 Blog post view tracked: ${blogPostId}`);
     } catch (err) {
         console.error('Blog view tracking error:', err);
     }
@@ -178,4 +161,3 @@ window.trackProjectClick = trackProjectClick;
 window.trackBlogPostView = trackBlogPostView;
 window.getOrCreateVisitorId = getOrCreateVisitorId;
 
-console.log('✅ Supabase client initialized');

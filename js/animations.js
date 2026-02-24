@@ -262,7 +262,7 @@ style.textContent = `
         transition: all 0.6s ease-out;
     }
     
-    .nav-links.mobile-open {
+    .nav-links.active {
         display: flex !important;
         flex-direction: column;
         position: absolute;
@@ -274,9 +274,9 @@ style.textContent = `
         padding: 1rem;
         border-radius: 0 0 10px 10px;
     }
-    
+
     @media (max-width: 768px) {
-        .mobile-toggle {
+        .mobile-menu-toggle {
             display: block !important;
         }
         .nav-links {
@@ -286,9 +286,4 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Export functions for global use
-window.SimeonDevAnimations = {
-    createParticles,
-    createMouseTrail,
-    createClickEffect
-};
+// animations.js self-contained, no external exports needed

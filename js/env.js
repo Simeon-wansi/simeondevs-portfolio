@@ -4,11 +4,9 @@
 // ============================================
 
 (function() {
-    console.log('🔧 Loading environment configuration...');
     
     // Check if config already exists (local development with config.js)
     if (window.SUPABASE_CONFIG) {
-        console.log('✅ Using local config.js for development');
         return;
     }
     
@@ -22,6 +20,4 @@
         anonKey: supabaseAnonKey
     };
     
-    console.log('✅ Environment variables loaded');
-    console.log('   Supabase URL:', supabaseUrl.substring(0, 30) + '...');
 })();

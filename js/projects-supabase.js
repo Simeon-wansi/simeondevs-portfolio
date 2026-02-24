@@ -94,7 +94,6 @@ async function fetchProjects(featured = null) {
             return [];
         }
 
-        console.log(`✅ Fetched ${data.length} projects`);
         return data;
 
     } catch (error) {
@@ -104,66 +103,108 @@ async function fetchProjects(featured = null) {
 }
 
 // ============================================
-// RENDER MINIMALIST PROJECT CARD
+// BADGE SVG ICONS
 // ============================================
 
-function createProjectCard(project) {
-    const card = document.createElement('div');
-    card.className = 'project-card-minimal';
-    card.setAttribute('data-project-id', project.id);
-    card.setAttribute('data-project-slug', project.slug);
-    card.onclick = () => openProjectModal(project);
+const BADGE_ICONS = {
+    featured:   `<svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
+    completed:  `<svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+    inProgress: `<svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+};
 
-    // Status badges
+// ============================================
+// HELPER - BUILD BADGES HTML
+// ============================================
+
+function buildBadgesHTML(project) {
     const badges = [];
     if (project.featured) {
-        badges.push(`
-            <span class="project-badge badge-featured">
-                ⭐ Featured
-            </span>
-        `);
+        badges.push(`<span class="project-badge badge-featured">${BADGE_ICONS.featured} Featured</span>`);
     }
-
     const statusBadge = project.status === 'completed'
-        ? '<span class="project-badge badge-completed">✅ Completed</span>'
-        : '<span class="project-badge badge-in-progress">🔨 In Progress</span>';
+        ? `<span class="project-badge badge-completed">${BADGE_ICONS.completed} Completed</span>`
+        : `<span class="project-badge badge-in-progress">${BADGE_ICONS.inProgress} In Progress</span>`;
     badges.push(statusBadge);
+    return badges.join('');
+}
 
-    // Tech tags (show first 3)
-    const techTags = project.technologies.slice(0, 3).map(tech =>
-        `<span class="tech-tag-minimal">${tech}</span>`
-    ).join('');
+// ============================================
+// HELPER - BUILD METRICS STRIP HTML
+// ============================================
 
-    // Format date
-    const date = new Date(project.completed_date || project.created_at);
-    const formattedDate = date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short'
-    });
+function buildMetricsHTML(project) {
+    const scores = [
+        { label: 'Complexity', value: project.complexity_score,       color: '#c084fc' },
+        { label: 'Innovation', value: project.innovation_score,       color: '#e8a920' },
+        { label: 'Impact',     value: project.business_impact_score,  color: '#34d399' },
+    ].filter(s => s.value != null && s.value > 0);
 
-    // Handle missing images with gradient fallback
+    if (scores.length === 0) return '';
+
+    return `
+        <div class="project-metrics">
+            ${scores.map(s => `
+                <div class="metric-item">
+                    <span class="metric-label">${s.label}</span>
+                    <div class="metric-track">
+                        <div class="metric-fill" style="--metric-val: ${Math.round((s.value / 10) * 100)}%; --metric-color: ${s.color};"></div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+// ============================================
+// HELPER - BUILD IMAGE HTML
+// ============================================
+
+function buildImageHTML(project) {
     const imageUrl = project.thumbnail_url || project.image_url;
     const hasImage = isValidImageUrl(imageUrl);
+    const firstLetter = (project.title || 'P').charAt(0).toUpperCase();
 
-    // Create image HTML or gradient fallback
     const imageHTML = hasImage ? `
-        <img src="${imageUrl}" 
-             alt="${project.title}" 
+        <img src="${imageUrl}"
+             alt="${project.title}"
              class="project-image"
              loading="lazy"
              onerror="this.style.display='none'; this.parentElement.classList.add('no-image')">
     ` : `
         <div class="project-image-placeholder">
-            <div class="placeholder-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <polyline points="21 15 16 10 5 21"/>
-                </svg>
-            </div>
-            <div class="placeholder-text">${project.title}</div>
+            <div class="placeholder-letter">${firstLetter}</div>
         </div>
     `;
+
+    return { hasImage, imageHTML };
+}
+
+// ============================================
+// CREATE PROJECT CARD
+// ============================================
+
+function createProjectCard(project, index = 0) {
+    const card = document.createElement('div');
+    card.className = `project-card-minimal${project.featured ? ' is-featured' : ''}`;
+    card.setAttribute('data-project-id', project.id);
+    card.setAttribute('data-project-slug', project.slug || '');
+    card.style.setProperty('--i', index);
+    card.onclick = () => openProjectModal(project);
+
+    const { hasImage, imageHTML } = buildImageHTML(project);
+    const allTechs = project.technologies || [];
+    const visibleTechs = allTechs.slice(0, 4);
+    const extraCount = allTechs.length - visibleTechs.length;
+    const techTags = visibleTechs.map(tech =>
+        `<span class="tech-tag-minimal">${tech}</span>`
+    ).join('') + (extraCount > 0 ? `<span class="tech-tag-minimal tech-tag-more">+${extraCount}</span>` : '');
+
+    const date = new Date(project.completed_date || project.created_at);
+    const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+
+    const roleText = project.role
+        ? `<div class="project-role">${project.role}${project.project_duration ? ' · ' + project.project_duration : ''}</div>`
+        : '';
 
     card.innerHTML = `
         <div class="project-image-wrapper ${!hasImage ? 'no-image' : ''}">
@@ -178,28 +219,19 @@ function createProjectCard(project) {
                 </span>
             </div>
             <div class="project-badges">
-                ${badges.join('')}
+                ${buildBadgesHTML(project)}
             </div>
         </div>
 
         <div class="project-content">
             <h3 class="project-title">${project.title}</h3>
-
-            <div class="project-techs">
-                ${techTags}
-            </div>
-
-            <p class="project-tagline">
-                ${project.tagline || project.description}
-            </p>
-
+            ${roleText}
+            <div class="project-techs">${techTags}</div>
+            <p class="project-tagline">${project.tagline || project.description || ''}</p>
+            ${buildMetricsHTML(project)}
             <div class="project-footer">
-                <span class="project-category">
-                    🎯 ${project.category}
-                </span>
-                <span class="project-date">
-                    ${formattedDate}
-                </span>
+                <span class="project-category">${project.category || ''}</span>
+                <span class="project-date">${formattedDate}</span>
             </div>
         </div>
     `;
@@ -236,12 +268,11 @@ async function renderFeaturedProjects() {
     }
 
     grid.innerHTML = '';
-    projects.forEach(project => {
-        const card = createProjectCard(project);
+    projects.forEach((project, i) => {
+        const card = createProjectCard(project, i);
         grid.appendChild(card);
     });
 
-    console.log(`✅ Rendered ${projects.length} featured projects`);
 }
 
 async function renderAllProjects() {
@@ -257,7 +288,7 @@ async function renderAllProjects() {
         </div>
     `;
 
-    const projects = await fetchProjects(false); // Non-featured only
+    const projects = await fetchProjects(null); // All published projects
 
     if (projects.length === 0) {
         grid.innerHTML = `
@@ -270,12 +301,11 @@ async function renderAllProjects() {
     }
 
     grid.innerHTML = '';
-    projects.forEach(project => {
-        const card = createProjectCard(project);
+    projects.forEach((project, i) => {
+        const card = createProjectCard(project, i);
         grid.appendChild(card);
     });
 
-    console.log(`✅ Rendered ${projects.length} projects`);
 }
 
 // ============================================
@@ -297,27 +327,6 @@ async function incrementProjectViews(projectId) {
 }
 
 // ============================================
-// TRACK LINK CLICKS
-// ============================================
-
-async function trackProjectClick(projectId, clickType) {
-    try {
-        const field = `${clickType}_clicks`; // github_clicks, demo_clicks, blog_clicks
-
-        const { error } = await supabaseClient.rpc('increment_project_clicks', {
-            project_id: projectId,
-            click_field: field
-        });
-
-        if (error) {
-            console.error(`Error tracking ${clickType} click:`, error);
-        }
-    } catch (error) {
-        console.error('Unexpected error tracking click:', error);
-    }
-}
-
-// ============================================
 // INITIALIZE ON PAGE LOAD
 // ============================================
 
@@ -328,12 +337,10 @@ if (document.readyState === 'loading') {
 }
 
 async function initProjects() {
-    console.log('🚀 Initializing projects...');
 
     await renderFeaturedProjects();
     await renderAllProjects();
 
-    console.log('✅ Projects initialized');
 }
 
 // ============================================
@@ -363,15 +370,15 @@ async function filterProjects(category) {
 
     grid.innerHTML = '<div class="loading-skeleton"><div class="skeleton-card"></div></div>';
 
-    let projects = await fetchProjects(false);
+    let projects = await fetchProjects(null); // All published projects
 
     if (category !== 'all') {
         projects = projects.filter(p => p.category === category);
     }
 
     grid.innerHTML = '';
-    projects.forEach(project => {
-        const card = createProjectCard(project);
+    projects.forEach((project, i) => {
+        const card = createProjectCard(project, i);
         grid.appendChild(card);
     });
 }
@@ -380,7 +387,9 @@ async function filterProjects(category) {
 // EXPORT FUNCTIONS FOR GLOBAL ACCESS
 // ============================================
 
-window.fetchProjects = fetchProjects;
-window.renderFeaturedProjects = renderFeaturedProjects;
-window.renderAllProjects = renderAllProjects;
+// Called by main.js initializePageData('home')
+window.loadFeaturedProjects = renderFeaturedProjects;
+// Called by main.js initializePageData('projects') and triggerPageAnimations('projects')
+window.initializeProjects = initProjects;
+// Called from filter button click handlers
 window.filterProjects = filterProjects;

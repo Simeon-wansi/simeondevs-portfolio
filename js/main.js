@@ -1,17 +1,34 @@
 // Simeondevs Portfolio - Main JavaScript File
 // Navigation & Core Functionality
 
+// Block right-click save and drag on images
+document.addEventListener('contextmenu', function(e) {
+    if (e.target.tagName === 'IMG') e.preventDefault();
+});
+document.addEventListener('dragstart', function(e) {
+    if (e.target.tagName === 'IMG') e.preventDefault();
+});
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
     setupNavigation();
     setupMobileMenu();
     initializeScrollAnimations();
+    initializeNavScroll();
 });
+
+// Nav scroll state - adds .scrolled to <nav> after 50px
+function initializeNavScroll() {
+    const nav = document.querySelector('nav');
+    if (!nav) return;
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 50);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // apply immediately on load in case page restores a scroll position
+}
 
 // Initialize core application features
 function initializeApp() {
-    console.log('🚀 SimeonDev Portfolio Initialized');
     
     // Load user preferences from localStorage
     loadUserPreferences();
@@ -26,11 +43,9 @@ function initializeApp() {
 
 // Main page switching functionality (UPDATED)
 function showPage(pageId) {
-    console.log(`\n🔄 Page switch initiated: ${pageId}`);
     
     // Hide all pages
     const pages = document.querySelectorAll('.page');
-    console.log(`📄 Found ${pages.length} pages to hide`);
     pages.forEach(page => {
         page.classList.remove('active');
         page.style.opacity = '0';
@@ -40,7 +55,6 @@ function showPage(pageId) {
     setTimeout(() => {
         const targetPage = document.getElementById(pageId);
         if (targetPage) {
-            console.log(`✅ Target page found: ${pageId}`);
             targetPage.classList.add('active');
             targetPage.style.opacity = '1';
             
@@ -50,7 +64,6 @@ function showPage(pageId) {
             // Save current page
             localStorage.setItem('currentPage', pageId);
             
-            console.log(`🎯 Page ${pageId} now active, triggering initialization...`);
             
             // Initialize page-specific Supabase data
             initializePageData(pageId);
@@ -64,11 +77,9 @@ function showPage(pageId) {
 // INITIALIZE PAGE-SPECIFIC DATA FROM SUPABASE
 // ============================================
 function initializePageData(pageId) {
-    console.log(`🔄 Initializing data for page: ${pageId}`);
 
     switch(pageId) {
         case 'home':
-            console.log('🏠 Loading featured content on home page...');
 
             // Load featured projects
             if (typeof loadFeaturedProjects === 'function') {
@@ -86,7 +97,6 @@ function initializePageData(pageId) {
             break;
             
         case 'projects':
-            console.log('📁 Loading projects from Supabase...');
             if (typeof initializeProjects === 'function') {
                 initializeProjects();
             } else {
@@ -95,7 +105,6 @@ function initializePageData(pageId) {
             break;
             
         case 'blog':
-            console.log('📝 Loading blog posts from Supabase...');
             if (typeof initializeBlog === 'function') {
                 initializeBlog();
             } else {
@@ -104,20 +113,16 @@ function initializePageData(pageId) {
             break;
             
         case 'about':
-            console.log('👤 About page - using static content');
             break;
             
         case 'services':
-            console.log('💼 Services page - using static content');
             // Future: Load from Supabase if needed
             break;
             
         case 'contact':
-            console.log('📧 Contact page ready');
             break;
             
         default:
-            console.log(`ℹ️ Page ${pageId} - no special initialization needed`);
     }
 }
 
@@ -151,22 +156,21 @@ function setupNavigation() {
 
 // Mobile menu setup - simplified since HTML already has the button
 function setupMobileMenu() {
-    console.log('📱 Mobile menu setup completed');
 }
 
 // Mobile Menu Toggle Functionality
 function toggleMobileMenu() {
     const navLinks = document.getElementById('navLinks');
     const mobileToggle = document.getElementById('mobileMenuToggle');
-    
-    navLinks.classList.toggle('active');
+
+    const isOpen = navLinks.classList.toggle('active');
     mobileToggle.classList.toggle('active');
-    
-    // Close mobile menu when a link is clicked
-    if (navLinks.classList.contains('active')) {
-        const navItems = navLinks.querySelectorAll('a');
-        navItems.forEach(item => {
-            item.addEventListener('click', closeMobileMenu);
+    mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+    // Attach close-on-click to links when opening
+    if (isOpen) {
+        navLinks.querySelectorAll('a').forEach(item => {
+            item.addEventListener('click', closeMobileMenu, { once: true });
         });
     }
 }
@@ -174,9 +178,10 @@ function toggleMobileMenu() {
 function closeMobileMenu() {
     const navLinks = document.getElementById('navLinks');
     const mobileToggle = document.getElementById('mobileMenuToggle');
-    
+
     navLinks.classList.remove('active');
     mobileToggle.classList.remove('active');
+    mobileToggle.setAttribute('aria-expanded', 'false');
 }
 
 // Close mobile menu when clicking outside
@@ -219,7 +224,6 @@ function triggerPageAnimations(pageId) {
             animateSkillCards();
             break;
         case 'projects':
-            console.log('🎯 Switching to projects page');
             
             // Initialize projects first, then animate
             setTimeout(() => {
@@ -345,7 +349,6 @@ function animatePageContent() {
 // Initialize background animations
 function initializeBackgroundAnimations() {
     // This will be enhanced by animations.js
-    console.log('🌟 Background animations initialized');
 }
 
 // Load user preferences
@@ -354,7 +357,6 @@ function loadUserPreferences() {
     if (preferences) {
         const prefs = JSON.parse(preferences);
         // Apply saved preferences
-        console.log('📱 User preferences loaded:', prefs);
     }
 }
 
@@ -388,12 +390,36 @@ function smoothScrollTo(element, duration = 1000) {
     requestAnimationFrame(animation);
 }
 
+// ============================================
+// GLOBAL NOTIFICATION UTILITY
+// Used by blog-supabase.js and other modules
+// ============================================
+function showNotification(message, type = 'info') {
+    const existing = document.getElementById('global-notification');
+    if (existing) existing.remove();
+
+    const colors = {
+        success: 'background:rgba(0,255,65,0.12);border:1px solid rgba(0,255,65,0.35);color:#00ff41;',
+        error:   'background:rgba(255,0,110,0.12);border:1px solid rgba(255,0,110,0.35);color:#ff006e;',
+        warning: 'background:rgba(255,214,10,0.12);border:1px solid rgba(255,214,10,0.35);color:#ffd60a;',
+        info:    'background:rgba(0,245,255,0.12);border:1px solid rgba(0,245,255,0.35);color:#00f5ff;'
+    };
+
+    const note = document.createElement('div');
+    note.id = 'global-notification';
+    note.textContent = message;
+    note.style.cssText = `
+        position:fixed;top:80px;right:1.5rem;z-index:99999;
+        padding:0.75rem 1.25rem;border-radius:8px;
+        font-size:0.9rem;max-width:320px;
+        animation:slideIn 0.3s ease;
+        ${colors[type] || colors.info}
+    `;
+
+    document.body.appendChild(note);
+    setTimeout(() => { if (note.parentNode) note.remove(); }, 4000);
+}
+
 // Export functions for global use
-window.showPage = showPage;
-window.SimeonDev = {
-    showPage,
-    animateHeroText,
-    smoothScrollTo,
-    saveUserPreferences,
-    loadUserPreferences
-};
+window.showPage = showPage;             // called from nav link onclick attributes in HTML
+window.showNotification = showNotification; // called by blog-supabase.js and other modules

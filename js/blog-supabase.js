@@ -10,7 +10,6 @@ let blogRealtimeSubscription = null; // Store subscription for cleanup
 // FETCH BLOG POSTS FROM SUPABASE
 // ============================================
 async function fetchBlogPosts() {
-    console.log('🔄 Fetching blog posts from Supabase...');
     
     try {
         const { data, error } = await supabaseClient
@@ -25,7 +24,6 @@ async function fetchBlogPosts() {
             return [];
         }
         
-        console.log(`✅ Fetched ${data.length} blog posts from Supabase`);
         blogPostsData = data;
         return data;
         
@@ -40,7 +38,6 @@ async function fetchBlogPosts() {
 // SETUP REAL-TIME SUBSCRIPTION FOR BLOG
 // ============================================
 function setupBlogRealtimeSubscription() {
-    console.log('⚡ Setting up real-time subscription for blog posts...');
     
     blogRealtimeSubscription = supabaseClient
         .channel('blog-posts-changes')
@@ -53,13 +50,11 @@ function setupBlogRealtimeSubscription() {
                 filter: 'status=eq.published'
             },
             (payload) => {
-                console.log('⚡ Blog real-time update received:', payload);
                 handleBlogRealtimeUpdate(payload);
             }
         )
         .subscribe((status) => {
             if (status === 'SUBSCRIBED') {
-                console.log('✅ Blog real-time subscription active');
             }
         });
 }
@@ -72,27 +67,24 @@ async function handleBlogRealtimeUpdate(payload) {
     
     switch (eventType) {
         case 'INSERT':
-            console.log('➕ New blog post published:', newRecord);
             blogPostsData.unshift(newRecord); // Add to beginning
             renderBlogPosts();
-            showNotification('New blog post published! 📝', 'success');
+            showNotification('New blog post published', 'success');
             break;
-            
+
         case 'UPDATE':
-            console.log('🔄 Blog post updated:', newRecord);
             const updateIndex = blogPostsData.findIndex(p => p.id === newRecord.id);
             if (updateIndex !== -1) {
                 blogPostsData[updateIndex] = newRecord;
                 renderBlogPosts();
-                showNotification('Blog post updated! ✏️', 'info');
+                showNotification('Blog post updated', 'info');
             }
             break;
-            
+
         case 'DELETE':
-            console.log('🗑️ Blog post deleted:', oldRecord);
             blogPostsData = blogPostsData.filter(p => p.id !== oldRecord.id);
             renderBlogPosts();
-            showNotification('Blog post removed! 🗑️', 'warning');
+            showNotification('Blog post removed', 'warning');
             break;
     }
 }
@@ -101,12 +93,10 @@ async function handleBlogRealtimeUpdate(payload) {
 // INITIALIZE BLOG (Called on page load)
 // ============================================
 async function initializeBlog() {
-    console.log('🚀 Initializing blog module...');
 
     // Check if blog page is active
     const blogPage = document.getElementById('blog');
     if (!blogPage || !blogPage.classList.contains('active')) {
-        console.log('⚠️  Blog page not active, skipping blog initialization');
         return;
     }
 
@@ -119,14 +109,12 @@ async function initializeBlog() {
     // Setup real-time subscription
     setupBlogRealtimeSubscription();
 
-    console.log('✅ Blog module initialized');
 }
 
 // ============================================
 // RENDER BLOG POSTS
 // ============================================
 function renderBlogPosts() {
-    console.log('🔄 Rendering blog posts to BLOG PAGE...');
 
     // CRITICAL FIX: Target blog page specifically, not homepage
     const blogGrid = document.querySelector('#blog .blog-grid');
@@ -146,8 +134,8 @@ function renderBlogPosts() {
     if (!blogPostsData || blogPostsData.length === 0) {
         blogGrid.innerHTML = `
             <div class="no-blog-message">
-                <h3>📝 No blog posts yet!</h3>
-                <p>Stay tuned for upcoming articles on AI, cybersecurity, and web development.</p>
+                <h3>No posts yet</h3>
+                <p>Stay tuned for upcoming articles on AI, security, and engineering.</p>
             </div>
         `;
         return;
@@ -159,56 +147,96 @@ function renderBlogPosts() {
     // Render ALL blog posts (no limit - show everything)
     blogPostsData.forEach((post, index) => {
         try {
-            const blogCard = createBlogCard(post);
+            const blogCard = createBlogCard(post, index);
             blogGrid.appendChild(blogCard);
         } catch (error) {
             console.error(`❌ Error rendering blog post ${index + 1}:`, error);
         }
     });
 
-    console.log(`✅ Rendered ${blogPostsData.length} blog posts to blog page`);
 }
 
 // ============================================
 // CREATE BLOG CARD ELEMENT
 // ============================================
-function createBlogCard(post) {
-    const card = document.createElement('div');
-    card.className = 'blog-card';
-    
-    // Format date
-    const publishedDate = post.published_at ? 
-        new Date(post.published_at).toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        }) : 
+function createBlogCard(post, index = 0) {
+    const card = document.createElement('article');
+    card.className = 'blog-card' + (post.featured ? ' is-featured' : '');
+    card.style.setProperty('--i', index);
+    card.onclick = () => showBlogPost(post.id);
+
+    // Short date format: "Feb 23, 2026"
+    const publishedDate = post.published_at ?
+        new Date(post.published_at).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        }) :
         'Draft';
-    
-    // Format tags
-    const tagsHtml = post.tags && Array.isArray(post.tags) ? 
-        post.tags.slice(0, 3).map(tag => `<span class="blog-tag">${escapeHtml(tag)}</span>`).join('') : 
-        '';
-    
+
+    // Cover image or letter placeholder
+    const firstLetter = escapeHtml((post.title || 'B')[0].toUpperCase());
+    const imageHtml = post.cover_image
+        ? `<img class="blog-card-img" src="${escapeHtml(post.cover_image)}" alt="${escapeHtml(post.title)}"
+               onerror="this.closest('.blog-card-image').classList.add('no-image'); this.outerHTML='<span class=\\'blog-card-placeholder-letter\\'>${firstLetter}</span>'">`
+        : `<span class="blog-card-placeholder-letter">${firstLetter}</span>`;
+    const imageWrapperClass = 'blog-card-image' + (post.cover_image ? '' : ' no-image');
+
+    // Featured badge
+    const featuredBadge = post.featured ? `
+        <span class="blog-featured-badge">
+            <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+                <path d="M6 1l1.4 2.8L10.5 4l-2.25 2.2.53 3.1L6 7.75 3.22 9.3l.53-3.1L1.5 4l3.1-.2L6 1z"/>
+            </svg>
+            Featured
+        </span>` : '';
+
+    // Tags
+    const tagsHtml = post.tags && Array.isArray(post.tags) && post.tags.length
+        ? `<div class="blog-card-tags">${post.tags.slice(0, 3).map(t => `<span class="blog-card-tag">${escapeHtml(t)}</span>`).join('')}</div>`
+        : '';
+
+    // Category
+    const categoryHtml = post.category
+        ? `<span class="blog-card-category">${escapeHtml(post.category)}</span>`
+        : '';
+
+    // Excerpt
+    const excerpt = post.excerpt || (post.content ? post.content.replace(/<[^>]+>/g, '').substring(0, 140) + '…' : '');
+
     card.innerHTML = `
-        <div class="blog-header">
-            <div class="blog-date">${publishedDate}</div>
-            ${post.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
-            <h3>${escapeHtml(post.title)}</h3>
-            ${tagsHtml ? `<div class="blog-tags">${tagsHtml}</div>` : ''}
+        <div class="${imageWrapperClass}">
+            ${imageHtml}
+            <div class="blog-card-image-overlay"></div>
+            ${featuredBadge}
         </div>
-        <div class="blog-excerpt">
-            <p>${escapeHtml(post.excerpt || post.content.substring(0, 150) + '...')}</p>
+        <div class="blog-card-body">
+            <div class="blog-card-meta">
+                ${categoryHtml}
+                <span class="blog-card-date">${publishedDate}</span>
+            </div>
+            <h3 class="blog-card-title">${escapeHtml(post.title)}</h3>
+            <p class="blog-card-excerpt">${escapeHtml(excerpt)}</p>
+            ${tagsHtml}
+            <div class="blog-card-footer">
+                <span class="blog-stat">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.5"/>
+                        <path d="M8 5v3.5l2 2"/>
+                    </svg>
+                    ${post.reading_time || 5} min read
+                </span>
+                <span class="blog-stat">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <ellipse cx="8" cy="8" rx="6.5" ry="4.5"/>
+                        <circle cx="8" cy="8" r="1.75" fill="currentColor" stroke="none"/>
+                    </svg>
+                    ${post.view_count || 0} views
+                </span>
+            </div>
         </div>
-        <div class="blog-footer">
-            <span class="blog-reading-time">⏱️ ${post.reading_time || 5} min read</span>
-            <span class="blog-views">👁️ ${post.view_count || 0} views</span>
-        </div>
-        <a href="#" class="blog-link" onclick="showBlogPost('${post.id}'); return false;">
-            Read More →
-        </a>
     `;
-    
+
     return card;
 }
 
@@ -216,7 +244,6 @@ function createBlogCard(post) {
 // SHOW BLOG POST DETAIL
 // ============================================
 async function showBlogPost(blogId) {
-    console.log(`🔄 Showing blog post: ${blogId}`);
     
     // Track blog view
     await trackBlogPostView(blogId);
@@ -297,44 +324,49 @@ function createBlogDetailView(blog) {
         <div class="container">
             <div class="blog-detail-header">
                 <button class="back-button" onclick="showPage('blog')">
-                    ← Back to Blog
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M10 3L5 8l5 5"/></svg>
+                    Back to Articles
                 </button>
                 <div class="blog-meta">
                     ${blog.category ? `<span class="blog-category">${escapeHtml(blog.category)}</span>` : ''}
                     <span class="blog-date">${publishedDate}</span>
-                    <span class="blog-read-time">⏱️ ${blog.reading_time || 5} min read</span>
-                    <span class="blog-views">👁️ ${blog.view_count || 0} views</span>
+                    <span class="blog-read-time">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13" style="vertical-align:middle;margin-right:3px"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v3.5l2 2"/></svg>${blog.reading_time || 5} min read
+                    </span>
+                    <span class="blog-views">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13" style="vertical-align:middle;margin-right:3px"><ellipse cx="8" cy="8" rx="6.5" ry="4.5"/><circle cx="8" cy="8" r="1.75" fill="currentColor" stroke="none"/></svg>${blog.view_count || 0} views
+                    </span>
                 </div>
                 <h1 class="blog-title">${escapeHtml(blog.title)}</h1>
                 ${tagsHtml ? `<div class="blog-tags">${tagsHtml}</div>` : ''}
             </div>
-            
+
             <article class="blog-content">
                 ${blog.content}
             </article>
-            
+
             <div class="blog-footer">
                 <div class="blog-share">
                     <h3>Share this article</h3>
                     <div class="share-buttons">
                         <button class="share-btn" onclick="shareOnTwitter('${escapeHtml(blog.title)}', '${escapeHtml(blog.excerpt || '')}')">
-                            🐦 Twitter
+                            Twitter / X
                         </button>
                         <button class="share-btn" onclick="shareOnLinkedIn('${escapeHtml(blog.title)}', '${escapeHtml(blog.excerpt || '')}')">
-                            💼 LinkedIn
+                            LinkedIn
                         </button>
                         <button class="share-btn" onclick="copyToClipboard()">
-                            📋 Copy Link
+                            Copy Link
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="blog-navigation">
                     <button class="nav-btn" onclick="showPreviousBlog('${blog.id}')">
-                        ← Previous Post
+                        ← Previous
                     </button>
                     <button class="nav-btn" onclick="showNextBlog('${blog.id}')">
-                        Next Post →
+                        Next →
                     </button>
                 </div>
             </div>
@@ -405,27 +437,14 @@ function highlightCodeBlocks() {
 }
 
 // ============================================
-// UPDATE NAVIGATION STATE
-// ============================================
-function updateNavigationState(activePageId) {
-    const navLinks = document.querySelectorAll('.nav-links a');
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('onclick')?.includes(activePageId)) {
-            link.classList.add('active');
-        }
-    });
-}
-
-// ============================================
 // SHOW BLOG ERROR
 // ============================================
 function showBlogError() {
-    const blogGrid = document.querySelector('.blog-grid');
+    const blogGrid = document.querySelector('#blog .blog-grid');
     if (blogGrid) {
         blogGrid.innerHTML = `
-            <div class="error-message">
-                <h3>⚠️ Unable to load blog posts</h3>
+            <div class="blog-error-state">
+                <h3>Unable to load articles</h3>
                 <p>Please check your internet connection and try again.</p>
                 <button class="cta-button" onclick="initializeBlog()">Retry</button>
             </div>
@@ -449,7 +468,6 @@ function escapeHtml(text) {
 window.addEventListener('beforeunload', () => {
     if (blogRealtimeSubscription) {
         supabaseClient.removeChannel(blogRealtimeSubscription);
-        console.log('🔌 Blog real-time subscription cleaned up');
     }
 });
 
@@ -457,7 +475,6 @@ window.addEventListener('beforeunload', () => {
 // INITIALIZE ON DOM READY
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Blog Supabase module loaded');
 
     // Blog initialization is now handled by main.js via initializePageData()
     // when user navigates to the blog page
@@ -467,7 +484,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // LOAD LATEST BLOG POSTS FOR HOMEPAGE
 // ============================================
 async function loadLatestBlogPosts() {
-    console.log('📰 Loading latest blog posts for homepage...');
 
     try {
         const { data, error } = await supabaseClient
@@ -483,7 +499,6 @@ async function loadLatestBlogPosts() {
             return;
         }
 
-        console.log(`✅ Loaded ${data.length} latest blog posts`);
         renderLatestBlogPosts(data);
 
     } catch (err) {
@@ -496,7 +511,6 @@ async function loadLatestBlogPosts() {
 // RENDER LATEST BLOG POSTS TO HOMEPAGE
 // ============================================
 function renderLatestBlogPosts(posts) {
-    console.log('🏠 Rendering latest blogs to HOMEPAGE...');
 
     // Specifically target homepage container (NOT blog page)
     const container = document.getElementById('latestBlogGrid');
@@ -519,16 +533,15 @@ function renderLatestBlogPosts(posts) {
     container.innerHTML = '';
 
     // Render each latest blog post (limited to 3 for homepage)
-    posts.forEach(post => {
+    posts.forEach((post, index) => {
         try {
-            const card = createBlogCard(post);
+            const card = createBlogCard(post, index);
             container.appendChild(card);
         } catch (error) {
             console.error(`❌ Error rendering latest blog post:`, error);
         }
     });
 
-    console.log(`✅ Rendered ${posts.length} latest blog posts to homepage`);
 }
 
 // ============================================
@@ -538,8 +551,8 @@ function showLatestBlogError() {
     const container = document.getElementById('latestBlogGrid');
     if (container) {
         container.innerHTML = `
-            <div class="error-message">
-                <h3>⚠️ Unable to load latest blog posts</h3>
+            <div class="blog-error-state">
+                <h3>Unable to load latest blog posts</h3>
                 <p>Please check your internet connection and try again.</p>
                 <button class="cta-button" onclick="loadLatestBlogPosts()">Retry</button>
             </div>
@@ -550,10 +563,11 @@ function showLatestBlogError() {
 // ============================================
 // EXPORT FUNCTIONS
 // ============================================
-window.initializeBlog = initializeBlog;
-window.showBlogPost = showBlogPost;
-window.fetchBlogPosts = fetchBlogPosts;
-window.shareOnTwitter = shareOnTwitter;
-window.shareOnLinkedIn = shareOnLinkedIn;
-window.copyToClipboard = copyToClipboard;
-window.loadLatestBlogPosts = loadLatestBlogPosts;
+window.initializeBlog = initializeBlog;         // called by main.js initializePageData
+window.showBlogPost = showBlogPost;             // called from blog card HTML onclick
+window.shareOnTwitter = shareOnTwitter;         // called from blog detail HTML onclick
+window.shareOnLinkedIn = shareOnLinkedIn;       // called from blog detail HTML onclick
+window.copyToClipboard = copyToClipboard;       // called from blog detail HTML onclick
+window.loadLatestBlogPosts = loadLatestBlogPosts; // called by main.js initializePageData('home')
+window.showPreviousBlog = showPreviousBlog;     // called from blog detail HTML onclick
+window.showNextBlog = showNextBlog;             // called from blog detail HTML onclick

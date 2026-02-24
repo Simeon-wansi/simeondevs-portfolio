@@ -6,12 +6,6 @@
     margin: 3rem 0;
 }
 
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    margin: 3rem 0;
-}
 
 .blog-grid {
     display: grid;
@@ -238,12 +232,18 @@
 }
 
 .blog-category {
-    background: var(--gradient-primary);
-    color: var(--primary-dark);
-    padding: 0.3rem 0.8rem;
-    border-radius: var(--radius-lg);
-    font-size: var(--font-size-xs);
-    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.28rem 0.75rem;
+    background: rgba(232, 169, 32, 0.1);
+    color: #e8a920;
+    border: 1px solid rgba(232, 169, 32, 0.3);
+    border-radius: 6px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
 }
 
 .blog-date, .blog-read-time {
@@ -252,13 +252,19 @@
 }
 
 .blog-title {
-    font-size: var(--font-size-4xl);
-    margin-bottom: var(--spacing-sm);
-    background: var(--gradient-primary);
+    font-family: 'Syne', system-ui, sans-serif;
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(135deg,
+        #ffffff 0%,
+        rgba(192, 152, 255, 0.95) 52%,
+        rgba(232, 169, 32, 0.85) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    line-height: 1.2;
 }
 
 .blog-tags {
@@ -270,12 +276,15 @@
 }
 
 .blog-tag {
-    background: rgba(157, 78, 221, 0.1);
-    color: var(--primary-purple);
-    padding: 0.2rem 0.6rem;
-    border-radius: var(--radius-sm);
-    font-size: var(--font-size-xs);
-    border: 1px solid var(--border-primary);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #c084fc;
+    background: rgba(157, 78, 221, 0.09);
+    border: 1px solid rgba(157, 78, 221, 0.22);
+    border-radius: 4px;
+    padding: 0.2rem 0.55rem;
+    letter-spacing: 0.02em;
 }
 
 .blog-author {

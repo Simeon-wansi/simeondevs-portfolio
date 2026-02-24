@@ -1,0 +1,417 @@
+/* ============================================
+   HOME PAGE — STATS STRIP + WHAT I BUILD
+   Loaded after hero-2025.css
+   ============================================ */
+
+/* === STATS STRIP === */
+.stats-strip {
+    padding: 2.75rem 0;
+    border-top: 1px solid rgba(157, 78, 221, 0.1);
+    border-bottom: 1px solid rgba(157, 78, 221, 0.1);
+    background: rgba(157, 78, 221, 0.025);
+}
+
+.stats-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-item {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.stat-num {
+    font-family: 'Syne', system-ui, sans-serif;
+    font-size: clamp(1.875rem, 3vw, 2.625rem);
+    font-weight: 800;
+    color: #e8a920;
+    line-height: 1;
+    letter-spacing: -0.025em;
+}
+
+.stat-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.715rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.stat-sep {
+    width: 1px;
+    height: 36px;
+    background: rgba(157, 78, 221, 0.18);
+    flex-shrink: 0;
+    align-self: center;
+}
+
+/* === WHAT I BUILD === */
+.what-i-build {
+    padding: 6rem 0 5.5rem;
+}
+
+.what-i-build .section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.what-i-build .section-title {
+    font-family: 'Syne', system-ui, sans-serif;
+    font-size: clamp(1.875rem, 3.5vw, 2.875rem);
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0 0 0.625rem;
+    letter-spacing: -0.025em;
+}
+
+.what-i-build .section-subtitle {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0;
+}
+
+/* Three-panel grid */
+.build-trio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid rgba(157, 78, 221, 0.14);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.build-col {
+    background: rgba(8, 4, 20, 0.85);
+    padding: 2.75rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: background 0.3s ease;
+    position: relative;
+}
+
+.build-col + .build-col {
+    border-left: 1px solid rgba(157, 78, 221, 0.1);
+}
+
+/* Top accent line — fades in on hover */
+.build-col::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(157, 78, 221, 0.55) 40%,
+        rgba(232, 169, 32, 0.4) 70%,
+        transparent 100%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.build-col:hover {
+    background: rgba(157, 78, 221, 0.055);
+}
+
+.build-col:hover::before {
+    opacity: 1;
+}
+
+/* Icon */
+.build-icon {
+    width: 38px;
+    height: 38px;
+    color: #9d4edd;
+    flex-shrink: 0;
+    margin-bottom: 0.25rem;
+}
+
+.build-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Title */
+.build-title {
+    font-family: 'Syne', system-ui, sans-serif;
+    font-size: 1.1875rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    letter-spacing: -0.015em;
+}
+
+/* Description */
+.build-desc {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.72;
+    color: rgba(255, 255, 255, 0.42);
+    margin: 0;
+    flex: 1;
+}
+
+/* Tech tags */
+.build-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+}
+
+.build-tags span {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.695rem;
+    font-weight: 600;
+    color: rgba(192, 132, 252, 0.75);
+    background: rgba(157, 78, 221, 0.07);
+    border: 1px solid rgba(157, 78, 221, 0.17);
+    border-radius: 4px;
+    padding: 0.2rem 0.55rem;
+    letter-spacing: 0.01em;
+}
+
+/* === FEATURED + LATEST SECTION HEADERS === */
+.featured-projects-section .section-header h2,
+.latest-articles-section .section-header h2 {
+    font-family: 'Syne', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    letter-spacing: -0.025em;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.featured-projects-section,
+.latest-articles-section {
+    padding: 5rem 0;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1023px) {
+    .build-trio {
+        grid-template-columns: 1fr;
+    }
+
+    .build-col + .build-col {
+        border-left: none;
+        border-top: 1px solid rgba(157, 78, 221, 0.1);
+    }
+
+    .build-col {
+        padding: 2rem 1.75rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .stats-row {
+        flex-wrap: wrap;
+        gap: 0;
+    }
+
+    .stat-sep { display: none; }
+
+    .stat-item {
+        min-width: 50%;
+        padding: 1.125rem 1rem;
+        border-bottom: 1px solid rgba(157, 78, 221, 0.08);
+    }
+
+    .stat-item:nth-child(odd)     { border-right: 1px solid rgba(157, 78, 221, 0.08); }
+    .stat-item:nth-last-child(-n+2) { border-bottom: none; }
+
+    .what-i-build { padding: 4rem 0 3.5rem; }
+    .build-col    { padding: 1.75rem 1.5rem; }
+
+    .featured-projects-section,
+    .latest-articles-section { padding: 3.5rem 0; }
+}
+
+@media (max-width: 480px) {
+    .stat-num { font-size: 1.75rem; }
+}
+
+/* ============================================
+   HERO SOCIAL LINKS
+   ============================================ */
+.hero-social {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.hero-social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(157, 78, 221, 0.25);
+    background: rgba(157, 78, 221, 0.06);
+    color: rgba(255, 255, 255, 0.45);
+    text-decoration: none;
+    transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.hero-social-link svg {
+    width: 18px;
+    height: 18px;
+}
+
+.hero-social-link:hover {
+    border-color: rgba(157, 78, 221, 0.6);
+    background: rgba(157, 78, 221, 0.14);
+    color: rgba(255, 255, 255, 0.85);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   SCROLL CHEVRON
+   ============================================ */
+.hero-scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    color: rgba(255, 255, 255, 0.55);
+    animation: scrollBounce 2s ease-in-out infinite;
+    cursor: default;
+    user-select: none;
+}
+
+.hero-scroll-hint svg {
+    width: 28px;
+    height: 28px;
+    filter: drop-shadow(0 0 6px rgba(157, 78, 221, 0.5));
+}
+
+.hero-scroll-hint::after {
+    content: 'scroll';
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+@keyframes scrollBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0);   opacity: 0.55; }
+    50%       { transform: translateX(-50%) translateY(8px); opacity: 1; }
+}
+
+/* ============================================
+   VIEW ALL BUTTONS — GHOST RESKIN
+   ============================================ */
+.view-all-projects,
+.view-all-link {
+    text-align: center;
+    margin-top: 2.5rem;
+}
+
+.view-all-projects .cta-button,
+.view-all-link .cta-button {
+    /* Override sections.css gradient pill */
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+    border: 1px solid rgba(157, 78, 221, 0.35) !important;
+    border-radius: 10px !important;
+    padding: 0.7rem 1.75rem !important;
+    font-family: 'DM Sans', system-ui, sans-serif !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+    transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease, transform 0.25s ease !important;
+}
+
+.view-all-projects .cta-button:hover,
+.view-all-link .cta-button:hover {
+    background: rgba(157, 78, 221, 0.1) !important;
+    border-color: rgba(157, 78, 221, 0.6) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: none !important;
+}
+
+/* ============================================
+   CLOSING CTA SECTION
+   ============================================ */
+.home-closing-cta {
+    padding: 6rem 0 5rem;
+    text-align: center;
+    position: relative;
+}
+
+.home-closing-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, rgba(157, 78, 221, 0.4));
+}
+
+.closing-sup {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #9d4edd;
+    margin: 0 0 1rem;
+}
+
+.closing-headline {
+    font-family: 'Syne', system-ui, sans-serif;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.95);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin: 0 0 2.25rem;
+}
+
+.closing-cta-btn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ============================================
+   SCROLL-REVEAL ANIMATIONS
+   ============================================ */
+.reveal-home {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+}
+
+.reveal-home.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-home.delay-1 { transition-delay: 0.1s; }
+.reveal-home.delay-2 { transition-delay: 0.2s; }
+.reveal-home.delay-3 { transition-delay: 0.3s; }
+
+@media (max-width: 767px) {
+    .home-closing-cta { padding: 4rem 0 3.5rem; }
+    .hero-scroll-hint { bottom: 1.25rem; }
+}

@@ -183,10 +183,7 @@
     padding: var(--space-2xl) 0;
 }
 
-.section-header {
-    text-align: center;
-    margin-bottom: var(--space-2xl);
-}
+/* .section-header defined with full children in main.css */
 
 .section-title {
     font-size: clamp(2rem, 4vw, 3rem);

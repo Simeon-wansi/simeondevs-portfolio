@@ -2,6 +2,14 @@
    UTILITY CLASSES
    ============================================ */
 
+/* Image protection - prevent drag-to-desktop */
+img {
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
 /* Spacing */
 .mt-xs { margin-top: var(--space-xs); }
 .mt-sm { margin-top: var(--space-sm); }
@@ -70,11 +78,14 @@ body {
 }
 
 /* All sections should respect width */
+/* NOTE: overflow-x is intentionally NOT set here.
+   Setting overflow-x: hidden on sections/pages promotes overflow-y to auto
+   (CSS spec), which creates an unwanted inner scrollbar on tall sections.
+   The html/body overflow-x: hidden above is sufficient. */
 section,
 .page {
     width: 100%;
     max-width: 100vw;
-    overflow-x: hidden;
 }
 
 /* Ensure all grids stay contained */
@@ -82,15 +93,6 @@ section,
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-}
-
-/* Center all section headers */
-.section-header {
-    text-align: center;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 3rem;
 }
 
 /* Subsection titles */

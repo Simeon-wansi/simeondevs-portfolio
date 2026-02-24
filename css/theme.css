@@ -2,7 +2,7 @@
 :root {
     /* Primary Colors */
     --primary-purple: #9d4edd;
-    --primary-gold: #ffd60a;
+    --primary-gold: #e8a920;
     --primary-dark: #0a0a0a;
     --primary-navy: #1a0a2e;
     --primary-blue: #16213e;
@@ -26,13 +26,13 @@
     /* Border Colors */
     --border-primary: rgba(157, 78, 221, 0.3);
     --border-hover: rgba(157, 78, 221, 0.5);
-    --border-focus: #ffd60a;
+    --border-focus: #e8a920;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(45deg, #9d4edd, #ffd60a);
-    --gradient-reverse: linear-gradient(45deg, #ffd60a, #9d4edd);
-    --gradient-card: linear-gradient(45deg, rgba(157, 78, 221, 0.1), rgba(255, 214, 10, 0.1));
-    --gradient-hover: linear-gradient(45deg, rgba(157, 78, 221, 0.1), rgba(255, 214, 10, 0.1));
+    --gradient-primary: linear-gradient(45deg, #9d4edd, #e8a920);
+    --gradient-reverse: linear-gradient(45deg, #e8a920, #9d4edd);
+    --gradient-card: linear-gradient(45deg, rgba(157, 78, 221, 0.1), rgba(232, 169, 32, 0.1));
+    --gradient-hover: linear-gradient(45deg, rgba(157, 78, 221, 0.1), rgba(232, 169, 32, 0.1));
     
     /* Shadows */
     --shadow-sm: 0 4px 12px rgba(157, 78, 221, 0.3);

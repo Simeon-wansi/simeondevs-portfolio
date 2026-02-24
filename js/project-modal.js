@@ -4,6 +4,16 @@
  */
 
 // ============================================
+// MODAL BADGE ICONS (SVG - consistent with card badges)
+// ============================================
+
+const MODAL_BADGE_ICONS = {
+    featured:   `<svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
+    completed:  `<svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+    inProgress: `<svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+};
+
+// ============================================
 // GLOBAL NAVIGATION STATE
 // ============================================
 
@@ -16,45 +26,41 @@ let currentProjectIndex = 0;
 
 function createLoadingModal() {
     return `
-        <div class="modal-hero-placeholder skeleton skeleton-image"></div>
+        <div class="skeleton skeleton-image"></div>
 
-        <div class="modal-header loading-state">
-            <div class="modal-badges skeleton-badges">
-                <span class="skeleton skeleton-badge"></span>
-                <span class="skeleton skeleton-badge"></span>
-                <span class="skeleton skeleton-badge"></span>
+        <div class="modal-body">
+            <div class="modal-header loading-state">
+                <div class="modal-badges skeleton-badges">
+                    <span class="skeleton skeleton-badge"></span>
+                    <span class="skeleton skeleton-badge"></span>
+                </div>
+                <div class="skeleton skeleton-header"></div>
+                <div class="skeleton skeleton-text long" style="margin-bottom: 1.5rem;"></div>
+                <div class="modal-techs skeleton-tech">
+                    <span class="skeleton skeleton-tech-tag"></span>
+                    <span class="skeleton skeleton-tech-tag"></span>
+                    <span class="skeleton skeleton-tech-tag"></span>
+                </div>
             </div>
 
-            <div class="skeleton skeleton-header"></div>
-
-            <div class="skeleton skeleton-text long" style="margin-bottom: 1.5rem;"></div>
-
-            <div class="modal-techs skeleton-tech">
-                <span class="skeleton skeleton-tech-tag"></span>
-                <span class="skeleton skeleton-tech-tag"></span>
-                <span class="skeleton skeleton-tech-tag"></span>
-                <span class="skeleton skeleton-tech-tag"></span>
+            <div class="modal-section loading-state">
+                <div class="skeleton skeleton-header" style="width: 38%; margin-bottom: 1rem;"></div>
+                <div class="skeleton skeleton-text long"></div>
+                <div class="skeleton skeleton-text medium"></div>
+                <div class="skeleton skeleton-text long"></div>
+                <div class="skeleton skeleton-text short"></div>
             </div>
-        </div>
 
-        <div class="modal-section loading-state">
-            <div class="skeleton skeleton-header" style="width: 40%; margin-bottom: 1rem;"></div>
-            <div class="skeleton skeleton-text long"></div>
-            <div class="skeleton skeleton-text medium"></div>
-            <div class="skeleton skeleton-text long"></div>
-            <div class="skeleton skeleton-text short"></div>
-        </div>
+            <div class="modal-section loading-state">
+                <div class="skeleton skeleton-header" style="width: 28%; margin-bottom: 1rem;"></div>
+                <div class="skeleton skeleton-text long"></div>
+                <div class="skeleton skeleton-text medium"></div>
+            </div>
 
-        <div class="modal-section loading-state">
-            <div class="skeleton skeleton-header" style="width: 30%; margin-bottom: 1rem;"></div>
-            <div class="skeleton skeleton-text long"></div>
-            <div class="skeleton skeleton-text long"></div>
-            <div class="skeleton skeleton-text medium"></div>
-        </div>
-
-        <div class="loading-state skeleton-buttons">
-            <div class="skeleton skeleton-button"></div>
-            <div class="skeleton skeleton-button"></div>
+            <div class="loading-state skeleton-buttons">
+                <div class="skeleton skeleton-button"></div>
+                <div class="skeleton skeleton-button"></div>
+            </div>
         </div>
     `;
 }
@@ -88,34 +94,20 @@ function openProjectModal(project, projectList = null, index = null) {
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Simulate loading delay and then show actual content
-    setTimeout(() => {
-        // Increment views
-        if (project.id) {
-            incrementProjectDetailsViews(project.id);
-        }
+    // Render actual content (data already in memory, no artificial delay)
+    if (project.id) {
+        incrementProjectDetailsViews(project.id);
+    }
 
-        // Render actual modal content
-        content.innerHTML = renderModalContent(project);
+    content.innerHTML = renderModalContent(project);
+    addNavigationButtons(modal);
 
-        // Add navigation buttons
-        addNavigationButtons(modal);
-
-        // Initialize gallery if present
-        setTimeout(() => {
-            initializeGallery();
-        }, 50);
-
-        // Animate score bars
-        setTimeout(() => {
-            animateScoreBars();
-        }, 100);
-    }, 500); // 500ms loading delay
+    setTimeout(() => { initializeGallery(); }, 50);
+    setTimeout(() => { animateScoreBars(); }, 100);
 
     // Add keyboard listeners
     document.addEventListener('keydown', handleModalKeyboard);
 
-    console.log('📖 Opened modal for:', project.title);
 }
 
 // ============================================
@@ -204,29 +196,15 @@ function updateModalContent(project) {
     // Scroll to top
     content.scrollTop = 0;
 
-    // Update content after delay
-    setTimeout(() => {
-        // Increment views
-        if (project.id) {
-            incrementProjectDetailsViews(project.id);
-        }
+    if (project.id) {
+        incrementProjectDetailsViews(project.id);
+    }
 
-        // Render new content
-        content.innerHTML = renderModalContent(project);
+    content.innerHTML = renderModalContent(project);
+    addNavigationButtons(modal);
 
-        // Update navigation buttons
-        addNavigationButtons(modal);
-
-        // Initialize gallery if present
-        setTimeout(() => {
-            initializeGallery();
-        }, 50);
-
-        // Animate score bars
-        setTimeout(() => {
-            animateScoreBars();
-        }, 100);
-    }, 500);
+    setTimeout(() => { initializeGallery(); }, 50);
+    setTimeout(() => { animateScoreBars(); }, 100);
 }
 
 // ============================================
@@ -252,7 +230,6 @@ function closeProjectModal() {
     currentProjectIndex = 0;
     currentGalleryIndex = 0;
 
-    console.log('✖️ Closed modal');
 }
 
 function handleModalKeyboard(e) {
@@ -277,20 +254,21 @@ function handleEscapeKey(e) {
 // ============================================
 
 function renderModalContent(project) {
-    // Status badges
+    // Badges (SVG icons, consistent with card badges)
     const badges = [];
     if (project.featured) {
-        badges.push('<span class="modal-badge badge-featured">⭐ Featured</span>');
+        badges.push(`<span class="modal-badge badge-featured">${MODAL_BADGE_ICONS.featured} Featured</span>`);
+    }
+    const statusBadge = project.status === 'completed'
+        ? `<span class="modal-badge badge-completed">${MODAL_BADGE_ICONS.completed} Completed</span>`
+        : `<span class="modal-badge badge-in-progress">${MODAL_BADGE_ICONS.inProgress} In Progress</span>`;
+    badges.push(statusBadge);
+    if (project.category) {
+        badges.push(`<span class="modal-badge badge-category">${project.category}</span>`);
     }
 
-    const statusBadge = project.status === 'completed'
-        ? '<span class="modal-badge badge-completed">✅ Completed</span>'
-        : '<span class="modal-badge badge-in-progress">🔨 In Progress</span>';
-    badges.push(statusBadge);
-    badges.push(`<span class="modal-badge">${project.category}</span>`);
-
-    // Technologies
-    const techTags = project.technologies.map(tech =>
+    // Technologies (all of them in the modal)
+    const techTags = (project.technologies || []).map(tech =>
         `<span class="modal-tech-tag">${tech}</span>`
     ).join('');
 
@@ -303,7 +281,7 @@ function renderModalContent(project) {
     const highlightsHTML = project.highlights && project.highlights.length > 0
         ? `
         <div class="modal-section">
-            <h2 class="modal-section-title">🎯 Highlights</h2>
+            <h2 class="modal-section-title">Highlights</h2>
             <ul class="highlights-list">
                 ${project.highlights.map(h => `<li class="highlight-item">${h}</li>`).join('')}
             </ul>
@@ -314,7 +292,7 @@ function renderModalContent(project) {
     const aiScoresHTML = (project.complexity_score || project.innovation_score || project.business_impact_score)
         ? `
         <div class="modal-section">
-            <h2 class="modal-section-title">🤖 AI Analysis</h2>
+            <h2 class="modal-section-title">AI Analysis</h2>
             <div class="ai-scores">
                 ${project.complexity_score ? renderScoreBar('Technical Complexity', project.complexity_score) : ''}
                 ${project.innovation_score ? renderScoreBar('Innovation Score', project.innovation_score) : ''}
@@ -326,28 +304,22 @@ function renderModalContent(project) {
     // Challenges, Solutions, Results
     const challengesHTML = project.challenges ? `
         <div class="modal-section">
-            <h2 class="modal-section-title">💪 Challenges</h2>
-            <div class="modal-text-content">
-                <p>${project.challenges}</p>
-            </div>
+            <h2 class="modal-section-title">Challenges</h2>
+            <div class="modal-text-content"><p>${project.challenges}</p></div>
         </div>
     ` : '';
 
     const solutionsHTML = project.solutions ? `
         <div class="modal-section">
-            <h2 class="modal-section-title">✨ Solutions</h2>
-            <div class="modal-text-content">
-                <p>${project.solutions}</p>
-            </div>
+            <h2 class="modal-section-title">Solutions</h2>
+            <div class="modal-text-content"><p>${project.solutions}</p></div>
         </div>
     ` : '';
 
     const resultsHTML = project.results ? `
         <div class="modal-section">
-            <h2 class="modal-section-title">🎉 Results</h2>
-            <div class="modal-text-content">
-                <p>${project.results}</p>
-            </div>
+            <h2 class="modal-section-title">Results</h2>
+            <div class="modal-text-content"><p>${project.results}</p></div>
         </div>
     ` : '';
 
@@ -355,7 +327,7 @@ function renderModalContent(project) {
     const lessonsHTML = project.lessons_learned && project.lessons_learned.length > 0
         ? `
         <div class="modal-section">
-            <h2 class="modal-section-title">📚 Lessons Learned</h2>
+            <h2 class="modal-section-title">Lessons Learned</h2>
             <ul class="lessons-list">
                 ${project.lessons_learned.map(l => `<li class="lesson-item">${l}</li>`).join('')}
             </ul>
@@ -363,10 +335,17 @@ function renderModalContent(project) {
         ` : '';
 
     // Project Info
-    const projectInfoHTML = `
+    const hasInfoItems = project.project_duration || project.team_size || project.role || project.completed_date;
+    const projectInfoHTML = hasInfoItems ? `
         <div class="modal-section">
-            <h2 class="modal-section-title">👥 Project Info</h2>
+            <h2 class="modal-section-title">Project Info</h2>
             <div class="project-info-grid">
+                ${project.role ? `
+                    <div class="info-item">
+                        <span class="info-label">Role</span>
+                        <span class="info-value">${project.role}</span>
+                    </div>
+                ` : ''}
                 ${project.project_duration ? `
                     <div class="info-item">
                         <span class="info-label">Duration</span>
@@ -376,24 +355,18 @@ function renderModalContent(project) {
                 ${project.team_size ? `
                     <div class="info-item">
                         <span class="info-label">Team Size</span>
-                        <span class="info-value">${project.team_size === 1 ? 'Solo Developer' : `${project.team_size} Developers`}</span>
-                    </div>
-                ` : ''}
-                ${project.role ? `
-                    <div class="info-item">
-                        <span class="info-label">Role</span>
-                        <span class="info-value">${project.role}</span>
+                        <span class="info-value">${project.team_size === 1 ? 'Solo' : `${project.team_size} people`}</span>
                     </div>
                 ` : ''}
                 ${project.completed_date ? `
                     <div class="info-item">
                         <span class="info-label">Completed</span>
-                        <span class="info-value">${new Date(project.completed_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                        <span class="info-value">${new Date(project.completed_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</span>
                     </div>
                 ` : ''}
             </div>
         </div>
-    `;
+    ` : '';
 
     // Action Buttons
     const actionsHTML = `
@@ -431,7 +404,7 @@ function renderModalContent(project) {
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                     </svg>
-                    Read Blog Post
+                    Blog Post
                 </a>
             ` : ''}
         </div>
@@ -442,15 +415,15 @@ function renderModalContent(project) {
         <div class="modal-footer">
             <div class="footer-stats">
                 <span class="stat-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                     </svg>
                     ${project.view_count || 0} views
                 </span>
-                ${project.github_clicks !== undefined ? `
+                ${project.github_clicks ? `
                     <span class="stat-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
                         </svg>
                         ${project.github_clicks} GitHub clicks
@@ -460,26 +433,21 @@ function renderModalContent(project) {
         </div>
     `;
 
-    // Prepare gallery images
+    // Hero image / gallery
     const galleryImages = [];
-    
-    // Add main image if exists
     if (project.image_url && project.image_url.trim() !== '') {
         galleryImages.push(project.image_url);
     }
-    
-    // Add gallery images if exists
     if (project.gallery_images && Array.isArray(project.gallery_images)) {
         galleryImages.push(...project.gallery_images.filter(img => img && img.trim() !== ''));
     }
 
-    // Render gallery or placeholder
-    const imageGalleryHTML = galleryImages.length > 0 
+    const imageGalleryHTML = galleryImages.length > 0
         ? renderImageGallery(galleryImages, project.title)
         : `
             <div class="modal-hero-placeholder">
                 <div class="placeholder-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                         <circle cx="8.5" cy="8.5" r="1.5"/>
                         <polyline points="21 15 16 10 5 21"/>
@@ -492,40 +460,33 @@ function renderModalContent(project) {
     return `
         ${imageGalleryHTML}
 
-        <div class="modal-header">
-            <div class="modal-badges">
-                ${badges.join('')}
+        <div class="modal-body">
+            <div class="modal-header">
+                <div class="modal-badges">${badges.join('')}</div>
+                <h1 class="modal-title">${project.title}</h1>
+                <p class="modal-tagline">${project.tagline || project.description || ''}</p>
+                <div class="modal-techs">${techTags}</div>
             </div>
 
-            <h1 class="modal-title">${project.title}</h1>
+            ${keyMetricsHTML}
+            ${highlightsHTML}
+            ${aiScoresHTML}
 
-            <p class="modal-tagline">${project.tagline || project.description}</p>
-
-            <div class="modal-techs">
-                ${techTags}
-            </div>
-        </div>
-
-        ${keyMetricsHTML}
-        ${highlightsHTML}
-        ${aiScoresHTML}
-
-        ${project.full_description ? `
-            <div class="modal-section">
-                <h2 class="modal-section-title">📝 Overview</h2>
-                <div class="modal-text-content">
-                    <p>${project.full_description}</p>
+            ${project.full_description ? `
+                <div class="modal-section">
+                    <h2 class="modal-section-title">Overview</h2>
+                    <div class="modal-text-content"><p>${project.full_description}</p></div>
                 </div>
-            </div>
-        ` : ''}
+            ` : ''}
 
-        ${challengesHTML}
-        ${solutionsHTML}
-        ${resultsHTML}
-        ${lessonsHTML}
-        ${projectInfoHTML}
-        ${actionsHTML}
-        ${footerHTML}
+            ${challengesHTML}
+            ${solutionsHTML}
+            ${resultsHTML}
+            ${lessonsHTML}
+            ${projectInfoHTML}
+            ${actionsHTML}
+            ${footerHTML}
+        </div>
     `;
 }
 
@@ -537,16 +498,16 @@ function renderKeyMetrics(metrics) {
     const items = Object.entries(metrics).map(([key, value]) => {
         const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
         return `
-            <div class="metric-item">
-                <span class="metric-label">${label}</span>
-                <span class="metric-value">${value}</span>
+            <div class="metric-tile">
+                <span class="metric-tile-value">${value}</span>
+                <span class="metric-tile-label">${label}</span>
             </div>
         `;
     }).join('');
 
     return `
         <div class="modal-section">
-            <h2 class="modal-section-title">📊 Key Metrics</h2>
+            <h2 class="modal-section-title">Key Metrics</h2>
             <div class="key-metrics-grid">
                 ${items}
             </div>
@@ -555,14 +516,16 @@ function renderKeyMetrics(metrics) {
 }
 
 function renderScoreBar(label, score) {
+    // Scores are on a 0–10 scale; convert to percentage for bar width
+    const pct = Math.round(Math.min(score, 10) * 10);
     return `
         <div class="score-item">
             <div class="score-header">
                 <span class="score-label">${label}</span>
-                <span class="score-value">${score}%</span>
+                <span class="score-value">${score}/10</span>
             </div>
             <div class="score-bar">
-                <div class="score-fill" data-score="${score}" style="width: 0%"></div>
+                <div class="score-fill" data-score="${pct}" style="width: 0%"></div>
             </div>
         </div>
     `;
@@ -740,31 +703,10 @@ async function incrementProjectDetailsViews(projectId) {
     }
 }
 
-// ============================================
-// TRACK CLICKS
-// ============================================
-
-function trackProjectClick(projectId, type) {
-    // Track click in database
-    const field = `${type}_clicks`;
-
-    supabaseClient
-        .from('projects')
-        .update({ [field]: supabaseClient.raw(`${field} + 1`) })
-        .eq('id', projectId)
-        .then(({ error }) => {
-            if (error) {
-                console.error(`Error tracking ${type} click:`, error);
-            } else {
-                console.log(`✅ Tracked ${type} click`);
-            }
-        });
-}
-
 // Make functions globally available
+// Note: trackProjectClick is defined and exported in supabase-client.js
 window.openProjectModal = openProjectModal;
 window.closeProjectModal = closeProjectModal;
-window.trackProjectClick = trackProjectClick;
 window.goToGalleryImage = goToGalleryImage;
 window.previousGalleryImage = previousGalleryImage;
 window.nextGalleryImage = nextGalleryImage;
