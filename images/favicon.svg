@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Dark background matching site theme -->
+  <rect width="32" height="32" rx="7" fill="#0d0a1a"/>
+  <!-- Subtle purple border -->
+  <rect width="32" height="32" rx="7" fill="none" stroke="#9d4edd" stroke-width="1.5" opacity="0.5"/>
+  <!-- > chevron in brand purple -->
+  <polyline points="5,10 14,16 5,22" fill="none" stroke="#9d4edd" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- _ underscore in off-white -->
+  <line x1="17" y1="22" x2="27" y2="22" stroke="rgba(255,255,255,0.78)" stroke-width="2.8" stroke-linecap="round"/>
+</svg>
