@@ -19,7 +19,9 @@ build/
 # ============================================
 # SUPABASE CREDENTIALS - NEVER COMMIT!
 # ============================================
-js/config.js
+# js/config.js is now a committed no-op stub (prevents production 404).
+# If you add real credentials locally, do NOT git add/commit that file.
+# js/config.js  ← intentionally unignored
 
 
 # IDE files

@@ -833,10 +833,10 @@
 
 /* ── LARGE-SCREEN ENHANCEMENTS ─────────────────────────────── */
 
-/* Ultra-wide: expand container so 4 columns can form naturally */
+/* Ultra-wide: align services container to global canonical width */
 @media (min-width: 1400px) {
     .services-page .container {
-        max-width: 1400px;
+        max-width: 1280px;
     }
 }
 

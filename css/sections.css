@@ -48,7 +48,7 @@
     gap: var(--spacing-xl);
     margin: var(--spacing-xl) 0;
     align-items: start;
-    max-width: 1200px;
+    max-width: 1280px;
     margin-left: auto;
     margin-right: auto;
 }

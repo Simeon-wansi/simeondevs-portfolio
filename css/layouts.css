@@ -17,7 +17,7 @@
     gap: 2rem !important;
     margin: var(--space-xl) auto !important;  /* Centers container itself */
     width: 100% !important;
-    max-width: 1400px !important;          /* Constrains on ultra-wide screens */
+    max-width: 100% !important;            /* Constrained by parent .container (1280px) */
     box-sizing: border-box !important;
     opacity: 1 !important;
     visibility: visible !important;
@@ -44,12 +44,11 @@
     #featuredProjectsGrid,
     #allProjectsGrid,
     #latestBlogGrid {
-        grid-template-columns: repeat(auto-fit, minmax(380px, 420px)) !important;
-        max-width: 1600px !important;
+        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)) !important;
     }
 }
 
-/* Ultra-wide screens: prevent excessive spread */
+/* Ultra-wide screens: cap column width to prevent excessive stretch */
 @media (min-width: 2560px) {
     .projects-grid,
     .blog-grid,
@@ -57,8 +56,8 @@
     #featuredProjectsGrid,
     #allProjectsGrid,
     #latestBlogGrid {
-        grid-template-columns: repeat(auto-fit, minmax(400px, 450px)) !important;
-        max-width: 1800px !important;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 420px)) !important;
+        justify-content: center !important;
     }
 }
 
@@ -120,7 +119,7 @@
 /* Base container - used throughout site */
 .container {
     width: 100%;
-    max-width: 1200px;           /* Tighter container for better centering */
+    max-width: 1280px;           /* Matches hero-container — single canonical width */
     margin-left: auto;           /* Centers horizontally */
     margin-right: auto;          /* Centers horizontally */
     padding-left: 2rem;          /* Side spacing */

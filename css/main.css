@@ -129,8 +129,8 @@ main {
    PREVENT HORIZONTAL SCROLL - CONTAINERS
    ============================================ */
 
-/* Prevent any element from causing horizontal scroll */
-.container,
+/* Prevent sections/pages from causing horizontal scroll.
+   NOTE: .container intentionally excluded — it has its own max-width for centering. */
 .section,
 .page {
     max-width: 100%;
